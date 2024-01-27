@@ -1,0 +1,214 @@
+<section
+  class="section fetureCollection"
+  data-section-id="{{ section.id }}"
+  data-section-type="collection-list"
+  style="background: url({{ section.settings.background_img | img_url:'master' }});"
+>
+  <div class="overlay">
+    <div class="container">
+      {%- if section.settings.title != blank -%}
+        <header class="section__header">
+          <h2 class="section__title heading h3" style="margin: 0 auto;">{{ section.settings.title | escape }}</h2>
+
+          {%- if section.settings.link_title != blank and section.settings.link != blank -%}
+            <a href="{{ section.settings.link }}" class="section__action-link link">
+              {{- section.settings.link_title | escape }}
+              {% render 'icon', icon: 'tail-right' -%}
+            </a>
+          {%- endif -%}
+        </header>
+      {%- endif -%}
+
+      <div class="scroller">
+        <div class="scroller__inner">
+          <div class="collection-list flickity-enabled" tabindex="0">
+            {%- for block in section.blocks -%}
+              {%- assign product = block.settings.product -%}
+              {% assign collection = block.settings.collection %}
+              <a
+                href="{{ shop.url }}/collections/{{ product.metafields.custom.collection_meta }}"
+                data-product-id="{{ product.id }}"
+                data-collection-type="{{ product.metafields.custom.collection_meta }}"
+                id="feature_product"
+                class="collection-item is-selected"
+                data-collection="{{product.type}}"
+                data-collection-index="{{ forloop.index0 }}"
+                {{ block.shopify_attributes }}
+              >
+                {%- unless product == blank -%}
+                  {%- assign product_image = block.settings.image
+                    | default: product.image
+                    | default: collection.products.first.featured_image
+                  -%}
+                  <div class="collection-item__image-wrapper collection-item__image-wrapper--rounded">
+                    {%- capture supported_sizes -%}{%- render 'image-size', sizes: '300,400,500,600,700,800', image: collection_image -%}{%- endcapture -%}
+                    {%- assign image_url = collection_image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+                    <div class="aspect-ratio" style="padding-bottom: 100%">
+                      <img
+                        class="lazyload image--fade-in"
+                        src="{{ product.featured_image | img_url: '600x600' }}"
+                        data-widths="[{{ supported_sizes }}]"
+                        data-sizes="auto"
+                        alt="{{ collection_image.alt | escape }}"
+                        style="background-color: #fff;"
+                      >
+                    </div>
+                  </div>
+                  {%- if section.settings.show_product_title -%}
+                    <span class="collection-item__title text--strong">
+                      {{- product.title }}
+                      {% render 'icon', icon: 'tail-right' -%}
+                    </span>
+                  {% endif %}
+                {%- endunless -%}
+              </a>
+            {% endfor %}
+            <button
+              class="flickity-button flickity-prev-next-button previous"
+              type="button"
+              disabled=""
+              aria-label="Previous"
+            >
+              <svg class="flickity-button-icon" viewBox="0 0 100 100">
+                <path d="M 10,50 L 60,100 L 70,90 L 30,50  L 70,10 L 60,0 Z" class="arrow"></path>
+              </svg>
+            </button>
+            <button class="flickity-button flickity-prev-next-button next" type="button" disabled="" aria-label="Next">
+              <svg class="flickity-button-icon" viewBox="0 0 100 100">
+                <path d="M 10,50 L 60,100 L 70,90 L 30,50  L 70,10 L 60,0 Z" class="arrow" transform="translate(100, 100) rotate(180) "></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Feature Section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Our collections"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_img",
+      "label": "Section Background Image"
+    },
+    {
+      "type": "text",
+      "id": "link_title",
+      "label": "Link title",
+      "default": "View all"
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "Link",
+      "default": "/collections"
+    },
+    {
+      "type": "checkbox",
+      "id": "round_images",
+      "label": "Round images",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_product_title",
+      "label": "Show product title",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product",
+      "name": "product",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "product"
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "600 x 600px .jpg recommended"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link",
+          "info": "If none is set, prodcut URL will be used."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "category": "Feature Section",
+      "name": "Feature Section",
+      "blocks": [
+        {
+          "type": "product"
+        },
+        {
+          "type": "product"
+        },
+        {
+          "type": "product"
+        },
+        {
+          "type": "product"
+        },
+        {
+          "type": "product"
+        },
+        {
+          "type": "product"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+{% include 'BrokenLinkRedirect' %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+
+  $(document).ready(function() {
+    // Listen for click event on the <a> element
+    $('#feature_product').click(function(event) {
+      event.preventDefault(); // Prevent default link behavior
+
+      // Get the product ID from the data-product-id attribute
+      var productId = $(this).data('data-product-id');
+
+      // Get the collection URL
+      var collectionUrl = 'https://www.elitefitness.com.au/collections/treadmills';
+
+      // Create the new URL with the product ID parameter
+      var newUrl = collectionUrl + "?p-id=" + productId;
+
+      alert(newUrl);
+
+      // Redirect to the new URL
+      window.location.href = newUrl;
+    });
+  });
+{% endjavascript %}

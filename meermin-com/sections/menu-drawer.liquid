@@ -1,0 +1,240 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Section: Cart drawer
+  - This is a required section for the Shopify Theme Store.
+  - It is available in the "Ajax Cart" section in the theme editor.
+------------------------------------------------------------------------------
+{% endcomment %}
+{% assign modifiers = '' %}
+
+{% unless shop.customer_accounts_enabled %}
+  {% assign modifiers = modifiers | append: 'is-hidden' %}
+{% endunless %}
+
+{% assign settings_store_code = settings.store_code | downcase %}
+
+{% if settings_store_code == 'seconds' %}
+  {% if cart.currency.iso_code == 'USD' %}
+    {% assign settings_store_code = 'us' %}
+  {% else %}
+    {% assign settings_store_code = 'eu' %}
+  {% endif %}
+{% endif %}
+
+<section
+  id="menuDrawer"
+  class="menu-drawer drawer drawer--left critical-hide"
+  role="navigation"
+  data-section-id="{{ section.id }}"
+  data-section-type="menu-drawer"
+  js-menu-drawer="container"
+>
+  <div class="menu-drawer__header">
+    <div class="container">
+      <button
+        class="menu-drawer__back button is-hidden"
+        tabindex="0"
+        value="{{ 'general.accessibility.back' | t }}"
+        js-menu-drawer="menuNavBack"
+      >
+        <span class="visually-hidden">{{ 'general.accessibility.close' | t }}</span>
+        {% render 'icon-misc' with icon: 'back' %}
+      </button>
+
+      <button
+        class="menu-drawer__close button"
+        tabindex="0"
+        value="{{ 'general.accessibility.close' | t }}"
+        data-target="menuDrawer"
+        js-toggle="menuDrawer"
+      >
+        <span class="visually-hidden">{{ 'general.accessibility.close' | t }}</span>
+        {% render 'icon-misc' with icon: 'close' %}
+      </button>
+    </div>
+  </div>
+
+  <div class="menu-drawer__body" js-menu-drawer="body">
+    <div class="container menu-drawer__container">
+      <div class="menu-drawer__menus">
+        <ul class="menu-drawer__menu">
+          {% for tier_1 in linklists[section.settings.primary_navigation_mobile].links %}
+
+            {% comment %}
+            ------------------------------------------------------------------------------
+              Menu Level: 1
+            ------------------------------------------------------------------------------
+            {% endcomment %}
+            {% if tier_1.links == blank %}
+              {% assign menu_handle = "" %}
+              {% if tier_1.url contains "#shop-" %}
+                {% assign menu_handle = tier_1.url | remove_first: '#' %}
+              {% endif %}
+              <li class="menu-drawer__item">
+                <a
+                  class="menu-drawer__link"
+                  href="{{ tier_1.url }}"
+                  tabindex="0"
+                  {% if menu_handle != blank%}
+                    js-menu-drawer="menuHandle"
+                    data-menu-handle="{{menu_handle}}"
+                  {% endif %}
+                >
+                  <span class="menu-drawer__primary-label">{{ tier_1.title }}</span>
+                </a>
+              </li>
+
+            {% comment %}
+            ------------------------------------------------------------------------------
+              Menu Level: 2
+            ------------------------------------------------------------------------------
+            {% endcomment %}
+            {% else %}
+              <li class="menu-drawer__item">
+                <button
+                  class="menu-drawer__button"
+                  tabindex="0"
+                  js-menu-drawer="tier2MenuToggle"
+                >
+                  <span class="menu-drawer__primary-label">{{ tier_1.title }}</span>
+                  <span>
+                    {% render 'icon-misc' with icon: 'plus' %}
+                    {% render 'icon-misc' with icon: 'minus' %}
+                  </span>
+                </button>
+
+                <ul js-menu-drawer="tier2Menu">
+                  {% for tier_2 in tier_1.links %}
+                    {% if tier_2.links == blank %}
+                      <li class="menu-drawer__item">
+                        <a href="{{ tier_2.url }}" class="menu-drawer__link">
+                          {{ tier_2.title }}
+                        </a>
+                      </li>
+                    {% else %}
+
+                      {% comment %}
+                      ------------------------------------------------------------------------------
+                        Menu Level: 3
+                      ------------------------------------------------------------------------------
+                      {% endcomment %}
+                      <li class="menu-drawer__item">
+                        <button
+                          class="menu-drawer__button"
+                          tabindex="0"
+                          js-menu-drawer="tier3MenuToggle"
+                        >
+                          <span class="menu-drawer__secondary-label">{{ tier_2.title }}</span>
+                        </button>
+
+                        <ul js-menu-drawer="tier3Menu">
+                          {% for tier_3 in tier_2.links %}
+                            <li class="menu-drawer__item">
+                              <a
+                                href="{{ tier_3.url }}"
+                                class="menu-drawer__link"
+                              >
+                                {{ tier_3.title }}
+                              </a>
+                            </li>
+                          {% endfor %}
+                        </ul>
+                      </li>
+                    {% endif %}
+                  {% endfor %}
+                </ul>
+              </li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+
+        <ul class="menu-drawer__secondary-menu">
+          {% for tier_1 in linklists[section.settings.secondary_navigation_mobile].links %}
+            <li class="menu-drawer__secondary-item">
+              <a href="{{tier_1.url}}" class="menu-drawer__secondary-link">
+                {{ tier_1.title }}
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      <ul class="menu-drawer__multistore">
+        <li class="country">
+          {% if settings.enable_redirect_modal or settings.store_code == 'SECONDS' %}
+            <button
+              js-menu-drawer="redirectModalToggle"
+            >
+              <span class="site-header__flag-icon">
+                <span
+                  class="flag-icon flag-icon-{{ settings_store_code }}"
+                  js-menu-drawer="storeIcon"
+                >
+                </span>
+              </span>
+
+              <div class="visually-hidden">
+                {{ 'layout.store_settings.update_preferences' | t }}
+              </div>
+            </button>
+          {% endif %}
+        </li>
+        <li class="currency">
+          {% render 'currency-selector' %}
+        </li>
+
+        {% if settings.store_code == 'EU' %}
+          <li class="language">
+            {% render 'language-selector' %}
+            </a>
+          </li>
+        {% endif %}  
+      </ul>
+
+      {% unless settings.store_code == 'SECONDS' %}
+        <a href="{{ routes.account_url }}" class="button button--primary menu-drawer__account-cta">
+          {% if customer %}
+            <span>{{ section.settings.account_button_text }}</span>
+
+          {% else %}
+            <span>{{ section.settings.account_button_login_text }}</span>
+          {% endif %}
+          </a>
+        {% endunless %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+  {
+    "name": "Menu Drawer",
+    "settings": [
+      {
+        "type": "link_list",
+        "id": "primary_navigation_mobile",
+        "label": "Primary Navigation - Mobile"
+      },
+      {
+        "type": "link_list",
+        "id": "secondary_navigation_mobile",
+        "label": "Secondary Navigation - Mobile"
+      },
+      {
+        "type": "header",
+        "content": "Account Button"
+      },
+      {
+        "type": "text",
+        "id": "account_button_login_text",
+        "label": "Account button text",
+        "default": "Login/Register"
+      },
+      {
+        "type": "text",
+        "id": "account_button_text",
+        "label": "Account button text",
+        "default": "My account"
+      }
+    ]
+  }
+{% endschema %}

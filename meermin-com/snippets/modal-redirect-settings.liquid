@@ -1,0 +1,182 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Snippet: Store settings modal
+------------------------------------------------------------------------------
+{% endcomment %}
+{% assign modifiers = '' %}
+{% assign tabindex = 0 %}
+
+{% if hidden %}
+  {% assign modifiers = modifier | append: 'is-hidden' %}
+  {% assign tabindex = -1 %}
+{% endif %}
+
+{% capture default_language_options%}
+  {% if settings.store_code == 'US' or settings.store_code == 'ROW' %}
+    <option value="en">English</option>
+  {% elsif settings.store_code == 'EU' %}
+    <option value="en">English</option>
+    <option value="fr">French</option>
+    <option value="es">Spanish</option>
+  {% endif %}
+{% endcapture%}
+
+<div
+  class="modal__card redirect-modal__card redirect-modal__settings {{ modifiers }}"
+  tabindex="{{ tabindex }}"
+  js-modal="card"
+  js-redirect-modal="settingsContainer"
+>
+  <div class="redirect-modal__header">
+    <div class="container">
+      <div class="row">
+        <div class="col xs12">
+          <h2 class="redirect-modal__title">
+            {{ 'redirect.modal.settings.title' | t }}
+          </h2>
+
+          <button class="redirect-modal__close button" js-redirect-modal="close">
+            <span class="visually-hidden">
+              {{ 'general.accessibility.close' | t }}
+            </span>
+
+            {% render 'icon-misc' with icon: 'close' %}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="redirect-modal__body">
+    <form
+      id="RedirectSettings"
+      class="form-group"
+      action="#"
+      method="GET"
+      js-redirect-modal="form"
+    >
+      <div class="container">
+        <div class="row">
+          <div class="col xs12">
+            <p class="body-1">
+              {{ 'redirect.modal.direction' | t }}
+            </p>
+          </div>
+          <div class="col xs12">
+            <label class="form-group__label" for="RedirectCountry">
+              {{ 'redirect.modal.country_selector_label' | t }}
+            </label>
+
+            <select
+              id="RedirectCountry"
+              name="loc"
+              style="background-image: url({{ 'icon-chevron-down.svg' | asset_url }});"
+              js-redirect-modal="countrySelector"
+            >
+                <option value="AU">{{ 'general.region.au' | t }}</option>
+                <option value="AT">{{ 'general.region.at' | t }}</option>
+                <option value="BE">{{ 'general.region.be' | t }}</option>
+                <option value="BG">{{ 'general.region.bg' | t }}</option>
+                <option value="CA">{{ 'general.region.ca' | t }}</option>
+                <option value="CN">{{ 'general.region.cn' | t }}</option>
+                <option value="HR">{{ 'general.region.hr' | t }}</option>
+                <option value="CY">{{ 'general.region.cy' | t }}</option>
+                <option value="CZ">{{ 'general.region.cz' | t }}</option>
+                <option value="DK">{{ 'general.region.dk' | t }}</option>
+                <option value="EE">{{ 'general.region.ee' | t }}</option>
+                <option value="FI">{{ 'general.region.fi' | t }}</option>
+                <option value="FR">{{ 'general.region.fr' | t }}</option>
+                <option value="DE">{{ 'general.region.de' | t }}</option>
+                <option value="GR">{{ 'general.region.gr' | t }}</option>
+                <option value="GB">{{ 'general.region.gb' | t }}</option>
+                <option value="HK">{{ 'general.region.hk' | t }}</option>
+                <option value="HU">{{ 'general.region.hu' | t }}</option>
+                <option value="IE">{{ 'general.region.ie' | t }}</option>
+                <option value="IT">{{ 'general.region.it' | t }}</option>
+                <option value="JP">{{ 'general.region.jp' | t }}</option>
+                <option value="LV">{{ 'general.region.lv' | t }}</option>
+                <option value="LT">{{ 'general.region.lt' | t }}</option>
+                <option value="LU">{{ 'general.region.lu' | t }}</option>
+                <option value="MY">{{ 'general.region.my' | t }}</option>
+                <option value="MT">{{ 'general.region.mt' | t }}</option>
+                <option value="MX">{{ 'general.region.mx' | t }}</option>
+                <option value="NL">{{ 'general.region.nl' | t }}</option>
+                <option value="NO">{{ 'general.region.no' | t }}</option>
+                <option value="PL">{{ 'general.region.pl' | t }}</option>
+                <option value="PT">{{ 'general.region.pt' | t }}</option>
+                <option value="RO">{{ 'general.region.ro' | t }}</option>
+                <option value="SG">{{ 'general.region.sg' | t }}</option>
+                <option value="SK">{{ 'general.region.sk' | t }}</option>
+                <option value="SI">{{ 'general.region.si' | t }}</option>
+                <option value="KR">{{ 'general.region.kr' | t }}</option>
+                <option value="ES">{{ 'general.region.es' | t }}</option>
+                <option value="SE">{{ 'general.region.se' | t }}</option>
+                <option value="CH">{{ 'general.region.ch' | t }}</option>
+                <option value="TW">{{ 'general.region.tw' | t }}</option>
+                <option value="US">{{ 'general.region.us' | t }}</option>
+                <option value="ROW">{{ 'general.region.row' | t }}</option>
+            </select>
+          </div>
+
+          <div class="col xs12 redirect-modal__selects">
+            <label class="form-group__label" for="RedirectCurrency">
+              {{ 'redirect.modal.currency_selector_label' | t }}
+            </label>
+            <select
+              id="RedirectCurrency"
+              name="currency"
+              style="background-image: url({{ 'icon-chevron-down.svg' | asset_url }});"
+              js-redirect-modal="currencySelector"
+            >
+              {% for currency in shop.enabled_currencies %}
+                {% if cart.currency.iso_code == currency.iso_code %}
+                  <option selected value="{{ currency.iso_code }}">
+                {% else %}
+                  <option value="{{ currency.iso_code }}">
+                {% endif %}
+                  {{ currency.iso_code }} ({{ currency.symbol }})
+                </option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div class="col xs12 redirect-modal__selects">
+            <label class="form-group__label" for="RedirectLanguage">
+              {{ 'redirect.modal.language_selector_label' | t }}
+            </label>
+
+            <select
+              name="lang" id="RedirectLanguage"
+              style="background-image: url({{ 'icon-chevron-down.svg' | asset_url }});"
+              js-redirect-modal="languageSelector"
+            >
+              {{ default_language_options }}
+            </select>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col xs12">
+            <div class="redirect-modal__update-btn">
+              <button
+                class="button button--primary button--block"
+                data-store-url="%redirect_store_url%"
+                js-redirect-modal="updateButton"
+              >
+                <span>{{ 'redirect.modal.update_preferences' | t }}</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="redirect-modal__footer is-hidden" js-redirect-modal="footer">
+    <div class="container">
+      <button class="text-link" js-redirect-modal="returnButton">
+        {{ 'redirect.modal.return' | t }}
+      </button>
+    </div>
+  </div>
+</div>

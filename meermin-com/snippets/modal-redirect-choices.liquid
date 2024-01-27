@@ -1,0 +1,76 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Snippet: Suggested auto-redirect modal
+------------------------------------------------------------------------------
+{% endcomment %}
+<div
+  class="modal__card redirect-modal__card redirect-modal__choices"
+  tabindex="0"
+  js-modal="card"
+  js-redirect-modal="choiceContainer"
+>
+  <div class="redirect-modal__header">
+    <div class="container">
+      <h3 class="redirect-modal__title">
+        {{ 'redirect.modal.choice.title' | t }}
+      </h3>
+
+      <p class="redirect-modal__lead">
+        {{ 'redirect.modal.choice.text' | t | newline_to_br }}
+      </p>
+
+      <button class="redirect-modal__close button" js-redirect-modal="close">
+        {% render 'icon-misc' with icon: 'close' %}
+      </button>
+    </div>
+  </div>
+
+  <div class="redirect-modal__body">
+    <div class="container">
+      <div class="row no-margin">
+        <div class="col xs12 m6">
+          <button
+            class="choice-card"
+            data-micromodal-close
+            js-redirect-modal="choiceContinue"
+          >
+            <span class="choice-card__icon">
+              <span class="flag-icon flag-icon-{{ settings.store_code | downcase }}"></span>
+            </span>
+
+            <span class="choice-card__label">
+              {{ 'redirect.modal.choice.continue' | t | replace: '%current_store_name%', settings.store_name }}
+            </span>
+          </button>
+        </div>
+
+        <div class="col xs12 m6">
+          <a
+            class="choice-card"
+            href="%redirect_store_url%"
+            rel="nofollow"
+            data-current-store-code="{{ settings.store_code | downcase }}"
+            data-redirect-store-code="%redirect_store_code%"
+            js-redirect-modal="redirectLink"
+          >
+            <span class="choice-card__icon">
+              <span class="flag-icon flag-icon-%redirect_store_code%"></span>
+            </span>
+
+            <span class="choice-card__label">
+              {{ 'redirect.modal.choice.redirect' | t }}
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="redirect-modal__footer">
+    <div class="container">
+      <button class="text-link" js-redirect-modal="settingsButton">
+        {{ 'redirect.modal.settings.label' | t }}
+      </button>
+    </div>
+  </div>
+</div>

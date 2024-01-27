@@ -1,0 +1,249 @@
+<section class="shop-navigation drawer drawer--left critical-hide"
+  data-section-id="{{ section.id }}"
+  data-section-type="shop-navigation"
+  js-shop-navigation="container"
+>
+  <div class="shop-navigation__list-container  shop-navigation__one" 
+    js-shop-navigation="{{linklists[section.settings.shop_nav_1_menu].handle}}"
+    data-shop-navigation="{{linklists[section.settings.shop_nav_1_menu].handle}}"
+  >
+    {% render 'shop-navigation-list',
+      menu: section.settings.shop_nav_1_menu,
+      img_one: section.settings.shop_nav_1_image_1,
+      img_one_text: section.settings.shop_nav_1_image_text_1,
+      img_one_url: section.settings.shop_nav_1_image_url_1,
+      img_two: section.settings.shop_nav_1_image_2,
+      img_two_text: section.settings.shop_nav_1_image_text_2,
+      img_two_url: section.settings.shop_nav_1_image_url_2,
+      img_three: section.settings.shop_nav_1_image_3,
+      img_three_text: section.settings.shop_nav_1_image_text_3,
+      img_three_url: section.settings.shop_nav_1_image_url_3,
+    %}
+  </div>
+
+  <div class="shop-navigation__list-container shop-navigation__two" 
+    js-shop-navigation="{{linklists[section.settings.shop_nav_2_menu].handle}}"
+    data-shop-navigation="{{linklists[section.settings.shop_nav_2_menu].handle}}"
+  >
+    {% render 'shop-navigation-list',
+      menu: section.settings.shop_nav_2_menu,
+      img_one: section.settings.shop_nav_2_image_1,
+      img_one_text: section.settings.shop_nav_2_image_text_1,
+      img_one_url: section.settings.shop_nav_2_image_url_1,
+      img_two: section.settings.shop_nav_2_image_2,
+      img_two_text: section.settings.shop_nav_2_image_text_2,
+      img_two_url: section.settings.shop_nav_2_image_url_2,
+      img_three: section.settings.shop_nav_2_image_3,
+      img_three_text: section.settings.shop_nav_2_image_text_3,
+      img_three_url: section.settings.shop_nav_2_image_url_3,
+    %}
+  </div>
+
+  <div class="shop-navigation__list-container shop-navigation__three" 
+    js-shop-navigation="{{linklists[section.settings.shop_nav_3_menu].handle}}"
+    data-shop-navigation="{{linklists[section.settings.shop_nav_3_menu].handle}}"
+  >
+    {% render 'shop-navigation-list',
+      menu: section.settings.shop_nav_3_menu,
+      img_one: section.settings.shop_nav_3_image_1,
+      img_one_text: section.settings.shop_nav_3_image_text_1,
+      img_one_url: section.settings.shop_nav_3_image_url_1,
+      img_two: section.settings.shop_nav_3_image_2,
+      img_two_text: section.settings.shop_nav_3_image_text_2,
+      img_two_url: section.settings.shop_nav_3_image_url_2,
+      img_three: section.settings.shop_nav_3_image_3,
+      img_three_text: section.settings.shop_nav_3_image_text_3,
+      img_three_url: section.settings.shop_nav_3_image_url_3,
+    %}
+  </div>
+
+  <div class="shop-navigation__list-container shop-navigation__four" 
+    js-shop-navigation="{{linklists[section.settings.shop_nav_4_menu].handle}}"
+    data-shop-navigation="{{linklists[section.settings.shop_nav_4_menu].handle}}"
+  >
+    {% render 'shop-navigation-list',
+      about_menu: true,
+      menu: section.settings.shop_nav_4_menu,
+    %}
+  </div>
+
+</section>
+
+{% schema %}
+  {
+    "name": "Shop Navigation",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Shop Navigation - Menu #1"
+      },
+      {
+        "type": "link_list",
+        "id": "shop_nav_1_menu",
+        "label": "Shop Nav #1 - Menu"
+      },
+      {
+        "type": "image_picker",
+        "id": "shop_nav_1_image_1",
+        "label": "Shop Nav #1 - Image #1"
+      },
+      {
+        "type": "text",
+        "id": "shop_nav_1_image_text_1",
+        "label": "Shop Nav #1 - Image Text #1"
+      },
+      {
+        "type": "url",
+        "id": "shop_nav_1_image_url_1",
+        "label": "Shop Nav #1 - Image Link URL #1"
+      },
+      {
+        "type": "image_picker",
+        "id": "shop_nav_1_image_2",
+        "label": "Shop Nav #1 - Image #2"
+      },
+      {
+        "type": "text",
+        "id": "shop_nav_1_image_text_2",
+        "label": "Shop Nav #1 - Image Text #2"
+      },
+      {
+        "type": "url",
+        "id": "shop_nav_1_image_url_2",
+        "label": "Shop Nav #1 - Image Link URL #2"
+      },
+      {
+        "type": "image_picker",
+        "id": "shop_nav_1_image_3",
+        "label": "Shop Nav #1 - Image #3"
+      },
+      {
+        "type": "text",
+        "id": "shop_nav_1_image_text_3",
+        "label": "Shop Nav #1 - Image Text #3"
+      },
+      {
+        "type": "url",
+        "id": "shop_nav_1_image_url_3",
+        "label": "Shop Nav #1 - Image Link URL #3"
+      },
+      {
+        "type": "header",
+        "content": "Shop Navigation - Menu #2"
+      },
+      {
+        "type": "link_list",
+        "id": "shop_nav_2_menu",
+        "label": "Shop Nav #2 - Menu"
+      },
+      {
+        "type": "image_picker",
+        "id": "shop_nav_2_image_1",
+        "label": "Shop Nav #2 - Image #1"
+      },
+      {
+        "type": "text",
+        "id": "shop_nav_2_image_text_1",
+        "label": "Shop Nav #2 - Image Text #1"
+      },
+      {
+        "type": "url",
+        "id": "shop_nav_2_image_url_1",
+        "label": "Shop Nav #2 - Image Link URL #1"
+      },
+      {
+        "type": "image_picker",
+        "id": "shop_nav_2_image_2",
+        "label": "Shop Nav #2 - Image #2"
+      },
+      {
+        "type": "text",
+        "id": "shop_nav_2_image_text_2",
+        "label": "Shop Nav #2 - Image Text #2"
+      },
+      {
+        "type": "url",
+        "id": "shop_nav_2_image_url_2",
+        "label": "Shop Nav #2 - Image Link URL #2"
+      },
+      {
+        "type": "image_picker",
+        "id": "shop_nav_2_image_3",
+        "label": "Shop Nav #2 - Image #3"
+      },
+      {
+        "type": "text",
+        "id": "shop_nav_2_image_text_3",
+        "label": "Shop Nav #2 - Image Text #3"
+      },
+      {
+        "type": "url",
+        "id": "shop_nav_2_image_url_3",
+        "label": "Shop Nav #2 - Image Link URL #3"
+      },
+      {
+        "type": "header",
+        "content": "Shop Navigation - Menu #3"
+      },
+      {
+        "type": "link_list",
+        "id": "shop_nav_3_menu",
+        "label": "Shop Nav #3 - Menu"
+      },
+      {
+        "type": "image_picker",
+        "id": "shop_nav_3_image_1",
+        "label": "Shop Nav #3 - Image #1"
+      },
+      {
+        "type": "text",
+        "id": "shop_nav_3_image_text_1",
+        "label": "Shop Nav #3 - Image Text #1"
+      },
+      {
+        "type": "url",
+        "id": "shop_nav_3_image_url_1",
+        "label": "Shop Nav #3 - Image Link URL #1"
+      },
+      {
+        "type": "image_picker",
+        "id": "shop_nav_3_image_2",
+        "label": "Shop Nav #3 - Image #2"
+      },
+      {
+        "type": "text",
+        "id": "shop_nav_3_image_text_2",
+        "label": "Shop Nav #3 - Image Text #2"
+      },
+      {
+        "type": "url",
+        "id": "shop_nav_3_image_url_2",
+        "label": "Shop Nav #3 - Image Link URL #2"
+      },
+      {
+        "type": "image_picker",
+        "id": "shop_nav_3_image_3",
+        "label": "Shop Nav #3 - Image #3"
+      },
+      {
+        "type": "text",
+        "id": "shop_nav_3_image_text_3",
+        "label": "Shop Nav #3 - Image Text #3"
+      },
+      {
+        "type": "url",
+        "id": "shop_nav_3_image_url_3",
+        "label": "Shop Nav #3 - Image Link URL #3"
+      },
+      {
+        "type": "header",
+        "content": "About Menu"
+      },
+      {
+        "type": "link_list",
+        "id": "shop_nav_4_menu",
+        "label": "About Menu"
+      }
+    ]
+  }
+{% endschema %}

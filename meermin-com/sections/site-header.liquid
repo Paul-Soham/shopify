@@ -1,0 +1,379 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Section: Site header
+  - This is a required section for the Shopify Theme Store.
+  - Settings available in `Header` section in the theme editor.
+  - Sticky navigation is set by default.
+------------------------------------------------------------------------------
+{% endcomment %}
+{% assign cart_item_counter = 0 %}
+
+{% for item in cart.items %}
+  {% assign product_type = item.product.type | handleize %}
+
+  {% unless product_type == 'add-on' %}
+    {% assign cart_item_counter = cart_item_counter | plus: item.quantity %}
+  {% endunless %}
+{% endfor %}
+
+<section
+  class="site-header"
+  data-section-id="{{ section.id }}"
+  data-section-type="site-header"
+  js-site-header="container"
+  js-product-gallery="siteHeader"
+>
+  {% if section.settings.announcement_bar_enabled %}
+    <div
+      class="site-header__announcement announcement-bar announcement-bar--primary is-active"
+      role="dialog"
+      style="background-color:{{section.settings.background_color}}"
+    >
+      {% if section.settings.announcement_bar_link != blank %}
+        <a
+          style="color:{{section.settings.font_color}}"
+          class="announcement-bar__text announcement-bar__link label"
+          href="{{ section.settings.announcement_bar_link }}"
+        >
+          {{ section.settings.announcement_bar_text | escape }}
+        </a>
+
+      {% else %}
+        <p
+          class="announcement-bar__text label"
+          style="color:{{section.settings.font_color}}"
+        >
+          {{ section.settings.announcement_bar_text | escape }}
+        </p>
+      {% endif %}
+    </div>
+  {% endif %}
+
+  <div class="site-header__masthead">
+    <header class="container">
+      <div class="row site-header__row">
+        <div class="col xs12">
+          <div class="site-header__inner" js-site-header='siteHeaderInner'>
+            <div class="site-header__hamburger">
+              <button
+                class="site-header__icon site-header__icon--hamburger"
+                data-target="menuDrawer"
+                js-toggle="menuDrawer"
+              >
+                <span class="visually-hidden">
+                  {{ 'general.accessibility.menu' | t }}
+                </span>
+
+                {% render 'icon-misc' with icon: 'hamburger' %}
+              </button>
+
+              {% if section.settings.enable_search %}
+                <button
+                  class="site-header__icon site-header__icon--search"
+                  tabindex="0"
+                  type="submit"
+                  data-target="searchBarHeader"
+                  js-toggle="searchBarHeader"
+                >
+                  <span class="icon-fallback-text">
+                    {{ 'general.search.submit' | t }}
+                  </span>
+
+                  {% render 'icon-misc' with icon: 'search' %}
+                </button>
+              {% endif %}
+            </div>
+
+
+            <nav
+              class="site-header__navbar"
+              aria-label="{{ 'general.accessibility.sitenav.main_navigation' | t }}"
+              js-site-header="navBar"
+            >
+            {% render 'site-nav' with menu: section.settings.primary_navigation_desktop %}
+          </nav>
+
+          <div class="site-header__brand">
+            {% if template.name == 'index' %}
+              <h1 class="site-header__logo">
+            {% else %}
+              <span class="site-header__logo">
+            {% endif %}
+
+            <a href="{{ shop.url }}">
+              {% render 'site-logo', color: 'black' %}
+            </a>
+
+            {% if template.name == 'index' %}
+              </h1>
+            {% else %}
+              </span>
+            {% endif %}
+          </div>
+
+            <div class="site-header__misc">
+              {% unless settings.store_code == 'SECONDS' %}
+                {% if settings.enable_redirect_modal %}
+                  <button
+                    class="site-header__icon site-header__icon--store-selector site-header__icon--store-selector-desktop critical-clear"
+                    js-site-header="redirectModalToggle"
+                  >
+                    <span class="site-header__flag-icon">
+                      <span
+                        class="flag-icon flag-icon-{{ settings.store_code | downcase }}"
+                        js-site-header="storeIcon"
+                      >
+                      </span>
+                    </span>
+
+                    <div class="visually-hidden">
+                      {{ 'layout.store_settings.update_preferences' | t }}
+                    </div>
+                  </button>
+                {% endif %}
+              {% endunless %}
+
+              {% if settings.store_code == 'SECONDS' %}
+                {% assign settings_store_code = settings.store_code | downcase %}
+
+                {% if settings_store_code == 'seconds' %}
+                  {% if cart.currency.iso_code == 'USD' %}
+                    {% assign settings_store_code = 'us' %}
+                  {% else %}
+                    {% assign settings_store_code = 'eu' %}
+                  {% endif %}
+                {% endif %}
+
+                <div
+                  class="currency-selector__wrap"
+                  js-currency-selector="wrap"
+                >
+                  <span class="currency-selector__flag-icon flag-icon flag-icon-{{ settings_store_code }}">
+                  </span>
+                  <div class="currency-selector__select">
+                    {{ cart.currency.iso_code }} ({{ cart.currency.symbol }})
+                  </div>
+
+                  <div
+                    class="currency-selector__dropdown"
+                    js-currency-selector="dropdown"
+                  >
+                    {% for currency in shop.enabled_currencies %}
+                      <div
+                        class="currency-selector__option"
+                        data-value="{{ currency.iso_code }}"
+                        js-currency-selector="option"
+                      >
+                        {{ currency.iso_code }} ({{ currency.symbol }})
+                      </div>
+                    {% endfor %}
+                  </div>
+                </div>
+              {% endif %}
+
+              {% if section.settings.enable_search %}
+
+                {% render 'search-bar' with id: section.id %}
+
+                <button
+                  class="site-header__icon site-header__icon--search"
+                  tabindex="0"
+                  type="submit"
+                  data-target="searchBarHeader"
+                  js-toggle="searchBarHeader"
+                  js-site-header="searchBarToggle"
+                >
+                  <span class="icon-fallback-text">
+                    {{ 'general.search.submit' | t }}
+                  </span>
+
+                  {% render 'icon-misc' with icon: 'search' %}
+                </button>
+              {% endif %}
+
+              {% if shop.customer_accounts_enabled %}
+                <ul class="site-header__account-dropdown">
+                  <li class="site-header__account-icon">
+                    <a
+                      class="site-header__icon site-header__icon--account"
+                      href="{{ routes.account_url }}"
+                    >
+                      {% render 'icon-misc' with icon: 'account' %}
+
+                      <span class="visually-hidden">
+                        {{ 'layout.customer.account' | t }}
+                      </span>
+                    </a>
+
+                    {% if customer %}
+                      <ul
+                        class="
+                          site-header__account-navlist
+                          navlist
+                          navlist--large
+                          critical-hide
+                        "
+                      >
+                        <a class="navlist__item" href="{{ routes.account_url }}">
+                          {{ 'customer.account.title' | t }}
+                        </a>
+
+                        <a class="navlist__item" href="{{ routes.account_url }}?view=orders">
+                          {{ 'customer.account.orders' | t }}
+                        </a>
+
+                        <a class="navlist__item" href="{{ routes.account_logout_url }}">
+                          {{ 'layout.customer.log_out' | t }}
+                        </a>
+                      </ul>
+                    {% endif %}
+                  </li>
+                </ul>
+              {% endif %}
+
+              <button
+                class="site-header__icon site-header__icon--cart"
+                {% unless template == 'cart' %}
+                  data-cy="cartIcon"
+                  data-target="cartDrawer"
+                  js-toggle="cartDrawer"
+                {% endunless %}
+              >
+
+                <span class="visually-hidden">{{ 'layout.cart' | t }}</span>
+
+                <span
+                  class="
+                    badge badge--primary badge--round
+
+                  "
+                  js-ajax-cart="cartCounter"
+                >
+                  {{ cart_item_counter }}
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+  </div>
+</section>
+
+{% schema %}
+  {
+    "name": "Site Header",
+    "class": "site-header-wrapper is-sticky",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Announcement bar"
+      },
+      {
+        "type": "checkbox",
+        "id": "announcement_bar_enabled",
+        "label": "Show announcement",
+        "default": false
+      },
+      {
+        "type": "text",
+        "id": "announcement_bar_text",
+        "label": "Announcement text",
+        "default": "Announce something here"
+      },
+      {
+        "type": "url",
+        "id": "announcement_bar_link",
+        "label": "Announcement link",
+        "info": "Optional"
+      },
+      {
+        "type": "select",
+        "id": "background_color",
+        "label": "Background color",
+        "options": [
+          {
+            "value": "#FFFFFF",
+            "label": "White"
+          },
+          {
+            "value": "#000000",
+            "label": "Black"
+          }
+        ],
+        "default": "#000000"
+      },
+      {
+        "type": "select",
+        "id": "font_color",
+        "label": "Font color",
+        "options": [
+          {
+            "value": "#FFFFFF",
+            "label": "White"
+          },
+          {
+            "value": "#000000",
+            "label": "Black"
+          }
+        ],
+        "default": "#FFFFFF"
+      },
+      {
+        "type": "header",
+        "content": "Desktop Primary Navigation"
+      },
+      {
+        "type": "link_list",
+        "id": "primary_navigation_desktop",
+        "label": "Primary Navigation - Desktop"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_search",
+        "label": "Show search",
+        "default": true
+      }
+    ]
+  }
+{% endschema %}
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "Organization",
+    "name": {{ shop.name | json }},
+    {% if section.settings.logo %}
+      {% assign image_size = section.settings.logo.width | append:'x' %}
+      "logo": {{ section.settings.logo | img_url: image_size | prepend: 'https' | json }},
+    {% endif %}
+    "sameAs": [
+      {{ settings.social_twitter_link | json }},
+      {{ settings.social_facebook_link | json }},
+      {{ settings.social_pinterest_link | json }},
+      {{ settings.social_instagram_link | json }},
+      {{ settings.social_tumblr_link | json }},
+      {{ settings.social_snapchat_link | json }},
+      {{ settings.social_youtube_link | json }},
+      {{ settings.social_vimeo_link | json }}
+    ],
+    "url": {{ shop.url | append: page.url | json }}
+  }
+</script>
+
+{% if request.page_type == 'index' %}
+  <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "WebSite",
+      "name": {{ shop.name | json }},
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "{{ shop.url }}/search?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      },
+      "url": {{ shop.url | append: page.url | json }}
+    }
+  </script>
+{% endif %}
+<meta name=tapcart-banner:appIcon content=https://storage.googleapis.com/tapcart-150607.appspot.com/c3e6aba048574c887538a6aa61faf938_i.jpeg>

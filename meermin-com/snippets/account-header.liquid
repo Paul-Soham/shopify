@@ -1,0 +1,27 @@
+{% comment %}
+----------------------------------------------------------------------------
+  Snippet: Account header
+  - Header welcome messgae displayed on account pages.
+----------------------------------------------------------------------------
+{% endcomment %}
+<div class="account-header">
+  <div class="container">
+    <div class="row">
+      <div class="col xs12 l10 offset-l1">
+        <div class="account-header__content">
+          <h1 class="account-header__title h1">
+            {{ 'customer.account.welcome_message' | t }}{{ customer.first_name | prepend: ', ' | capitalize }}
+          </h1>
+          <div class="account-header__logout">
+            <a
+              class="button button--secondary button--secondary-brand"
+              href="{{ routes.account_logout_url }}"
+            >
+              {{ 'layout.customer.log_out' | t }}
+            </a>
+          </div>
+        </div>    
+      </div>
+    </div>
+  </div>
+</div>

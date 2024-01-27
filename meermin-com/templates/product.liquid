@@ -1,0 +1,208 @@
+{% comment %}
+----------------------------------------------------------------------------
+  Template: Product
+----------------------------------------------------------------------------
+{% endcomment %}
+
+{% assign size_guide_handle = '' %}
+{% assign style_number = '' %}
+{% assign mto = '' %}
+{% assign product_color = product.variants[0].option1 | downcase %}
+{% assign is_made_to_order = 'false' %}
+{% assign has_countdown = 'false' %}
+{% assign image_count = 0 %}
+{% assign single_image = false %}
+
+{% for tag in product.tags %}
+  {% if tag contains 'size-guide:' %}
+    {% assign size_guide_handle = tag | replace: ':', '-' %}
+  
+  {% elsif tag contains 'mto:' %}
+    {% assign mto = tag %}
+    {% assign is_made_to_order = tag | split: ':' | last %}
+  
+  {% elsif tag contains 'style-number:' %}
+      {% assign style_number = tag%}
+
+  {% elsif tag contains 'mto-end-date:' %}
+    {% assign has_countdown = 'true' %}
+    {% assign mto_end_date = tag | replace: 'mto-end-date:', '' %}
+
+  {% elsif tag contains 'mto-start-date' %}  
+    {% assign mto_start_date = tag | replace: 'mto-start-date:', '' %}
+  
+  {% elsif tag contains 'mto-ship-date:' %} 
+    {% assign mto_ship_date = tag | replace: 'mto-ship-date:', '' | replace: '-', ' '%}
+  {% endif %}
+{% endfor %}
+
+{% for image in product.images %}
+  {% unless image.src contains 'swatch' %}
+    {% assign image_count = image_count | plus: 1 %}
+  {% endunless %}
+{% endfor %}
+
+{% if image_count == 1 %}
+  {% assign single_image = true %}
+{% endif %}
+
+<div
+  class="template-product__container"
+  js-template-product="container"
+>
+  <div
+    class="
+      container 
+      template-product__order-gallery-form
+    "
+    js-product-template="orderGalleryForm"
+  >
+    {% if settings.enable_breadcrumbs %}
+      <div class="row">
+        <div class="template-product__header">
+          <div class="col xs12">
+            <div class="template-product__breadcrumb">
+              {% render 'breadcrumb' %}
+            </div>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+
+    <div class="row template-product__form-wrapper">
+      <div class="col xs12 m7 l7 template-product__gallery-wrapper">
+        <div class="template-product__gallery">
+          {% render 'product-gallery',
+            hide_thumbnail_nav: false,
+            single_image: single_image,
+          %}
+        </div>
+      </div>
+
+      <div
+        class="
+          col xs12 m5 l5 xl4 
+          template-product__form-detail-wrapper
+        "
+        js-product-template="formDetailWrapper"
+      >
+        <div class="template-product__aside" js-product-gallery="productAside">
+          <div class="template-product__aside-inner">
+            {% if is_made_to_order == 'true' %}
+              {% if has_countdown == 'true' %}
+                <p class="template-product__countdown"
+                  data-start-date="{{ mto_start_date }}"
+                  data-end-date="{{ mto_end_date }}"
+                  data-timezone="{{ shop.metafields.location.timezone }}"
+                  js-count-down="container"
+                >
+                </p>
+              {% endif %}
+
+              <h6 class="template-product__badge">{{ 'products.product.made_to_order' | t }}</h6>
+            {% endif %}
+
+            {% render 'product-form', 
+              mto: mto,
+              is_made_to_order: is_made_to_order,
+              mto_ship_date: mto_ship_date,
+              style_number: style_number,
+              product_color: product_color
+            %}
+
+            {% unless mto_ship_date == blank or mto_ship_date == '' %}
+              <div class="order-day" style="display: flex; align-items: center;">
+                <p class="body-2 template-product__estimated-delivery" style="margin: 0; color: #000;">
+                  {{ 'products.product.estimated_delivery' | t }}
+                </p>
+                <p>&nbsp;</p>
+                <p class="body-2 template-product__estimated-delivery" style="font-weight: 400; color: #000;">
+                   {{ mto_ship_date }}
+                </p>
+              </div>
+            {% endunless %}
+
+            {% section 'size-chart' %}
+
+            <div class="template-product__footer-misc">
+              {% if settings.enable_free_shipping_notification %}
+                {% render 'free-shipping-notification' with class: 'template-product' %}
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {% if settings.enable_product_reviews %}
+      <div class="row">
+        <div class="col xs12">
+          <div class="template-product__reviews">
+            {% render 'product-reviews' %}
+          </div>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+
+  {% render 'template-product-description' %}
+  {% render 'template-product-highlight-1' %}
+  {% render 'template-product-highlight-2' %}
+  {% render 'template-product-highlight-3' %}
+
+  {% unless settings.store_code == 'SECONDS' %}
+    {% section 'recommended-products' %}
+  {% endunless %}
+</div>
+
+{% unless size_guide_handle == '' %}
+  {% render 'modal-size-guide' with size_guide_handle: size_guide_handle %}
+{% endunless %}
+
+{% render 'product-schema' %}
+
+{% unless settings.store_code == 'SECONDS' %}
+  <script>
+    (function (window) {
+      var BROWSE_PRODUCT = "brontoBrowseObject";
+      window[BROWSE_PRODUCT] = {
+        product: {{ product | json }}
+      };
+    })(window);
+  </script>
+{% endunless %}
+<script type="text/javascript">
+  var _learnq = _learnq || [];
+
+  var item = {
+    Name: {{ product.title|json }},
+    ProductID: {{ product.id|json }},
+    Categories: {{ product.collections|map:'title'|json }},
+    ImageURL: "https:{{ product.featured_image.src|img_url:'grande' }}",
+    URL: "{{ shop.secure_url }}{{ product.url }}",
+    Brand: {{ product.vendor|json }},
+    Price: {{ product.price|money|json }},
+    CompareAtPrice: {{ product.compare_at_price_max|money|json }}
+  };
+
+  _learnq.push(['track', 'Viewed Product', item]);
+  _learnq.push(['trackViewedItem', {
+    Title: item.Name,
+    ItemId: item.ProductID,
+    Categories: item.Categories,
+    ImageUrl: item.ImageURL,
+    Url: item.URL,
+    Metadata: {
+      Brand: item.Brand,
+      Price: item.Price,
+      CompareAtPrice: item.CompareAtPrice
+    }
+  }]);
+</script>
+
+
+{% comment %}
+  product-page-bottom model installed by Builder.io
+  You may modify this code at any time
+{% endcomment %}
+{% include 'model.product-page-bottom.builder' %}

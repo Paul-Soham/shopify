@@ -1,0 +1,348 @@
+{
+  "general": {
+    "accessibility": {
+      "skip_to_content": "Passer au contenu",
+      "menu": "Menu",
+      "close": "Fermer",
+      "sitenav": {
+        "main_navigation": "Navigation principale",
+        "show_subnav": "Afficher le sous-menu pour \"{{ navigation }}\""
+      }
+    },
+    "meta": {
+      "tags": "Mots clés \"{{ tags }}\"",
+      "page": "Page {{ page }}"
+    },
+    "404": {
+      "title": "404 - Page non trouvée",
+      "subtext_html": "Cette page n'est pas disponible. <a href=\"/collections/all\">Retourner au magasinage</a>"
+    },
+    "password_page": {
+      "opening_soon": "Bientôt ouvert",
+      "admin_link_html": "Êtes-vous le propriétaire de la boutique? <a href=\"/admin\">Connectez-vous ici</a>.",
+      "password_link": "Entrer avec un mot de passe",
+      "login_form": {
+        "password_label": "Mot de passe",
+        "password_placeholder": "Votre mot de passe",
+        "submit": "Entrer"
+      }
+    },
+    "social": {
+      "share_on_facebook": "Partager sur Facebook",
+      "share_on_twitter": "Tweeter sur Twitter",
+      "share_on_pinterest": "Épingler sur Pinterest"
+    },
+    "search": {
+      "title": "Effectuez une recherche",
+      "placeholder": "Rechercher dans la boutique",
+      "submit": "Recherche",
+      "heading": {
+        "one": "Résultat de la recherche",
+        "other": "Résultats de la recherche"
+      },
+      "results_with_count": {
+        "one": "{{ count }} résultat pour \"{{ terms }}\"",
+        "other": "{{ count }} résultats pour \"{{ terms }}\""
+      },
+      "no_results_html": "Veuillez essayer un terme de recherche différent ou revenir à la <a href=\"/\">page d'accueil</a>."
+    },
+    "newsletter_form": {
+      "label": "E-mailadres",
+      "email_placeholder": "Adresse courriel",
+      "confirmation": "Merci pour votre abonnement",
+      "submit": "S'inscrire"
+    }
+  },
+  "blogs": {
+    "article": {
+      "author_on_date_html": "Publié par {{ author }} le {{ date }}",
+      "related_articles_title": "Articles Liés"
+    },
+    "general": {
+      "hero_description": "Informez les clients sur un produit, une collection ou une histoire de marque quis libero maecenas eget sit. Quam ut eget.",
+      "subheading": "Des articles"
+    },
+    "pagination": {
+      "current_page": "Page {{ current }} de {{ size }}",
+      "previous": "précédent",
+      "next": "Suivant"
+    }
+  },
+  "cart": {
+    "general": {
+      "title": "Panier",
+      "remove": "Retirer",
+      "subtotal": "Sous-total",
+      "total": "Total",
+      "shipping": "livraison",
+      "shipping_at_checkout": "Expédition, taxes et remises calculées à la caisse.",
+      "clear": "Vider le panier",
+      "review": "Révision et paiement",
+      "checkout": "Aller à la caisse",
+      "empty": "Votre panier est vide.",
+      "currency_disclaimer": "Les commandes seront traitées dans %shop_currency%.",
+      "continue_browsing": "Continuer la navigation",
+      "savings": "Vous économisez"
+    },
+    "label": {
+      "product": "Produit",
+      "price": "Prix",
+      "quantity": "Quantité",
+      "total": "Total",
+      "discounted_price": "Prix réduit",
+      "original_price": "Prix d'origine"
+    },
+    "add_on": {
+      "label": "Ajouter {{ product }}",
+      "placeholder": "Message (gratuit et optionnel)",
+      "disclaimer": "* Les émoticônes ou les symboles ne seront pas traités correctement après le paiement.",
+      "free": "Libre",
+      "in_cart": "le {{ product }} est actuellement dans votre panier"
+    },
+    "free_shipping": {
+      "blank": "Livraison gratuite pour les commandes supérieures à #value#.",
+      "partial": "Dépenser #value# pour la livraison gratuite.",
+      "ideal": "Vous êtes admissible à la livraison gratuite."
+    },
+    "low_stock_message": {
+      "blank": "Il n'y en a plus en stock.",
+      "multiple": "Il reste %quantity% dans cette taille.",
+      "single": "Il ne reste plus qu'une unité dans cette taille."
+    }
+  },
+  "collections": {
+    "product": {
+      "quick_view": "Aperçu rapide"
+    },
+    "general": {
+      "breadcrumb_home": "Accueil",
+      "no_matches": "Aucun produit ne correspond à votre recherche.",
+      "showing_results": "Affichage des résultats {{ page_size }}",
+      "filter_label": "Affiner par"
+    },
+    "sorting": {
+      "sort_by": "Trier par",
+      "manual": "En vedette",
+      "price_ascending": "Prix: De bas en haut",
+      "price_descending": "Prix: Haut en bas",
+      "title_ascending": "A-Z",
+      "title_descending": "Z-A",
+      "created_ascending": "Du plus ancien au plus récent",
+      "created_descending": "Du plus récent au plus vieux",
+      "best_selling": "Meilleure vente"
+    },
+    "filtering": {
+      "clear": "Effacer le filtre"
+    },
+    "pagination": {
+      "current_page": "Page {{ current }} of {{ size }}",
+      "previous": "précédent",
+      "next": "Suivant"
+    }
+  },
+  "contact": {
+    "form": {
+      "name": "Nom",
+      "email": "Courriel",
+      "phone": "Téléphone",
+      "message": "Message",
+      "send": "Envoyer",
+      "post_success": "Merci de nous avoir avoir contacté. Nous vous reviendrons le plus rapidement possible."
+    }
+  },
+  "customer": {
+    "account": {
+      "title": "Mon compte",
+      "orders": "Ordres",
+      "view_orders": "Voir toutes les commandes",
+      "recent_orders": "Commande récente",
+      "addresses": "Carnet d'adresses",
+      "default_address": "Adresse par défaut",
+      "view_addresses": "Voir les adresses",
+      "return_to_orders": "Volver a Pedidos"
+    },
+    "activate_account": {
+      "title": "Activer le compte",
+      "subtext": "Créez votre mot de passe pour activer le compte.",
+      "password": "Mot de passe",
+      "password_confirm": "Confirmer le mot de passe",
+      "submit": "Activer le compte",
+      "cancel": "Refuser l'invitation"
+    },
+    "addresses": {
+      "title": "Votre adresse",
+      "default": "Dirección predeterminada",
+      "additional": "Adresses Additionnelles",
+      "add_new": "Ajouter une nouvelle adresse",
+      "edit_address": "Éditer l'adresse",
+      "first_name": "Prénom",
+      "last_name": "Nom",
+      "company": "Compagnie",
+      "address1": "Adresse 1",
+      "address2": "Adresse 2",
+      "city": "Ville",
+      "country": "Pays",
+      "province": "Province",
+      "zip": "Code postal",
+      "phone": "Téléphone",
+      "set_default": "Définir comme adresse par défaut",
+      "return": "Volver a direcciones",
+      "update": "Mettre à jour l'adresse",
+      "edit": "Editar dirección",
+      "delete": "Eliminar direccion",
+      "delete_confirm": "Êtes-vous certain(e) de vouloir supprimer cette adresse?"
+    },
+    "login": {
+      "email": "Courriel",
+      "password": "Mot de passe",
+      "forgot_password": "Mot de passe oublié?",
+      "login": "S'identifier",
+      "returning_user": "Clients de retour",
+      "new_customers": "Nouveaux clients",
+      "create_account": "Créez un compte pour accélérer les commandes futures, affichez et mettez à jour les détails de votre compte, suivez l'état de votre commande et son historique.",
+      "guest_title": "Continuer en tant qu'invité",
+      "guest_continue": "Continuer"
+    },
+    "orders": {
+      "title": "Vos commandes",
+      "order_number": "Numéro de commande",
+      "date": "Date",
+      "payment_status": "Statut du paiement",
+      "fulfillment_status": "Statut d'envoi",
+      "total": "Total",
+      "view_order": "Voir l'ordre",
+      "none": "Vous n'avez pas placé de commande à ce jour."
+    },
+    "order": {
+      "title": "Commande {{ name }}",
+      "subtitle": "Merci pour votre commande! Consultez les détails ci-dessous.",
+      "date_label": "Date de commande",
+      "date": "Placée le {{ date }}",
+      "details_title": "Order Details",
+      "shipping_title": "Livraison",
+      "billing_title": "Facturation",
+      "items_title": "Items commandés",
+      "cancelled": "Commande annulée le {{ date }}",
+      "cancelled_reason": "Motif: {{ reason }}",
+      "billing_address": "Adresse de facturation",
+      "payment_status": "Statut du paiement",
+      "shipping_address": "Adresse de livraison",
+      "fulfillment_status": "Statut d'envoi",
+      "discount": "Rabais appliqué",
+      "shipping": "Livraison",
+      "tax": "Taxes",
+      "product": "Produit",
+      "variants": "Des variantes",
+      "sku": "SKU",
+      "price": "Prix",
+      "quantity": "Quantité",
+      "total": "Total",
+      "subtotal": "Sous-total"
+    },
+    "recover_password": {
+      "title": "Réinitialiser votre mot de passe",
+      "email": "Courriel",
+      "submit": "Soumettre",
+      "cancel": "Annuler",
+      "subtext": "Nous vous ferons parvenir un courriel pour réinitialiser votre mot de passe.",
+      "success": "Nous vous avons fait parvenir un courriel pour réinitialiser votre mot de passe."
+    },
+    "reset_password": {
+      "title": "Réinitialiser le mot de passe du compte",
+      "subtext": "Entrez un nouveau mot de passe pour {{ email }}",
+      "password": "Mot de passe",
+      "password_confirm": "Confirmer le mot de passe",
+      "submit": "Réinitialiser le mot de passe"
+    },
+    "register": {
+      "title": "Créer un compte",
+      "first_name": "Prénom",
+      "last_name": "Nom",
+      "email": "Courriel",
+      "password": "Mot de passe",
+      "submit": "Registre",
+      "login_here_html": "Vous avez déjà un compte? <a href=\"{{ url }}\">Connectez-vous ici</a>"
+    }
+  },
+  "layout": {
+    "cart": "Panier",
+    "customer": {
+      "account": "Compte",
+      "log_out": "Se déconnecter"
+    },
+    "cookie_banner": {
+      "message_html": "Nous utilisons nos propres cookies pour améliorer nos services et votre expérience de magasinage. Si vous continuez à naviguer, vous êtes réputé avoir accepté notre politique en <a href=\"/pages/cookie-policy\">matière de cookies</a>."
+    },
+    "footer": {
+      "social_platform": "{{ name }} sur {{ platform }}",
+      "payment_methods": "Méthodes de paiement acceptées",
+      "store_selector_error": "Malheureusement, votre navigateur n'est pas compatible avec notre détection GeoIP."
+    },
+    "store_settings": {
+      "update_preferences": "Changer les préférences du magasin",
+      "change_store": "Changer de magasin"
+    },
+    "currency_selector": {
+      "label": "Changer de devise"
+    }
+  },
+  "products": {
+    "product": {
+      "description": "La description",
+      "delivery_returns": "Livraison et retours",
+      "regular_price": "Prix régulier",
+      "sold_out": "Épuisé",
+      "unavailable": "Non disponible",
+      "prompt": "Sélectionnez les options",
+      "on_sale": "En solde",
+      "on_sale_from_html": "En solde {{ price }}",
+      "from_text_html": "À partir de {{ price }}",
+      "quantity": "Quantité",
+      "add_to_cart": "Ajouter au panier",
+      "adding_to_cart": "Déjà membre?"
+    }
+  },
+  "gift_cards": {
+    "issued": {
+      "title": "Votre carte-cadeau {{ shop }} d'une valeur de {{ value }}!",
+      "subtext": "Voici votre carte-cadeau!",
+      "disabled": "Désactivée",
+      "expired": "Expirée le {{ expiry }}",
+      "active": "Expire le {{ expiry }}",
+      "redeem": "Entrez ce code lors du paiement pour utiliser votre carte-cadeau",
+      "shop_link": "Boutique",
+      "print": "Imprimer",
+      "remaining_html": "{{ balance }} restant",
+      "add_to_apple_wallet": "Ajouter à Apple Wallet"
+    }
+  },
+  "date_formats": {
+    "month_day_year": "%d %B, %Y",
+    "day_month_year": "%d / %m / %Y"
+  },
+  "redirect": {
+    "modal": {
+      "country_selector_label": "Pays",
+      "currency_selector_label": "Devise",
+      "language_selector_label": "La langue",
+      "update_preferences": "Mettre à jour les préférences du magasin",
+      "return": "Retour",
+      "updating": "Mise à jour des préférences...",
+      "choice": {
+        "title": "Hey! Nous pensons que vous naviguez depuis %redirect_store_name%",
+        "text": "Vous ne pourrez pas commander dans votre devise locale sur ce magasin. Voulez-vous visiter notre magasin %redirect_store_name% à la place?",
+        "continue": "Continuer la navigation sur %current_store_name% store",
+        "redirect": "Oui, emmène-moi au magasin %redirect_store_name%"
+      },
+      "settings": {
+        "title": "Paramètres du magasin",
+        "label": "Je veux choisir les paramètres de mon magasin"
+      }
+    }
+  },
+  "predictive_search": {
+    "article_suggestions_heading": "Suggestions d'articles",
+    "page_suggestions_heading": "Suggestions de page",
+    "product_suggestions_heading": "Suggestions de produits"
+  }
+}

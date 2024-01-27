@@ -1,0 +1,19 @@
+img.banner-img {
+  max-width: 100%;
+  width: 100%;
+  object-fit: cover;
+  height: 400px;
+  border-style: none;
+  vertical-align: top;
+}
+.container.full-banner h2 {
+    text-align: center;
+}
+.container.full-banner a {
+    margin: 0 auto;
+    display: block;
+    width: 200px;
+    color: #fff;
+    background: #c21010;
+    border-radius: 5px;
+}

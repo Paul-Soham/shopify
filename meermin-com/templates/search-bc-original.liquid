@@ -1,0 +1,90 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Template: Search
+------------------------------------------------------------------------------
+{% endcomment %}
+{% paginate search.results by 24 %}
+  <header class="template-search__hero hero">
+    <div class="template-search__container container">
+      <h1 class="template-search__title">
+        {% if search.performed %}
+          {% assign product_search_count = 0 %}
+
+          {% for item in search.results %}
+            {% if item.object_type == 'product' %}
+              {% assign product_search_count = product_search_count | plus: 1 %}
+            {% endif %}
+          {% endfor %}
+
+          <span class="visually-hidden">
+            {{ 'general.search.heading' | t: count: product_search_count }}:
+          </span>
+
+          <span>
+            {{ 'general.search.results_with_count' | t: terms: search.terms, count: product_search_count }}
+          </span>
+
+        {% else %}
+          {{ 'general.search.title' | t }}
+        {% endif %}
+      </h1>
+
+      <div class="template-search__form">
+        {% render 'search-bar' with state: 'is-static' %}
+      </div>
+    </div>
+  </header>
+
+  {% comment %}
+  ----------------------------------------------------------------------------
+    Search results
+  ----------------------------------------------------------------------------
+  {% endcomment %}
+  {% if search.performed %}
+    <div
+      class="container"
+      {% if settings.enable_quick_view %}
+        js-quick-view="container"
+      {% endif %}
+    >
+      <div class="row">
+        {% if product_search_count == 0 %}
+          <p>
+            {{ 'general.search.no_results_html' | t: terms: search.terms }}
+          </p>
+
+        {% else %}
+          <h2 class="visually-hidden">
+            {{ 'general.search.heading' | t: count: product_search_count }}
+          </h2>
+        {% endif %}
+      </div>
+
+      <div class="row">
+        <div class="col xs12">
+          <div class="card-grid card-grid--4up">
+            {% for item in search.results %}
+              {% if item.object_type == 'product' %}
+                <div class="card-grid__item">
+                  {% render 'product-card' with product: item %}
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col xs12">
+          {% if paginate.pages > 1 %}
+            {% render 'pagination' with paginate: paginate %}
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  {% endif %}
+{% endpaginate %}
+
+{% if settings.enable_quick_view %}
+  {% render 'modal-quick-view' %}
+{% endif %}

@@ -1,0 +1,157 @@
+{% comment %}
+----------------------------------------------------------------------------
+  Template: Account
+  - Account area landing page.
+----------------------------------------------------------------------------
+{% endcomment %}
+
+{% render 'account-header' %}
+
+<div class="container">
+  <div class="row">
+    <div class="template-account__body">
+      {% comment %}
+      ------------------------------------------------------------------------------
+        Sidebar
+      ------------------------------------------------------------------------------
+      {% endcomment %}
+      <div class="col xs12 l2 offset-l1">
+        {% render 'account-nav' %}
+      </div>
+
+      {% comment %}
+      ------------------------------------------------------------------------------
+        Inner content
+      ------------------------------------------------------------------------------
+      {% endcomment %}
+      <div class="col xs12 l7 offset-l1">
+        <div class="template-account__inner">
+          <div class="col xs12 m8">
+            {% assign most_recent_order = customer.orders | first %}
+
+            {% if customer.orders.size != 0 %}
+              <div class="template-account__panel panel">
+                <div class="container">
+                  <div class="row">
+                    <div class="col xs12">
+                      <h2 class="panel__title h4">
+                        {{ 'customer.account.recent_orders' | t }}
+                      </h2>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="panel__grid">
+                  <div class="container">
+                    <div class="row">
+                      <div class="col xs6 m6">
+                        <h3 class="panel__label label">
+                          {{ 'customer.orders.order_number' | t }}
+                        </h3>
+
+                        <p data-label="{{ 'customer.orders.date' | t }}">
+                          {{ most_recent_order.name | link_to: most_recent_order.customer_url }}
+                        </p>
+                      </div>
+
+                      <div class="col xs6 m6">
+                        <h3 class="panel__label label">
+                          {{ 'customer.orders.fulfillment_status' | t }}
+                        </h3>
+
+                        <p
+                          data-label="{{ 'customer.orders.date' | t }}"
+                          data-label="{{ 'customer.orders.fulfillment_status' | t }}"
+                        >
+                          {{ most_recent_order.fulfillment_status_label }}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col xs6 m6">
+                        <h3 class="panel__label label">
+                          {{ 'customer.orders.date' | t }}
+                        </h3>
+
+                        <p data-label="{{ 'customer.orders.date' | t }}">
+                          {{ most_recent_order.created_at | date: format: 'month_day_year' }}
+                        </p>
+                      </div>
+
+                      <div class="col xs6 m6">
+                        <h3 class="panel__label label">
+                          {{ 'customer.orders.total' | t }}
+                        </h3>
+
+                        <p data-label="{{ 'customer.orders.total' | t }}">
+                          {{ most_recent_order.total_price | money }}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col xs12">
+                        <div class="panel__footer">
+                          <a href="{{ routes.account_url }}?view=orders" class="panel__text-link text-link">
+                            {{ 'customer.account.view_orders' | t }}
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            {% else %}
+              <p>{{ 'customer.orders.none' | t }}</p>
+            {% endif %}
+          </div>
+
+          <div class="col xs12 m4">
+            <div class="template-account__panel panel">
+              <div class="container">
+                <div class="row">
+                  <div class="col xs12">
+                    <h2 class="panel__title h4">{{ 'customer.account.addresses' | t }}</h2>
+                  </div>
+                </div>
+              </div>
+
+              <div class="panel__grid">
+                <div class="container">
+                  <div class="row">
+                    <div class="col xs12">
+                      <h3 class="panel__label label">{{ 'customer.account.default_address' | t }}</h3>
+
+                      <div class="panel__body">
+                        {{ customer.default_address | format_address }}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col xs12">
+                      <div class="panel__footer">
+                        <a href="{{ routes.account_addresses_url }}" class="panel__text-link text-link">
+                          {{ 'customer.account.view_addresses' | t }} ({{ customer.addresses_count }})
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--Loyalty Dev-->
+<div class="yotpo-widget-instance" data-yotpo-instance-id="144627"></div>
+<div class="yotpo-widget-instance" data-yotpo-instance-id="144630"></div>
+<div class="yotpo-widget-instance" data-yotpo-instance-id="144625"></div>
+<div class="yotpo-widget-instance" data-yotpo-instance-id="144629"></div>
+<!-- End Loyalty Dev -->

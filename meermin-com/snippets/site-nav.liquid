@@ -1,0 +1,172 @@
+{% comment %}
+----------------------------------------------------------------------------
+  Snippet: Site navigation
+----------------------------------------------------------------------------
+{% endcomment %}
+<ul class="site-nav">
+  {% for tier_1 in linklists[menu].links %}
+
+    {% comment %}
+    ------------------------------------------------------------------------------
+      0 levels
+    ------------------------------------------------------------------------------
+    {% endcomment %}
+    {% if tier_1.levels == 0 %}
+      <li
+        class="site-nav__item"
+        js-site-header="siteNavItem"
+      >
+        <a
+          class="site-nav__link"
+          href="{{ tier_1.url }}"
+          aria-haspopup="false"
+          js-site-header="siteNavLink"
+        >
+          {{ tier_1.title }}
+        </a>
+      </li>
+
+    {% comment %}
+    ------------------------------------------------------------------------------
+      1 level
+    ------------------------------------------------------------------------------
+    {% endcomment %}
+    {% elsif tier_1.levels == 1 %}
+      <li
+        class="site-nav__item site-nav__item--has-dropdown"
+        js-site-header="siteNavItem"
+        js-site-dropdown="dropdownParent"
+      >
+        <a
+          class="site-nav__link"
+          href="{{ tier_1.url }}"
+          aria-expanded="false"
+          aria-haspopup="true"
+          js-site-header="siteNavLink"
+        >
+          {{ tier_1.title }}
+        </a>
+
+        <button
+          class="site-nav__caret button button--outlined no-padding"
+          aria-expanded="false"
+          js-site-header="megaNavToggle"
+        >
+          {% render 'icon-direction' with icon: 'caret-down' %}
+
+          <span class="visually-hidden">
+            {{ 'general.accessibility.sitenav.show_subnav' | t : navigation: link.title }}
+          </span>
+        </button>
+
+        <div class="site-nav__dropdown-container">
+          <ul 
+            class="site-nav__dropdown navlist navlist--block critical-hide"
+            js-site-header="siteNavDropdown"
+          >
+            {% for tier_2 in tier_1.links %}
+              {% assign menu_handle = "" %}
+              {% if tier_2.url contains "#shop-" %}
+                {% assign menu_handle = tier_2.url | remove_first: '#' %}
+              {% endif %}
+
+              <li class="navlist__item">
+                <a
+                  class="navlist__link"
+                  href="{{ tier_2.url }}"
+                  js-site-header="navLink"
+                  {% if menu_handle != blank%}
+                    js-site-nav="shopNavMenuHandle"
+                    data-nav-menu-handle="{{menu_handle}}"
+                  {% endif %}
+                >
+                  {{ tier_2.title }}
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </li>
+
+    {% comment %}
+    ------------------------------------------------------------------------------
+      2 levels
+    ------------------------------------------------------------------------------
+    {% endcomment %}
+    {% else %}
+      <li
+        class="site-nav__item site-nav__item--has-meganav"
+        js-site-header="siteNavItem"
+        js-site-dropdown="dropdownParent"
+      >
+        <a
+          class="site-nav__link"
+          href="{{ tier_1.url }}"
+          js-site-header="siteNavLink"
+        >
+          {{ tier_1.title }}
+        </a>
+
+        <button
+          class="site-nav__caret button button--outlined no-padding"
+          aria-expanded="false"
+          js-site-header="megaNavToggle"
+        >
+          <span class="visually-hidden">
+            {{ 'general.accessibility.sitenav.show_subnav' | t : navigation: link.title }}
+          </span>
+
+          {% render 'icon-direction' with icon: 'caret-down' %}
+        </button>
+
+        <div class="site-nav__meganav critical-hide">
+          <div class="row">
+            {% for tier_2 in tier_1.links %}
+              {% unless tier_2.title contains 'http' %}
+                <div class="col xs2 {% if forloop.first %}offset-xs1{% endif %}">
+                  <a
+                    class="site-nav__subtitle"
+                    href="{{ tier_2.url }}"
+                    js-site-header="navLink"
+                  >
+                    {{ tier_2.title }}
+                  </a>
+
+                  {% if tier_2.links != blank %}
+                    <ul class="navlist navlist--block">
+                      {% for tier_3 in tier_2.links %}
+                        <li class="navlist__item">
+                          <a
+                            class="navlist__link"
+                            href="{{ tier_3.url }}"
+                            js-site-header="navLink"
+                          >
+                            {{ tier_3.title }}
+                          </a>
+                        </li>
+                      {% endfor %}
+                    </ul>
+                  {% endif %}
+                </div>
+              {% endunless %}
+            {% endfor %}
+
+            {% for tier_2 in tier_1.links %}
+              {% if tier_2.title contains 'http' %}
+                <div class="col xs3">
+                  <a js-site-header="navLink" href="{{ tier_2.url }}">
+                    <img
+                      class="site-nav__meganav-image lazyload"
+                      alt=""
+                      data-src="{{ tier_2.title }}"
+                    />
+                  </a>
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+      </li>
+    {% endif %}
+  {% endfor %}
+</ul>

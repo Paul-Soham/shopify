@@ -1,0 +1,18 @@
+{% comment %}
+----------------------------------------------------------------------------
+  Template: Page
+  - Basic Shopify page.
+----------------------------------------------------------------------------
+{% endcomment %}
+
+<div class="template-page">
+  {% render 'search-hero' %}
+
+  <div class="container">
+    <div class="row">
+      <div class="col xs12">
+        {% section 'search-template-bc-sf-filter' %}
+      </div>
+    </div>
+  </div>
+</div>

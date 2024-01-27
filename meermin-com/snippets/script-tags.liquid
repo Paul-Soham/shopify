@@ -1,0 +1,79 @@
+
+<script type="text/javascript" src="{{ 'vendors.min.js' | asset_url }}" defer="defer"></script>
+{%- if layout == 'checkout' -%}
+<script type="text/javascript" src="{{ 'layout.checkout.js' | asset_url }}" defer="defer"></script>
+{%- endif -%} {%- if layout == 'gift_card' -%}
+<script type="text/javascript" src="{{ 'layout.gift_card.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}
+<script type="text/javascript" src="{{ 'shopify.min.js' | asset_url }}" defer="defer"></script>
+{%- if layout == 'password' -%}
+<script type="text/javascript" src="{{ 'layout.password.js' | asset_url }}" defer="defer"></script>
+{%- endif -%} {%- if layout == 'styleguide' -%}
+<script type="text/javascript" src="{{ 'layout.styleguide.js' | asset_url }}" defer="defer"></script>
+{%- endif -%} {%- if layout == 'theme' -%}
+<script type="text/javascript" src="{{ 'layout.theme.js' | asset_url }}" defer="defer"></script>
+{%- endif -%} {%- if template == 'blog' -%}
+<script type="text/javascript" src="{{ 'template.blog.js' | asset_url }}" defer="defer"></script>
+{%- else -%}
+<link rel="prefetch" href="{{ 'template.blog.js' | asset_url }}" as="script">
+{%- endif -%} {%- if template == 'cart' -%}
+<script type="text/javascript" src="{{ 'template.cart.js' | asset_url }}" defer="defer"></script>
+{%- else -%}
+<link rel="prefetch" href="{{ 'template.cart.js' | asset_url }}" as="script">
+{%- endif -%} {%- if template == 'collection' -%}
+<script type="text/javascript" src="{{ 'template.collection.js' | asset_url }}" defer="defer"></script>
+{%- else -%}
+<link rel="prefetch" href="{{ 'template.collection.js' | asset_url }}" as="script">
+{%- endif -%} {%- if template == 'collection.mto--expired' -%}
+<script type="text/javascript" src="{{ 'template.collection.mto--expired.js' | asset_url }}" defer="defer"></script>
+{%- else -%}
+<link rel="prefetch" href="{{ 'template.collection.mto--expired.js' | asset_url }}" as="script">
+{%- endif -%} {%- if template == 'collection.mto--funding' -%}
+<script type="text/javascript" src="{{ 'template.collection.mto--funding.js' | asset_url }}" defer="defer"></script>
+{%- else -%}
+<link rel="prefetch" href="{{ 'template.collection.mto--funding.js' | asset_url }}" as="script">
+{%- endif -%} {%- if template == 'gift_card' -%}
+<script type="text/javascript" src="{{ 'template.gift_card.js' | asset_url }}" defer="defer"></script>
+{%- else -%}
+<link rel="prefetch" href="{{ 'template.gift_card.js' | asset_url }}" as="script">
+{%- endif -%} {%- if template == 'index' -%}
+<script type="text/javascript" src="{{ 'template.index.js' | asset_url }}" defer="defer"></script>
+{%- else -%}
+<link rel="prefetch" href="{{ 'template.index.js' | asset_url }}" as="script">
+{%- endif -%} {%- if template == 'list-collections' -%}
+<script type="text/javascript" src="{{ 'template.list-collections.js' | asset_url }}" defer="defer"></script>
+{%- else -%}
+<link rel="prefetch" href="{{ 'template.list-collections.js' | asset_url }}" as="script">
+{%- endif -%} {%- if template == 'page.careers' -%}
+<script type="text/javascript" src="{{ 'template.page.careers.js' | asset_url }}" defer="defer"></script>
+{%- else -%}
+<link rel="prefetch" href="{{ 'template.page.careers.js' | asset_url }}" as="script">
+{%- endif -%} {%- if template == 'page.know-us' -%}
+<script type="text/javascript" src="{{ 'template.page.know-us.js' | asset_url }}" defer="defer"></script>
+{%- else -%}
+<link rel="prefetch" href="{{ 'template.page.know-us.js' | asset_url }}" as="script">
+{%- endif -%} {%- if template == 'product.gift-card' -%}
+<script type="text/javascript" src="{{ 'template.product.gift-card.js' | asset_url }}" defer="defer"></script>
+{%- else -%}
+<link rel="prefetch" href="{{ 'template.product.gift-card.js' | asset_url }}" as="script">
+{%- endif -%} {%- if template == 'product' -%}
+<script type="text/javascript" src="{{ 'template.product.js' | asset_url }}" defer="defer"></script>
+{%- else -%}
+<link rel="prefetch" href="{{ 'template.product.js' | asset_url }}" as="script">
+{%- endif -%} {%- if template == 'search' -%}
+<script type="text/javascript" src="{{ 'template.search.js' | asset_url }}" defer="defer"></script>
+{%- else -%}
+<link rel="prefetch" href="{{ 'template.search.js' | asset_url }}" as="script">
+{%- endif -%} {%- if template == 'customers/addresses' -%}
+<script type="text/javascript" src="{{ 'template.addresses.js' | asset_url }}" defer="defer"></script>
+{%- else -%}
+<link rel="prefetch" href="{{ 'template.addresses.js' | asset_url }}" as="script">
+{%- endif -%} {%- if template == 'customers/login' -%}
+<script type="text/javascript" src="{{ 'template.login.js' | asset_url }}" defer="defer"></script>
+{%- else -%}
+<link rel="prefetch" href="{{ 'template.login.js' | asset_url }}" as="script">
+{%- endif -%} {%- if template == 'customers/register' -%}
+<script type="text/javascript" src="{{ 'template.register.js' | asset_url }}" defer="defer"></script>
+{%- else -%}
+<link rel="prefetch" href="{{ 'template.register.js' | asset_url }}" as="script">
+{%- endif -%}

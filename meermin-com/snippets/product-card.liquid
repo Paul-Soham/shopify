@@ -1,0 +1,92 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Snippet: Product card
+  - Uses the card component as the base.
+  - Uses badges by default (Optional).
+------------------------------------------------------------------------------
+{% endcomment %}
+{%- capture modifiers -%}
+  {%- if settings.enable_alt_product_image_hover -%}
+    product-card--alt
+  {%- endif -%}
+{%- endcapture -%}
+
+{% if empty_template %}
+  {% assign product = '' %}
+{% endif %}
+
+{% unless empty_template %}
+  {% assign product_has_badges = false %}
+  {% assign product_badge_list = '' %}
+
+  {% for tag in product.tags %}
+    {% assign sanitized_tag = tag | downcase %}
+
+    {% if sanitized_tag contains 'badge:' %}
+      {% assign product_has_badges = true %}
+      {% assign product_badge_title = tag | split: ':' | last %}
+      {% assign product_badge_list = product_badge_list | append: product_badge_title | append: ','%}
+    {% endif %}
+  {% endfor %}
+{% endunless %}
+
+<a
+  class="product-card {{ modifiers }}"
+  href="{{ product.url | within: collection }}"
+  data-cy="productCard"
+  js-product-link
+>
+  {% if product.featured_image != blank or empty_template %}
+    {% if product_has_badges %}
+      {% assign product_badge_array = product_badge_list | split: ',' %}
+
+      <div class="product-card__badge-listing">
+        {% for badge in product_badge_array %}
+          <div class="product-card__badge badge badge--secondary">
+            <span>{{ badge }}</span>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <div class="product-card__thumbnail-container">
+      {% render 'responsive-card-image' with
+        image: product.featured_image,
+        responsive_image_counter: forloop.index0,
+        wrapper_class: 'product-card__thumbnail product-card__thumbnail--primary'
+      %}
+
+      {% if settings.enable_alt_product_image_hover %}
+        {% render 'responsive-card-image' with
+          image: product.images[1],
+          responsive_image_counter: forloop.index,
+          wrapper_class: 'product-card__thumbnail product-card__thumbnail--secondary'
+        %}
+      {% endif %}
+
+      {% if settings.enable_quick_view %}
+        <button
+          class="product-card__button button button--primary button--block"
+          data-product-url="{% unless empty_template %}/products/{{ product.handle }}{% endunless %}"
+          js-quick-view="toggle"
+        >
+          <span>{{ 'collections.product.quick_view' | t }}</span>
+        </button>
+      {% endif %}
+    </div>
+  {% endif %}
+
+  <div class="product-card__footer">
+    <span class="product-card__title" js-product-link="product-title">
+      {{ product.title }}
+    </span>
+
+    {% render 'product-price' with product: product %}
+
+    {% if settings.enable_product_reviews %}
+      <div class="product-card__meta">
+        <span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span>
+      </div>
+    {% endif %}
+  </div>
+</a>

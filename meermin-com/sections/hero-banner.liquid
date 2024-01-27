@@ -1,0 +1,335 @@
+{% comment %}
+----------------------------------------------------------------------------
+  Section: Hero banner
+  - Full width slider with title, text, and CTA.
+----------------------------------------------------------------------------
+{% endcomment %}
+<div
+  id="HeroBanner-{{ section.id }}"
+  class="hero-banner carousel swiper-container"
+  data-autoplay="{{ section.settings.slide_transition_timing }}"
+  data-section-id="{{ section.id }}"
+  data-section-type="hero-banner"
+  js-carousel="container"
+  js-hero-banner="container"
+>
+  <div class="swiper-wrapper">
+    {% for block in section.blocks %}
+      {% if block.settings.image == blank %}
+        {% capture background_placeholder %}
+          <div class="hero-banner__placeholder placeholder-background">
+            {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+          </div>
+        {% endcapture %}
+      {% endif %}
+
+      <div
+        id="{{ block.id }}"
+        class="
+          hero-banner__cell
+          {{ block.settings.content_alignment }}
+          lazyload
+          swiper-slide
+        "
+        {% unless block.settings.image == blank %}
+          style="background-position: {{ block.settings.alignment }}"
+          data-bgset="{% render 'responsive-bg-image', image: block.settings.image %}"
+        {% endunless %}
+        js-carousel="cell"
+        js-hero-banner="cell"
+        {{ block.shopify_attributes }}
+      >
+        {% if
+          block.settings.image_mobile == blank and
+          block.settings.image_desktop == blank
+        %}
+          {{ background_placeholder }}
+
+        {% else %}
+          <div class="hero-banner__image">
+            {% render 'art-direction-image' with
+              alt: block.settings.alt_text
+              large_image: block.settings.image_desktop,
+              small_image: block.settings.image_mobile,
+            %}
+            <div
+              class="hero-banner__image-overlay"
+              style="background-color: #35240c; opacity: {{ block.settings.overlay_slide_opacity }}%"
+            ></div>
+          </div>
+        {% endif %}
+
+        <div class="container">
+          <div class="row">
+            <div class="col xs12">
+              <div class="hero-banner__content">
+                <div class="hero-banner__body {{ block.settings.text_alignment }}">
+                  {% if block.settings.subtitle != blank %}
+                    <p
+                      class="hero-banner__subtitle h6"
+                    >
+                      {{ block.settings.subtitle }}
+                    </p>
+                  {% endif %}
+                  <h2
+                    class="d1 hero-banner__title"
+                  >
+                    {{ block.settings.title }}
+                  </h2>
+
+                  {% if block.settings.cta_url %}
+                    <a
+                      class="
+                      button
+                      hero-banner__button
+                        {{ block.settings.cta_theme }}
+                      "
+                      href="{{ block.settings.cta_url }}"
+                      js-hero-banner="link"
+                    >
+                      <span>{{ block.settings.cta_text }}</span>
+                    </a>
+                  {% endif %}
+                </div>
+                {% if block.settings.details %}
+                  <div class="hero-banner__details-container container">
+                    <p class="hero-banner__details h6">
+                      {{ block.settings.details }}
+                    </p>
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+  {% unless section.blocks.size <= 1 %}
+    <div class="hero-banner__navigation container">
+      <div 
+        class="hero-banner__navigation-button hero-banner__prev swiper-button-prev swiper-button-custom"
+        js-hero-banner="prev"
+      >
+        {% render 'icon-direction' with icon: 'chevron-left' %}
+      </div>
+      <div 
+        class="hero-banner__navigation-button hero-banner__next swiper-button-next swiper-button-custom"
+        js-hero-banner="next"
+      >
+        {% include 'icon-direction' with icon: 'chevron-right' %}
+      </div>
+    </div>
+  {% endunless %}
+</div>
+
+{% schema %}
+  {
+    "name": "Hero banner carousel",
+    "class": "index-section",
+    "settings": [
+      {
+        "type": "select",
+        "id": "slide_transition_timing",
+        "label": "Slide Transition Timing",
+        "options": [
+          {
+            "value": "0",
+            "label": "Disable"
+          },
+          {
+            "value": "500",
+            "label": "Half a Second"
+          },
+          {
+            "value": "1000",
+            "label": "One Second"
+          },
+          {
+            "value": "2000",
+            "label": "Two Seconds"
+          },
+          {
+            "value": "3000",
+            "label": "Three Seconds"
+          },
+          {
+            "value": "4000",
+            "label": "Four Seconds"
+          },
+          {
+            "value": "5000",
+            "label": "Five Seconds"
+          }
+        ],
+        "default": "3000"
+      }
+    ],
+    "max_blocks": 3,
+    "blocks": [
+      {
+        "type": "image",
+        "name": "Banner slide",
+        "settings": [
+          {
+            "type": "header",
+            "content": "Overlay"
+          },
+          {
+            "type": "range",
+            "id": "overlay_slide_opacity",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "%",
+            "label": "Overlay opacity",
+            "default": 35
+          },
+          {
+            "type": "header",
+            "content": "Image",
+            "info": "Both images are required."
+          },
+          {
+            "type": "image_picker",
+            "id": "image_desktop",
+            "label": "Image - Desktop",
+            "info": "Recommended min dimensions: 2000x1280px (.jpg)"
+          },
+          {
+            "type": "image_picker",
+            "id": "image_mobile",
+            "label": "Image - Mobile",
+            "info": "Recommended min dimensions: 540x720px (.jpg)"
+          },
+          {
+            "type": "url",
+            "id": "cta_url",
+            "label": "CTA Link URL"
+          },
+          {
+            "type": "text",
+            "id": "cta_text",
+            "label": "CTA Link Text",
+            "default": "Shop Now"
+          },
+          {
+            "type": "header",
+            "content": "Content",
+            "info": "Leave fields empty to hide."
+          },
+          {
+            "type": "text",
+            "id": "subtitle",
+            "label": "Slide Subtitle",
+            "default": "Fresh & Spring Ready"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Slide Title",
+            "default": "Slide title"
+          },
+          {
+            "type": "text",
+            "id": "details",
+            "label": "Slide Details",
+            "default": "101198 - Black Calf - E"
+          },
+          {
+            "type": "header",
+            "content": "Options",
+            "info": "Options to define styling of the content."
+          },
+          {
+            "type": "select",
+            "id": "content_alignment",
+            "label": "Content alignment",
+            "default": "is-middle is-left",
+            "options": [
+              {
+                "label": "Top left",
+                "value": "is-top is-left"
+              },
+              {
+                "label": "Top center",
+                "value": "is-top is-center"
+              },
+              {
+                "label": "Top right",
+                "value": "is-top is-right"
+              },
+              {
+                "label": "Middle left",
+                "value": "is-middle is-left"
+              },
+              {
+                "label": "Middle center",
+                "value": "is-middle is-center"
+              },
+              {
+                "label": "Middle right",
+                "value": "is-middle is-right"
+              },
+              {
+                "label": "Bottom left",
+                "value": "is-bottom is-left"
+              },
+              {
+                "label": "Bottom center",
+                "value": "is-bottom is-center"
+              },
+              {
+                "label": "Bottom right",
+                "value": "is-bottom is-right"
+              }
+            ]
+          },
+          {
+            "type": "select",
+            "id": "text_alignment",
+            "label": "Text alignment",
+            "default": "text-left",
+            "options": [
+              {
+                "label": "Left",
+                "value": "text-left"
+              },
+              {
+                "label": "Center",
+                "value": "text-center"
+              }
+            ]
+          },
+          {
+            "type": "select",
+            "id": "cta_theme",
+            "default": "button--primary",
+            "label": "Call to action colour",
+            "options": [
+              {
+                "value": "button--primary",
+                "label": "Primary"
+              },
+              {
+                "value": "button--secondary button--secondary-light",
+                "label": "Secondary"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Hero banner carousel",
+        "category": "Images",
+        "blocks": [
+          {
+            "type": "image"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

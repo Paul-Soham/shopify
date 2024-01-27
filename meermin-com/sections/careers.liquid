@@ -1,0 +1,210 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Section: Trunk show
+  - A custom section to display physical stores information.
+------------------------------------------------------------------------------
+{% endcomment %}
+
+{% assign sections_length = 0 %}
+
+{% for block in section.blocks %}
+  {% if block.type == 'section' %}
+    {% assign sections_length = sections_length | plus: 1 %}
+  {% endif %}
+{% endfor %}
+
+<div
+  id="Careers-{{ section.id }}"
+  class="careers"
+  data-section-id="{{ section.id }}"
+  data-section-type="careers"
+>
+  <div class="container">
+    <div class="row">
+      <div class="col xs12 careers__container">
+        <h1 class="d2 careers__title">{{ section.settings.title }}</h1>
+      </div>
+        <div class="col xs12 m10 offset-m1">
+          <p class="h4 careers__content">{{section.settings.content}}</p>
+        </div>
+    </div>
+  </div>
+  {% if sections_length > 1 %}
+    <div
+      class="careers__toggle-container container"
+    >
+      <div
+        class="row carousel swiper-container"
+        js-carousel="container"
+        js-careers="toggleContainer"
+      >
+        <div class="col xs12 m10 offset-m1 swiper-wrapper">
+          <div
+            class="swiper-slide"
+            js-carousel="cell"
+          >
+            <button
+              class="button careers__toggle-button is-active"
+              js-careers="toggleButton"
+              data-toggle="all"
+            >
+              {{ 'careers.all' | t }}
+            </button>
+          </div>
+          {% for block in section.blocks %}
+            {% if block.type == 'section' %}
+              <div
+                class="swiper-slide"
+                js-carousel="cell"
+              >
+                <button
+                  class="button careers__toggle-button"
+                  js-careers="toggleButton"
+                  data-toggle="{{ block.id }}"
+                >
+                  {{ block.settings.title }}
+                </button>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+        <div class="swiper-scrollbar"></div>
+      </div>
+    </div>
+ {% endif %}
+  <div class="container">
+    <div class="row">
+      <div class="col xs12 m10 offset-m1">
+        <div class="careers__section-container">
+          {% for block in section.blocks %}
+            {% if block.type == 'section' %}
+              {% assign section_title = block.settings.title %}
+              {% assign job_block_count = 0 %}
+
+              <div
+                class="careers__section"
+                js-careers="toggleSection"
+                data-toggle="{{ block.id }}"
+              >
+                <h2 class="d3">
+                  {{ section_title }}
+                </h2>
+                <p class="body-1 careers__section-description">
+                  {{ block.settings.description }}
+                </p>
+
+                {% for job_block in section.blocks %}
+                  {% if
+                    job_block.type == 'location' and
+                    job_block.settings.index == section_title
+                  %}
+                    {% assign job_block_count = job_block_count | plus: 1 %}
+
+                    <div class="careers__section-post">
+                      <h3 class="h3 careers__section-title">
+                        {{ job_block.settings.title }}
+                      </h3>
+                      {% if
+                        job_block.settings.cta_link != blank and
+                        job_block.settings.cta_text != blank
+                      %}
+                        <a
+                          href="{{ job_block.settings.cta_link }}"
+                          class="button button--primary"
+                        >
+                          <span>{{ job_block.settings.cta_text }}</span>
+                        </a>
+                      {% endif %}
+                    </div>
+
+                  {% endif %}
+                {% endfor %}
+
+                {% if job_block_count == 0 %}
+                  <p class="h3 careers__no-jobs">
+                    {{ 'careers.no_jobs' | t }}
+                  </p>
+                {% endif %}
+              </div>
+
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Careers",
+    "class": "index-section",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Intro content"
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Page title",
+        "default": "We’re Hiring!"
+      },
+      {
+        "type": "textarea",
+        "id": "content",
+        "label": "Content",
+        "default": "We're a small but young Team of enthusiastic people always looking for friendly, talented folks to join our Team. Look for a position below that best fits your experience & join us!"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "section",
+        "name": "Career section",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Heading",
+            "default": "Regional Management"
+          },
+          {
+            "type": "textarea",
+            "id": "description",
+            "label": "descrition",
+            "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse ac felis a mauris rhoncus fermentum nec id arcu. Nunc vel ipsum eget felis vestibulum commodo eget et lectus. Fusce quis eros faucibus, mattis lorem non, tincidunt erat. Proin mi diam, aliquet id sapien nec, finibus faucibus lorem. Maecenas arcu est, viverra ac molestie luctus, porttitor scelerisque sem. Suspendisse potenti. Duis aliquet mi vitae molestie suscipit."
+          }
+        ]
+      },
+      {
+        "type": "location",
+        "name": "Job post settings",
+        "settings": [
+          {
+            "type": "text",
+            "id": "index",
+            "label": "Career section indexing",
+            "default": "Regional Management",
+            "info": "Type the name of the section you want the job to be listed under"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Heading",
+            "default": "Country Manager - Sweden"
+          },
+          {
+            "type": "url",
+            "id": "cta_link",
+            "label": "Link"
+          },
+          {
+            "type": "text",
+            "id": "cta_text",
+            "label": "Link Text"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

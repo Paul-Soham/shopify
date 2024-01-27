@@ -1,0 +1,168 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Section: Newsletter modal
+  - This is an optional section for Frame.
+  - It is available in the global theme settings in the theme editor.
+------------------------------------------------------------------------------
+{% endcomment %}
+<section
+  id="newsletter-modal"
+  class="modal newsletter-modal critical-clear"
+  aria-hidden="true"
+  data-section-id="{{ section.id }}"
+  data-section-type="newsletter-modal"
+>
+  {% if settings.enable_newsletter_modal %}
+    <div
+      class="modal__overlay"
+      tabindex="-1"
+      data-micromodal-close
+    >
+      <div js-modal="body">
+        <div class="newsletter-modal__card" js-modal="card">
+          <button
+            class="newsletter-modal__close button"
+            aria-label="Close modal"
+            data-micromodal-close
+          >
+            {% render 'icon-misc' with icon: 'close' %}
+          </button>
+
+          {% if section.settings.large_image %}
+            <div class="newsletter-modal__image">
+              {% render 'art-direction-image' with
+                alt: section.settings.alt_text,
+                large_image: section.settings.large_image,
+                small_image: section.settings.small_image,
+              %}
+            </div>
+          {% endif %}
+
+          <div
+            class="newsletter-modal__body modal__body"
+            role="dialog"
+            aria-labelledby="newsletter-signup"
+            aria-modal="true"
+          >
+            {% if section.settings.title != blank %}
+              <h2 id="newsletter-signup" class="newsletter-modal__title">
+                {{ section.settings.title | escape }}
+              </h2>
+            {% endif %}
+
+            {% if section.settings.body != blank %}
+              <p class="newsletter-modal__paragraph">
+                {{ section.settings.body | escape }}
+              </p>
+            {% endif %}
+
+            {% form 'customer', id: 'NewsletterModal', js-direct-add: 'form' %}
+              {{ form.errors | default_errors }}
+
+              {% if form.posted_successfully? %}
+                <p>{{ 'general.newsletter_form.confirmation' | t }}</p>
+
+              {% else %}
+                <input
+                  name="contact[tags]"
+                  type="hidden"
+                  value="newsletter"
+                >
+
+                <label for="NewsletterModal-Email" class="newsletter-modal__label">
+                  {{ 'customer.login.email' | t }}
+                </label>
+
+                <input
+                  id="NewsletterModal-Email"
+                  class="newsletter-modal__input"
+                  autocapitalize="off"
+                  autocorrect="off"
+                  name="contact[email]"
+                  placeholder="{{ 'general.newsletter_form.email_placeholder' | t }}"
+                  type="email"
+                  js-direct-add="email"
+                >
+                <div js-direct-add="feedback" class="hello"></div>
+                <button
+                  class="button button--primary button--block newsletter-modal__button"
+                  name="commit"
+                  type="submit"
+                  value="{{ 'general.newsletter_form.submit' | t }}"
+                  js-direct-add="submit"
+                >
+                  <div class="loader">
+                    <div class="ball-clip-rotate">
+                      <div></div>
+                    </div>
+                  </div>
+                  <span>{{ 'general.newsletter_form.submit' | t }}</span>
+                </button>
+              {% endif %}
+            {% endform %}
+
+            <footer class="modal__footer">
+              {{ section.settings.disclaimer }}
+            </footer>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+</section>
+
+{% schema %}
+  {
+    "name": "Newsletter Modal",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Enable/disable in theme settings"
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Heading",
+        "default": "Subscribe to our newsletter"
+      },
+      {
+        "type": "textarea",
+        "id": "body",
+        "label": "Body",
+        "default": "A short sentence describing what someone will receive by subscribing"
+      },
+      {
+        "type": "header",
+        "content": "Featured image"
+      },
+      {
+        "type": "image_picker",
+        "id": "large_image",
+        "label": "Large image",
+        "info": "Upload a 2:3 portrait image. (Required)"
+      },
+      {
+        "type": "image_picker",
+        "id": "small_image",
+        "label": "Small image",
+        "info": "Upload a 3:2 landscape image. (Required)"
+      },
+      {
+        "type": "text",
+        "id": "alt_text",
+        "label": "Image description",
+        "info": "This text will be used as the alt tag for accessibility and SEO."
+      },
+      {
+        "type": "header",
+        "content": "Disclaimer"
+      },
+      {
+        "type": "richtext",
+        "id": "disclaimer",
+        "label": "Description",
+        "default": "<p>By providing your email address, you agree to our <a href=\"/pages/privacy-policy\">Privacy Policy</a> and <a href=\"/pages/terms-conditions\">Terms of Service</a>.</p>"
+      }
+    ]
+  }
+{% endschema %}

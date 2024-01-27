@@ -1,0 +1,141 @@
+{% comment %}
+------------------------------------------------------------------------------
+Section: Specification section with PDP
+- use for ordering the specification list
+------------------------------------------------------------------------------
+{% endcomment %}
+<style>
+.fa{
+    opacity: .5;
+}
+  a.modalclick {
+    color: black;
+}
+  .template-product__specification-list span {
+    display: flex;
+    align-items: center;
+}
+  img.modalinfo {
+    width: auto;
+    height: 20px;
+}
+</style>
+{% assign has_specifications = false %}
+  {% for block in section.blocks %} 
+    {% for tag in product.tags %}
+    {% assign tag_split = tag | split: ':' %}
+      {% if tag_split.first == block.settings.key_name %}
+      {% assign has_specifications = true %}
+      {% break %}
+      {% endif %}
+    {% endfor %}
+        {% if has_specifications %}
+        {% break %}
+        {% endif %}
+  {% endfor%}
+{% if has_specifications %}
+<h5 class="template-product__specification-title">
+	{{ 'products.product.specification' | t }}
+</h5>
+{% endif %}
+<div class="template-product__specification-list-container">
+	{% for block in section.blocks %} 
+      {% for tag in product.tags %}
+    	{% assign tag_split = tag | split: ':' %}
+    	{% if tag_split.first == block.settings.key_name %}
+    	{% assign key_name = tag_split[0] | capitalize | replace: "-", " "%}
+    	{% assign key_value = tag_split[1] | capitalize | replace: "-", " " %}
+    	<li class="template-product__specification-list body-1">
+    		<span class="template-product__specification-list-title">
+    			{{ key_name }}
+    		</span>
+    		<span>
+                {% assign page_exist = key_value | handleize %}
+    			{% if pages[page_exist].content != blank %}
+                 <a href="javascript:void(0);" class="modalclick" data-id="{{ forloop.index }}" js-template-product="sizeGuide">
+      				{{ key_value }}
+      			  </a>&nbsp;<img src="https://cdn.shopify.com/s/files/1/0376/1291/2685/files/info_128x128_crop_center.png?v=1663049966" class="modalinfo" alt="">
+                {% else %}
+      				{{ key_value }}
+                {% endif %}
+    		</span>
+    	</li>
+	{% endif %}
+	{% endfor %}
+	{% endfor %}
+
+	{% for block in section.blocks %} 
+	{% for tag in product.tags %}
+	{% assign tag_split = tag | split: ':' %}
+	{% if tag_split.first == block.settings.key_name %}
+	{% assign key_name = tag_split[0] | capitalize | replace: "-", " "%}
+	{% assign key_value = tag_split[1] | capitalize | replace: "-", " " %}
+     
+    {% assign page-content = key_value | handleize %}
+    	<div id="size-guide-new-{{ forloop.index }}" class="modal modal--light specification-mod" role="dialog" tabindex="-1" style="opacity: 0;">
+    		<div class="modal__overlay" tabindex="-1" data-micromodal-close="" js-size-guide="overlay">
+    		</div>
+    		<div class="modal__card">
+    			<div class="modal__header modal-size-guide__header">
+    				<h3 class="modal-size-guide__title">{{ key_value }}</h3>
+                    <button class="button specification_close" style="position: absolute; right: 0; top: 0;">
+                    <span class="visually-hidden">
+                    Close
+                    </span>                
+                    <svg class="icon icon__close" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M4 4L20 20M4 20L20 4" stroke="black"></path>
+                    </svg> 
+                    </button>
+    			</div>
+    			<div class="modal__body modal-size-guide__body">
+    				{{ pages[page-content].content }}
+    			</div>
+    		</div>
+    	</div>
+      
+	{% endif %}
+	{% endfor %}
+	{% endfor%}
+</div>
+
+{% schema %}
+  {
+    "name": "Product Specification",
+    "class": "template-product__specification-section",
+    "blocks": [
+      {
+        "type": "list", 
+        "name": "Specification key name",
+        "settings": [
+          {
+            "type": "header",
+            "content": "Add key name",
+            "info": "Key name must match the specification tag from the product"
+          },
+          {
+            "type": "text",
+            "id": "key_name",
+            "label": "Key name"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}
+
+
+{% javascript %}
+$(document).ready(function(){
+  $('.modalclick').on('click', function(e){
+  e.preventDefault();
+      var data_id = $(this).attr('data-id');
+      $("#size-guide-new-"+data_id).addClass('is-active');
+      $("#size-guide-new-"+data_id).css('opacity',1);
+  });
+  $('.specification_close').on('click', function(e){
+    e.preventDefault();
+      $(".specification-mod").removeClass('is-active');
+      $(".specification-mod").css('opacity',0);
+  });
+});
+{% endjavascript %}

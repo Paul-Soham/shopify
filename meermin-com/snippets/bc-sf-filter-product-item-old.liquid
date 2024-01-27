@@ -1,0 +1,286 @@
+{% comment %} Grid Width Class Desktop {% endcomment %}
+{% assign grid_width_class_desktop = 'bc-sf-filter-grid-width-4' %}
+{% case section.settings.products_per_row %}
+  {% when 2 %}
+    {% assign grid_width_class_desktop = 'bc-sf-filter-grid-width-2' %}
+  {% when 3 %}
+    {% assign grid_width_class_desktop = 'bc-sf-filter-grid-width-3' %}
+  {% when 4 %}
+    {% assign grid_width_class_desktop = 'bc-sf-filter-grid-width-4' %}
+  {% when 5 %}
+    {% assign grid_width_class_desktop = 'bc-sf-filter-grid-width-5' %}
+{% endcase %}
+
+{% comment %} Grid Width Class Mobile {% endcomment %}
+{% assign grid_width_class_mobile = 'bc-sf-filter-grid-width-mb-2' %}
+{% case section.settings.products_per_row_mobile %}
+  {% when 1 %}
+    {% assign grid_width_class_mobile = 'bc-sf-filter-grid-width-mb-1' %}
+  {% when 2 %}
+    {% assign grid_width_class_mobile = 'bc-sf-filter-grid-width-mb-2' %}
+  {% when 3 %}
+    {% assign grid_width_class_mobile = 'bc-sf-filter-grid-width-mb-3' %}
+{% endcase %}
+
+{% comment %} Soldout {% endcomment %}
+{% assign sold_out = false %}
+{% assign sold_out_class = '' %}
+{% assign sold_out_text = section.settings.soldout_label %} 
+{% unless product.available %}
+  {% assign sold_out = true %}
+  {% assign sold_out_class = 'sold-out' %}  
+{% endunless %}
+
+{% comment %} On Sale {% endcomment %}
+{% assign on_sale = false %}
+{% assign sale_class = '' %}
+{% assign sale_text = section.settings.sale_label %} 
+{% if product.compare_at_price > product.price %}
+  {% assign on_sale = true %}
+  {% assign sale_class =  'on-sale' %}
+{% endif %}
+
+{% comment %} Product Image Url {% endcomment %}
+{% assign main_img_url = 'bc-sf-filter-no-image.gif' | asset_url %}
+{% if product.featured_image.src == blank %}
+  {% if product.images[0]%}
+    {% assign main_img_url = product.images[0]  %}
+  {% endif %}
+  {% if product.images[1] %}
+    {% if product.images[1].src contains 'swatch' %}
+      {% assign swap_img_url = product.images[0]  %}
+    {% else %}
+      {% assign swap_img_url = product.images[1]  %}
+    {% endif %}
+  {% endif %}
+{% else %}
+  {% assign main_img_url = product.featured_image  %}
+  {% if product.images[1].src contains 'swatch' %}
+    {% assign swap_img_url = product.images[0]  %}
+  {% else %}
+    {% assign swap_img_url = product.images[1]  %}
+  {% endif %}
+{% endif %}
+
+{% assign main_img_url = main_img_url | img_url: '1x1' | replace: '_1x1.', '_{width}x.' %}
+{% assign swap_img_url = swap_img_url | img_url: '1x1' | replace: '_1x1.', '_{width}x.' %}
+
+{% if collection.handle == 'mens-oxfords' %}
+
+{% if forloop.index == 8 %}
+<div class="bc-sf-filter-product-item bc-sf-filter-product-item-grid {% if section.settings.active_image_swap and product.images[1] %} has-bc-swap-image{% endif %} {{ grid_width_class_desktop }} {{ grid_width_class_mobile }} {{ sold_out_class }} {{ sale_class }} custom-width"
+  js-promo-banner="productCard" >
+{% endif %}
+
+<div 
+{% if forloop.index == 8 or forloop.index == 9 %}  
+class="bc-sf-filter-product-item product-eight bc-sf-filter-product-item-grid {% if section.settings.active_image_swap and product.images[1] %} has-bc-swap-image{% endif %} {{ sold_out_class }} {{ sale_class }} {{ forloop.index }}"
+{% else %}   
+class="bc-sf-filter-product-item bc-sf-filter-product-item-grid {% if section.settings.active_image_swap and product.images[1] %} has-bc-swap-image{% endif %} {{ grid_width_class_desktop }} {{ grid_width_class_mobile }} {{ sold_out_class }} {{ sale_class }} {{ forloop.index }}"
+{% endif %} 
+js-promo-banner="productCard">
+  {% include 'bc-sf-filter-json', product: product %}
+  <div class="bc-sf-filter-product-item-inner">
+
+    <div class="bc-sf-filter-product-item-image">
+      <a href="{{ product.url | within: collection }}" class="bc-sf-filter-product-item-image-link">
+        <img class="bc-sf-filter-product-item-main-image lazyload" alt="{{ product.featured_image.alt | escape }}" data-src="{{ main_img_url }}" data-widths="[180, 360, 540, 720]" data-sizes="auto" />
+        {% if section.settings.active_image_swap and product.images[1] %}
+        <img class="bc-sf-filter-product-item-flip-image lazyload" alt="{{ product.featured_image.alt | escape }}" data-src="{{ swap_img_url }}" data-widths="[180, 360, 540, 720]" data-sizes="auto" />
+      {% endif %}
+      </a>
+    </div>
+
+    {% comment %} PRODUCT LABEL {% endcomment %}
+    {% if section.settings.show_sale_label or section.settings.show_sold_out_label %}
+      <div class="bc-sf-filter-product-item-label">
+        {% if sold_out and section.settings.show_sold_out_label %}
+        <span class="soldout bc-sf-filter-label">
+          {{ sold_out_text }}
+        </span>
+        {% endif %}
+        {% if on_sale and section.settings.show_sale_label %}
+        <span class="sale bc-sf-filter-label">
+          {{ sale_text }}
+        </span>
+        {% endif %}
+
+        {% comment %} LABEL EXTEND BY TAG: New, Best, Featured {% endcomment %}
+        {% assign showAll = false %}
+        {% if showAll %}
+          {% for tag in product.tags %}
+            {% if tag contains 'pfs:label-'%}
+              {% assign t = tag | split: 'pfs:label-' %}
+              <span class="bc-sf-filter-label tag {{ t }}">{{ t }}</span>
+            {% endif %}
+          {% endfor %}
+        {% else %}
+          {% assign productTags = product.tags | reverse %}
+          {% for tag in productTags %}
+            {% if tag contains 'pfs:label-'%}
+              {% assign t = tag | split: 'pfs:label-' %}
+              <span class="bc-sf-filter-label tag {{ t }}">{{ t }}</span>
+              {% break %}
+            {% endif %}
+          {% endfor %}
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {% render 'bc-sf-filter-product-item-countdown',
+      template: template,
+      productTags: product.tags
+    %}
+
+    <div class="bc-sf-filter-product-bottom text-center">
+      <a href="{{ product.url | within: collection }}" class="bc-sf-filter-product-item-title h6">{{ product.title }}</a>
+
+      {% if section.settings.show_vendor %}
+        <p class="bc-sf-filter-product-item-vendor">{{ product.vendor }}</p>
+      {% endif %}
+
+      {% if section.settings.show_price %}
+        <p class="bc-sf-filter-product-item-price body-1">
+          {% if on_sale %}
+            <span class="bc-sf-filter-product-item-sale-price">{{ product.price | money }}</span>
+            <s>{{ product.compare_at_price | money }}</s>
+          {% else %}
+            {% if product.price_varies %}
+              {{ section.settings.from }}
+            {% endif %}
+            <span class="bc-sf-filter-product-item-regular-price">{{ product.price | money }}</span>
+          {% endif %}
+        </p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% if forloop.index == 9 %}
+</div>
+{% endif %}
+
+{% comment %}
+{% for product in collection.products %}
+  {% assign product_count = collection.products %}
+    {% if product_count == 8 %}
+      {{ product_count }}
+    {% endif %}
+{% endfor %}
+
+{% assign grid_width_class_desktop = 'bc-sf-filter-grid-width' %}
+{% if forloop.index5 != "" %}
+{{ grid_width_class_desktop }}
+{% endif %}
+{% endcomment %}
+
+
+  {% assign promo_banner = collection.metafields.custom.promo_banner %}
+  {% if promo_banner != null %}
+  {% assign grid_width_class_mobile = 'bc-sf-filter-grid-width-mb-1' %}
+  {% assign grid_width_class_desktop = 'bc-sf-filter-grid-width-1' %}
+      {% if forloop.index == 4 %}
+        <div class="bc-sf-filter-product-item bc-sf-filter-product-item-grid {% if section.settings.active_image_swap and product.images[1] %} has-bc-swap-image{% endif %} {{ grid_width_class_desktop }} {{ grid_width_class_mobile }} {{ sold_out_class }} {{ sale_class }}">
+          <img src="{{ promo_banner | img_url:'1024x1024' }} " alt="" class="banner-img-class">
+          <h6 class="banner-title">{{ collection.metafields.custom.promo_banner_heading }}</h6>
+          <p class="banner-des">{{ collection.metafields.custom.promo_banner_description }}</p>
+        </div>    
+      {% endif %}
+  {% endif %}
+
+
+{% assign promo_sec_banner = collection.metafields.custom.promo_second_banner %}
+{% if promo_sec_banner != null %}
+{% assign grid_width_class_mobile = 'bc-sf-filter-grid-width-mb-1' %}
+{% assign grid_width_class_desktop = 'bc-sf-filter-grid-width-1' %}
+    {% if forloop.index == 7 %}
+      <div class="bc-sf-filter-product-item banner-img bc-sf-filter-product-item-grid {% if section.settings.active_image_swap and product.images[1] %} has-bc-swap-image{% endif %} {{ grid_width_class_desktop }} {{ grid_width_class_mobile }} {{ sold_out_class }} {{ sale_class }}">
+        <img src="{{ promo_sec_banner | img_url:'1024x1024' }} " alt="" class="banner-img-class">
+        <h6 class="banner-title">{{ collection.metafields.custom.promo_banner_heading }}</h6>
+        <p class="banner-des">{{ collection.metafields.custom.promo_banner_description }}</p>
+      </div>    
+    {% endif %}
+{% endif %}
+
+
+
+{% else %}
+  <div   
+class="bc-sf-filter-product-item bc-sf-filter-product-item-grid {% if section.settings.active_image_swap and product.images[1] %} has-bc-swap-image{% endif %} {{ grid_width_class_desktop }} {{ grid_width_class_mobile }} {{ sold_out_class }} {{ sale_class }} {{ forloop.index }}"
+js-promo-banner="productCard">
+  {% include 'bc-sf-filter-json', product: product %}
+  <div class="bc-sf-filter-product-item-inner">
+
+    <div class="bc-sf-filter-product-item-image">
+      <a href="{{ product.url | within: collection }}" class="bc-sf-filter-product-item-image-link">
+        <img class="bc-sf-filter-product-item-main-image lazyload" alt="{{ product.featured_image.alt | escape }}" data-src="{{ main_img_url }}" data-widths="[180, 360, 540, 720]" data-sizes="auto" />
+        {% if section.settings.active_image_swap and product.images[1] %}
+        <img class="bc-sf-filter-product-item-flip-image lazyload" alt="{{ product.featured_image.alt | escape }}" data-src="{{ swap_img_url }}" data-widths="[180, 360, 540, 720]" data-sizes="auto" />
+      {% endif %}
+      </a>
+    </div>
+
+    {% comment %} PRODUCT LABEL {% endcomment %}
+    {% if section.settings.show_sale_label or section.settings.show_sold_out_label %}
+      <div class="bc-sf-filter-product-item-label">
+        {% if sold_out and section.settings.show_sold_out_label %}
+        <span class="soldout bc-sf-filter-label">
+          {{ sold_out_text }}
+        </span>
+        {% endif %}
+        {% if on_sale and section.settings.show_sale_label %}
+        <span class="sale bc-sf-filter-label">
+          {{ sale_text }}
+        </span>
+        {% endif %}
+
+        {% comment %} LABEL EXTEND BY TAG: New, Best, Featured {% endcomment %}
+        {% assign showAll = false %}
+        {% if showAll %}
+          {% for tag in product.tags %}
+            {% if tag contains 'pfs:label-'%}
+              {% assign t = tag | split: 'pfs:label-' %}
+              <span class="bc-sf-filter-label tag {{ t }}">{{ t }}</span>
+            {% endif %}
+          {% endfor %}
+        {% else %}
+          {% assign productTags = product.tags | reverse %}
+          {% for tag in productTags %}
+            {% if tag contains 'pfs:label-'%}
+              {% assign t = tag | split: 'pfs:label-' %}
+              <span class="bc-sf-filter-label tag {{ t }}">{{ t }}</span>
+              {% break %}
+            {% endif %}
+          {% endfor %}
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {% render 'bc-sf-filter-product-item-countdown',
+      template: template,
+      productTags: product.tags
+    %}
+
+    <div class="bc-sf-filter-product-bottom text-center">
+      <a href="{{ product.url | within: collection }}" class="bc-sf-filter-product-item-title h6">{{ product.title }}</a>
+
+      {% if section.settings.show_vendor %}
+        <p class="bc-sf-filter-product-item-vendor">{{ product.vendor }}</p>
+      {% endif %}
+
+      {% if section.settings.show_price %}
+        <p class="bc-sf-filter-product-item-price body-1">
+          {% if on_sale %}
+            <span class="bc-sf-filter-product-item-sale-price">{{ product.price | money }}</span>
+            <s>{{ product.compare_at_price | money }}</s>
+          {% else %}
+            {% if product.price_varies %}
+              {{ section.settings.from }}
+            {% endif %}
+            <span class="bc-sf-filter-product-item-regular-price">{{ product.price | money }}</span>
+          {% endif %}
+        </p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endif %}

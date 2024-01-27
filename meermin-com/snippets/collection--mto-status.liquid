@@ -1,0 +1,41 @@
+{% if 
+  template.suffix contains 'mto--' and 
+  collection.products_count > 0
+%}
+  {% if template.suffix == 'mto--funding' %}
+    <div class="template-collection__mto template-collection__mto-funding">
+      <div class="template-collection__mto-text-container">
+        <p class="button template-collection__mto-content">
+          {% render 'icon-misc' with icon: 'funding' %}
+          {{ 'collections.mto.funding' | t }}
+        </p>
+      </div>
+      {% if cta_text != blank and cta_url != blank %}
+        <div class="template-collection__mto-button-container">
+          <a class="button button--secondary" href="{{ cta_url }}">
+            {{ cta_text }}
+          </a>
+        </div>
+      {% endif %}
+    </div>
+  {% elsif template.suffix == 'mto--expired' %}
+    <div class="template-collection__mto template-collection__mto-expired">
+      <div class="template-collection__mto-text-container">
+        <p class="button template-collection__mto-content">
+          {% render 'icon-misc' with icon: 'expired' %}
+          {{ 'collections.mto.expired' | t }}
+        </p>
+      </div>
+      <div class="bc-sf-filter-toolbar-count">
+        <span id="bc-sf-filter-total-product" class="body-2">{% render 'bc-sf-filter-skeleton', width: 1 %}</span>
+      </div>
+      {% if cta_text != blank and cta_url != blank %}
+        <div class="template-collection__mto-button-container">
+          <a class="button button--secondary" href="{{ cta_url }}">
+            {{ cta_text }}
+          </a>
+        </div>
+      {% endif %}
+    </div>
+  {% endif %}
+{% endif %}

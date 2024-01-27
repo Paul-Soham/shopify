@@ -1,0 +1,51 @@
+{%- comment -%}
+----------------------------------------------------------------------------
+  Snippet: Font face
+  - Set @font-face properties where we can access Liquid.
+----------------------------------------------------------------------------
+{%- endcomment -%}
+<style>
+@font-face {
+  font-family: 'Brown';
+  src:  url({{ 'Brown-Regular.woff2' | asset_url }}) format("woff2"),
+        url({{ 'Brown-Regular.woff' | asset_url }}) format("woff"),
+        url({{ 'Brown-Regular.eot?' | asset_url }}) format("embedded-opentype"),
+        url({{ 'Brown-Regular.ttf' | asset_url }}) format("truetype");
+  font-style: normal;
+  font-weight: 400;
+  unicode-range: U+000-5FF;
+}
+
+@font-face {
+  font-family: 'Brown';
+  src:  url({{ 'Brown-Bold.woff2' | asset_url }}) format("woff2"),
+        url({{ 'Brown-Bold.woff' | asset_url }}) format("woff"),
+        url({{ 'Brown-Bold.eot?' | asset_url }}) format("embedded-opentype"),
+        url({{ 'Brown-Bold.ttf' | asset_url }}) format("truetype");
+  font-style: normal;
+  font-weight: 700;
+  unicode-range: U+000-5FF;
+}    
+
+@font-face {
+  font-family: 'Brown';
+  src:  url({{ 'Brown-Light.woff2' | asset_url }}) format("woff2"),
+        url({{ 'Brown-Light.woff' | asset_url }}) format("woff"),
+        url({{ 'Brown-Light.eot?' | asset_url }}) format("embedded-opentype"),
+        url({{ 'Brown-Light.ttf' | asset_url }}) format("truetype");
+  font-style: normal;
+  font-weight: 300;
+  unicode-range: U+000-5FF;
+}
+
+@font-face {
+  font-family: 'Brown';
+  src:  url({{ 'Brown-Thin.woff2' | asset_url }}) format("woff2"),
+        url({{ 'Brown-Thin.woff' | asset_url }}) format("woff"),
+        url({{ 'Brown-Thin.eot?' | asset_url }}) format("embedded-opentype"),
+        url({{ 'Brown-Thin.ttf' | asset_url }}) format("truetype");
+  font-style: normal;
+  font-weight: 100;
+  unicode-range: U+000-5FF;
+}
+</style>

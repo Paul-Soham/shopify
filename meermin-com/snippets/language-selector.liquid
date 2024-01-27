@@ -1,0 +1,49 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Component: Language selector
+  - A dropdown selector allowing the user to see different languages on the
+  store.
+  - Requires coupled JS and CSS to function.
+------------------------------------------------------------------------------
+{% endcomment %}
+
+<div class="language-selector" js-language-selector="container">
+  <label
+    class="label language-selector__label visually-hidden"
+    for="LanguageSelector-{{ id }}"
+    js-language-selector="label"
+  >
+    {{ 'layout.currency_selector.label' | t }}
+  </label>
+
+  <select
+    id="LanguageSelector-{{ id }}"
+    class="language-selector__select"
+    name="language-selector"
+    style="background-image: url({{ 'icon-chevron-down.svg' | asset_url }});"
+    js-language-selector="selector"
+    js-weglot-language-selector="selector"
+  >
+    <option
+      js-language-selector="option"
+      data-id="eng"
+      value="en"
+    >
+      <span>ENG</span>
+    </option>
+    <option
+      js-currency-selector="option"
+      data-id="fr"
+      value="fr"
+    >
+      <span>FR</span>
+    </option>
+    <option
+      js-currency-selector="option"
+      data-id="es"
+      value="es"
+    >
+      <span>ES</span>
+    </option>
+  </select>
+</div>

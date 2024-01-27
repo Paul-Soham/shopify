@@ -1,0 +1,37 @@
+{% comment %}
+----------------------------------------------------------------------------
+  Snippet: Search hero
+  - Header shown on the search page.
+----------------------------------------------------------------------------
+{% endcomment %}
+
+<header
+  class="template-collection__hero template-search__header hero lazyload"
+  data-bgset="{% render 'responsive-bg-image', image: collection_featured_image %}"
+>
+  <div class="container">
+    <div class="row no-margin-bottom">
+      <div class="col xs12">
+        <div
+          class="hero__container"
+          {% if hero_text_color %}
+            style="color: {{ hero_text_color }}"
+          {% endif %}
+        >
+          <h1 class="
+            d2
+            {% comment %} bc-sf-search-result-header {% endcomment %}
+          ">
+            {{ 'general.search.heading.other' | t }}
+          </h1>
+
+          <form class="bc-sf-search-form" action="/search" method="get" role="search">
+            <input class="bc-sf-search-box template-search__hero-input body-2" type="search" name="q" value="{{ search.terms | escape }}">
+            <button type="submit" class="bc-sf-search-btn button button--primary button--outlined button--outlined-dark"><span>{{ 'general.search.submit' | t }}</span></button>
+          </form>
+          <p class="bc-sf-search-result-number body-1"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>

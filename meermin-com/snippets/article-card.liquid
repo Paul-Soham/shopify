@@ -1,0 +1,50 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Snippet: Article card
+------------------------------------------------------------------------------
+{% endcomment %}
+<div class="article-card card">
+  {% if article.image %}
+    <div class="article-card__thumbnail">
+      <a href="{{ article.url }}">
+        <div
+          class="
+            article-card__thumbnail-image
+            lazyload
+          "
+          data-bgset="{% render 'responsive-bg-image', image: article.image %}"
+        >
+        </div>
+      </a>
+    </div>
+  {% endif %}
+
+  <div class="article-card__body">
+    <div class="article-card__content">
+      <div class="body-2 article-card__meta">
+        <span>
+          {{ article.published_at | time_tag: format: 'day_month_year' }}
+        </span>
+      </div>
+
+      <h4 class="h3 article-card__title">
+        {{ article.title }}
+      </h4>
+
+      <p class="h4 article-card__description">
+        {% if article.excerpt.size > 0 %}
+          {{ article.excerpt | strip_html | truncate: 110 }}
+        {% else %}
+          {{ article.content | strip_html | truncate: 110 }}
+        {% endif %}
+      </p>
+
+      <a
+        class="button button--secondary button--secondary-brand"
+        href="{{ article.url }}"
+      >
+        {{ 'blogs.article.read_more' | t }}
+      </a>
+    </div>
+  </div>
+</div>

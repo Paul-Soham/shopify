@@ -1,0 +1,53 @@
+<section
+  class="blog-filters"
+  data-section-id="{{ section.id }}"
+  data-section-type="blog-filters"
+>
+  <div class="container">
+    <div
+      id="BlogFilters-{{ section.id }}"
+      class="blog-filters__carousel swiper-container"
+      js-carousel="container"
+      js-blog-filters="carousel"
+    >
+    <ul class="template-blog__categories swiper-wrapper">
+      <li 
+        class="template-blog__category-item swiper-slide{% if current_tags == nil %} tag-active{% endif %}"
+        js-carousel="cell"
+        js-blog-filters="slide"
+      >
+        <a href="{{ blog.url }}">All topics</a>
+      </li>
+      {% for tag in blog.all_tags %}
+        {% unless tag contains 'related_articles: ' 
+          or tag contains 'featured' 
+          or tag contains 'shogun' 
+        %}
+          {% if current_tags contains tag %}
+            <li 
+              class="template-blog__category-item swiper-slide tag-active"
+              js-carousel="cell"
+              js-blog-filters="slide"
+            >
+              {{ tag }}
+            </li>
+
+          {% else %}
+            {% if tag contains 'related-articles' %}
+              {% assign related_article_tag_size = related_article_tag_size | plus: 1 %}
+
+            {% else %}
+              <li 
+                class="template-blog__category-item swiper-slide"
+                js-carousel="cell"
+                js-blog-filters="slide"
+              >
+                {{ tag | link_to_tag: tag }}
+              </li>
+            {% endif %}
+          {% endif %}
+        {% endunless %}
+      {% endfor %}
+    </ul>
+  </div>
+</section>

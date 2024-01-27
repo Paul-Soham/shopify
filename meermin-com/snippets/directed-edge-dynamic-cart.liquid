@@ -1,0 +1,190 @@
+{% comment %}
+Do not edit this template. Any edits will be overwritten by our app.
+
+This IS NOT a public API.  Please do not make calls to these objects directly as
+they are subject to change at any time.
+{% endcomment %}
+
+<script type="text/javascript" id="directededge-dynamic-cart-script">
+
+DirectedEdgeDynamicCart = {
+    endpoints: ["/cart/change.js", "/cart/add.js", "/cart/update.js",
+                "/cart/clear.js" ]
+};
+  
+DirectedEdgeDynamicCart.ajax = function(method, url, params, success, error)
+{
+    var request;
+
+    if(window.XMLHttpRequest)
+    {
+        request = new XMLHttpRequest();
+    }
+    else if(window.ActiveXObject)
+    {
+        request = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    else
+    {
+        throw "Could not create AJAX request.";
+    }
+
+    request.open(method, url, true);
+    request.setRequestHeader("Accept", "application/json, text/javascript, */*");
+    request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    request.onreadystatechange = function (e) {
+        if(request.readyState == 4)
+        {
+            if(request.status == 200)
+            {
+                success(e.target.responseText);
+            }
+            else
+            {
+                if(error != undefined)
+                {
+                    error(e);
+                }
+            }
+        }
+    };
+
+    request.send(params);
+};
+
+DirectedEdgeDynamicCart.addAjaxHandler = function(handler)
+{
+    var ajaxProto;
+
+    if(window.XMLHttpRequest)
+    {
+        ajaxProto = XMLHttpRequest.prototype;
+    }
+    else if(window.ActiveXObject)
+    {
+        ajaxProto = ActiveXObject("Microsoft.XMLHTTP").prototype;
+    }
+
+    var openOriginial = ajaxProto.open;
+    ajaxProto.open = function() {
+        this.addEventListener("load", function(event) {
+            var url = event.srcElement._url;
+
+            if(event.srcElement.readyState == 4 &&
+               DirectedEdgeDynamicCart.matchesEndpoint(url, event.srcElement._method))
+            {
+                handler();
+            }
+        }, false);
+
+        return openOriginial.apply(this, arguments);
+    };
+
+    var fetchOriginal = window.fetch;
+    window.fetch = function() {
+        var url = arguments[0];
+        if(arguments.length < 2)
+        {
+            return fetchOriginal.apply(this, arguments);
+        }
+
+        var object = arguments[1];
+        if(DirectedEdgeDynamicCart.matchesEndpoint(url, object.method))
+        {
+            var fetchArgs = arguments;
+            return new Promise(function(resolve, reject) {
+                fetchOriginal.apply(this, fetchArgs).then(function(response) {
+                    handler();
+                    resolve(response);
+                }).catch(function(error) {
+                    reject(error);
+                });
+            });
+        }
+
+        return fetchOriginal.apply(this, arguments);
+    }
+};
+
+DirectedEdgeDynamicCart.getCartList = function(callback)
+{
+    DirectedEdgeDynamicCart.ajax("GET", "/cart.js", "", function(data) {
+        var productIds = [];
+        var cart = JSON.parse(data);
+        var count = cart.items.length;
+        for(var i = 0; i < count; i++)
+        {
+            productIds.push(cart.items[i].product_id);
+        }
+
+        if(callback != undefined)
+        {
+            callback(productIds.join(","), true, cart.token);
+        }
+    }, function(event) {
+        if(callback != undefined)
+        {
+            callback(null, false);
+        }
+    });
+}
+
+DirectedEdgeDynamicCart.submitCart = function(callback)
+{
+    DirectedEdgeDynamicCart.getCartList(function(list, success) {
+        if(success)
+        {
+            var request = "shop=" + Shopify.shop + "&cart=" + list;
+            DirectedEdgeDynamicCart.ajax("POST", "//shopify.directededge.com/basket/update", request,
+                                         function() {
+                                             if(callback != undefined)
+                                             {
+                                                 callback(true);
+                                             }
+                                         }, function() {
+                                             if(callback != undefined)
+                                             {
+                                                 callback(false);
+                                             }
+                                         });
+        }
+        else
+        {
+            if(callback != undefined)
+            {
+                callback(false);
+            }
+        }
+    });
+};
+
+DirectedEdgeDynamicCart.matchesEndpoint = function(url, method)
+{
+    for(var i = 0; i < DirectedEdgeDynamicCart.endpoints.length; i++)
+    {
+        var endpoint = DirectedEdgeDynamicCart.endpoints[i];
+        if(url.indexOf(endpoint) == 0)
+        {
+            if(method == "POST" || url.indexOf("&") != -1)
+            {
+                return true;
+            }
+        }
+    }
+
+    return false;
+};
+
+
+(function() {
+    {% if shop.metafields.directededge_email['top_products'] != blank %}
+    DirectedEdgeDynamicCart.addAjaxHandler(function() {
+        DirectedEdgeDynamicCart.submitCart();
+    });
+    {% if template == 'cart' %}
+    DirectedEdgeDynamicCart.submitCart();
+    {% endif %}
+    {% endif %}
+})();
+
+</script>

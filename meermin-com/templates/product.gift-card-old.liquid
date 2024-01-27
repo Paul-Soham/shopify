@@ -1,0 +1,129 @@
+{% comment %}
+----------------------------------------------------------------------------
+  Template: Product
+----------------------------------------------------------------------------
+{% endcomment %}
+
+{% assign size_guide_handle = '' %}
+{% assign style_number = '' %}
+{% assign mto = '' %}
+{% assign product_color = product.variants[0].option1 | downcase %}
+{% assign is_made_to_order = 'false' %}
+{% assign has_countdown = 'false' %}
+{% assign image_count = 0 %}
+{% assign single_image = false %}
+
+{% for tag in product.tags %}
+  {% if tag contains 'size-guide:' %}
+    {% assign size_guide_handle = tag | replace: ':', '-' %}
+  
+  {% elsif tag contains 'mto:' %}
+    {% assign mto = tag %}
+    {% assign is_made_to_order = tag | split: ':' | last %}
+  
+  {% elsif tag contains 'style-number:' %}
+      {% assign style_number = tag%}
+
+  {% elsif tag contains 'mto-end-date:' %}
+    {% assign has_countdown = 'true' %}
+    {% assign mto_end_date = tag | replace: 'mto-end-date:', '' %}
+
+  {% elsif tag contains 'mto-start-date' %}  
+    {% assign mto_start_date = tag | replace: 'mto-start-date:', '' %}
+  
+  {% elsif tag contains 'mto-ship-date:' %} 
+    {% assign mto_ship_date = tag | replace: 'mto-ship-date:', '' | replace: '-', ' '%}
+  {% endif %}
+{% endfor %}
+
+{% for image in product.images %}
+  {% unless image.src contains 'swatch' %}
+    {% assign image_count = image_count | plus: 1 %}
+  {% endunless %}
+{% endfor %}
+
+{% if image_count == 1 %}
+  {% assign single_image = true %}
+{% endif %}
+
+<div class="template-product__container" js-template-product="container">
+  <div class="container template-product__order-gallery-form">
+    {% if settings.enable_breadcrumbs %}
+      <div class="row">
+        <div class="template-product__header">
+          <div class="col xs12">
+            <div class="template-product__breadcrumb">
+              {% render 'breadcrumb' %}
+            </div>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+    <div class="row template-product__form-wrapper">
+      {% comment %}
+      ----------------------------------------------------------------------------
+        Product gallery
+      ----------------------------------------------------------------------------
+      {% endcomment %}
+      <div class="col xs12 m6 l8 template-product__gallery-wrapper">
+        <div class="template-product__gallery">
+          {% render 'product-gallery',
+            hide_thumbnail_nav: false,
+            single_image: single_image,
+          %}
+        </div>
+      </div>
+
+      {% comment %}
+      ----------------------------------------------------------------------------
+        Product form
+        - With accordion containing description.
+      ----------------------------------------------------------------------------
+      {% endcomment %}
+      <div class="col xs12 m6 l4 template-product__form-detail-wrapper">
+        <div class="template-product__aside">
+          <div class="template-product__aside-inner">
+            {% if is_made_to_order == 'true' %}
+              {% if has_countdown == 'true' %}
+                <p class="template-product__countdown"
+                  data-start-date="{{ mto_start_date }}"
+                  data-end-date="{{ mto_end_date }}"
+                  js-count-down="container">
+                </p>
+              {% endif %}  
+
+              <h6 class="template-product__badge">{{ 'products.product.made_to_order' | t }}</h6>
+            {% endif %}
+
+            {% render 'product-form-gift-card', 
+              mto: mto,
+              is_made_to_order: is_made_to_order,
+              style_number: style_number,
+              product_color: product_color
+            %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {% comment %}
+    ----------------------------------------------------------------------------
+      Product reviews
+    ----------------------------------------------------------------------------
+    {% endcomment %}
+    {% if settings.enable_product_reviews %}
+      <div class="row">
+        <div class="col xs12">
+          <div class="template-product__reviews">
+            {% render 'product-reviews' %}
+          </div>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+
+{% unless size_guide_handle == '' %}
+  {% render 'modal-size-guide' with size_guide_handle: size_guide_handle %}
+{% endunless %}
+
+{% render 'product-schema' %}

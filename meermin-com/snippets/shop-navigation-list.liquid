@@ -1,0 +1,49 @@
+<div class="shop-navigation__list">
+  {% for tier_1 in linklists[menu].links %} 
+    <ul class="shop-navigation__list-tier1 list-tier1-{{ forloop.index }}">
+      <li class="shop-navigation__list-tier-1-title h6">
+        {% if about_menu %}
+          <a href="{{ tier_1.url }}">{{tier_1.title}}</a>
+        {% else %}
+          {{tier_1.title}}
+        {% endif %}
+      </li>
+      {% for tier_2 in tier_1.links %} 
+        <li class="shop-navigation__list-tier-2-link">
+          <a href="{{tier_2.url}}">
+            {{ tier_2.title }}
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+  {% endfor %}
+
+  <ul class="shop-navigation__list-image-container">
+    {% if img_one %}
+      <li class="shop-navigation__list-image img-1">
+        <a href="{{img_one_url}}">
+          <img src="{{img_one | img_url: '530x', crop: 'center'}}" alt="{{img_one_text}}">
+          <span class="shop-navigation__list-image-text">{{ img_one_text | strip }}</span>
+        </a>
+      </li>
+    {% endif %}
+
+    {% if img_two %}
+      <li class="shop-navigation__list-image img-2">
+        <a href="{{img_two_url}}">
+          <img src="{{img_two | img_url: '530x', crop: 'center'}}" alt="{{img_two_text}}">
+          <span class="shop-navigation__list-image-text">{{ img_two_text | strip }}</span>
+        </a>
+      </li>
+    {% endif %}
+
+    {% if img_three %}
+      <li class="shop-navigation__list-image img-3">
+        <a href="{{img_three_url}}">
+          <img src="{{img_three | img_url: '530x', crop: 'center'}}" alt="{{img_three_text}}">
+          <span class="shop-navigation__list-image-text">{{ img_three_text | strip }}</span>
+        </a>
+      </li>
+    {% endif %}
+  </ul>
+</div>

@@ -1,0 +1,191 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Template: Cart
+
+  - Features:
+  -- Cart add-on is an optional product that is added to the user's cart.
+------------------------------------------------------------------------------
+{% endcomment %}
+{% if settings.enable_cart_addon and settings.cart_addon_product != '' %}
+  {% assign cart_has_add_on = false %}
+
+  {% for item in cart.items %}
+    {% assign product_type = item.product.type | handleize %}
+
+    {% if product_type == 'add-on'  %}
+      {% assign cart_has_add_on = true %}
+    {% endif %}
+  {% endfor %}
+{% endif %}
+
+<div class="template-cart__body">
+  <div class="template-cart__container" js-cart="container">
+    {% if cart.item_count > 0 %}
+      <form
+        action="/cart"
+        method="post"
+        novalidate
+        data-cy="cartForm"
+      >
+        <div class="container">
+          <div class="row template-cart__panel-wrap">
+            <div class="col xs12 l6 offset-l1 template-cart__line-items">
+              <div class="template-cart__panel">
+                <h1 class="template-cart__title h1">
+                  {{ 'cart.general.title' | t }}
+                </h1>
+
+                <div class="cart-table__header-desktop">
+                  <div class="cart-table__item-first">
+                    {{ 'cart.general.item' | t }}          
+                  </div>
+      
+                  <div class="cart-table__header-item-inner">
+                    <div class="cart-table__header-item--large">
+                      {{ 'cart.general.description' | t }}
+                    </div>
+                    <div class="cart-table__header-item item-size">
+                      {{ 'cart.general.size' | t }}
+                    </div>
+                    <div class="cart-table__header-item item-quantity">
+                      {{ 'cart.general.quantity' | t }}
+                    </div>
+                    <div class="cart-table__header-item item-right">
+                      {{ 'cart.general.price' | t }}
+                    </div>
+                  </div>
+                </div>
+      
+
+                {% render 'cart-table' %}
+
+                {% if settings.enable_free_shipping_notification %}
+                  {% render 'free-shipping-notification' with class: 'cart-table' %}
+                {% endif %}
+              </div>
+            </div>
+
+            <div class="col xs12 l4 template-cart__sidebar-wrap">
+              <div class="template-cart__panel totals-footer" js-cart="panel">
+                <div class="container">
+                  <div class="row">
+                    <div class="col xs12">
+                      <div class="cart-table__overview-footer">
+                        <div class="cart-table__total">
+                          <span class="h3">
+                            {{ 'cart.general.total' | t | append: ':' }}
+                          </span>
+
+                          <span
+                            class="h3"
+                            data-price="{{ cart.total_price }}"
+                            js-cart-table="total"
+                            js-currency="price"
+                          >
+                            {{ cart.total_price | money }}
+                          </span>
+                        </div>
+
+                        <div class="cart-table__checkout-button">
+                          <button
+                            class="button button--primary button--block"
+                            name="checkout"
+                            type="submit"
+                            data-cy="cartCheckout"
+                          >
+                            <span>{{ 'cart.general.checkout' | t }}</span>
+                          </button>
+                        </div>
+
+                        <div class="template-cart__sidebar-separator">
+                          <p class="separator-text">
+                            {{ 'cart.general.express_checkout' | t }}
+                          </p>
+                        </div>
+
+                        <div class="additional-checkout-buttons">
+                          {{ content_for_additional_checkout_buttons }}
+                        </div>
+
+                        <div class="cart-table__shipping-at-checkout">
+                          {{ 'cart.general.shipping_at_checkout' | t }}
+                        </div>
+
+                        <p class="cart-table__disclaimer caption text-center">
+                          {{ 'cart.general.currency_disclaimer' | t |
+                            replace: '%shop_currency%', cart.currency.iso_code
+                          }}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+
+    {% comment %}
+    ----------------------------------------------------------------------------
+      Empty cart
+    ----------------------------------------------------------------------------
+    {% endcomment %}
+    {% else %}
+      <div class="container">
+        <div class="row">
+          <div class="col xs12 m6 offset-m3 text-center">
+            <h1 class="template-cart__empty-title">
+              {{ 'cart.general.title' | t }}
+            </h1>
+
+            <p class="template-cart__empty-text">
+              {{ 'cart.general.empty' | t }}
+            </p>
+
+            <a
+              class="
+                template-cart__empty-button
+                button
+                button--primary
+                button--large
+              "
+              href="{{ routes.all_products_collection_url }}"
+            >
+              <span>{{ 'cart.general.continue_browsing' | t }}</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+
+  {% unless settings.store_code == 'SECONDS' %}
+    {% if cart.item_count > 0 %}
+      <div class="template-cart__recommendations-wrap container">
+        <div class="row">
+          <div class="col xs12">
+            {% section 'recommended-products' %}
+          </div>
+        </div>
+      </div>
+    {% endif %}
+  {% endunless %}
+
+  <div class="product-tags visually-hidden" js-ajax-cart="productTags">
+    {% for item in cart.items %}
+      <ul data-id="{{ item.product.id }}">
+        {% for tag in item.product.tags %}
+          <li>{{ tag }}</li>
+        {% endfor %}
+       </ul>
+    {% endfor %}
+  </div>
+</div>
+
+
+{% comment %}
+  cart-page-bottom model installed by Builder.io
+  You may modify this code at any time
+{% endcomment %}
+{% include 'model.cart-page-bottom.builder' %}

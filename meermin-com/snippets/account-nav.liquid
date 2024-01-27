@@ -1,0 +1,43 @@
+{% comment %}
+----------------------------------------------------------------------------
+  Snippet: Account nav
+  - Navigation displayed on account pages.
+----------------------------------------------------------------------------
+{% endcomment %}
+<ul class="template-account__navlist navlist">
+  {% assign has_active_link = false %}
+  {% assign template_is_order = false %}
+
+  {% if template.suffix contains 'order' or template.name contains 'order' %}
+    {% assign template_is_order = true %}
+  {% endif %}
+
+  {% for link in linklists['account'].links %}
+    {% assign modifier = '' %}
+
+    {% if link.title == 'Orders' and template_is_order %}
+      {% assign modifier = modifier | append: ' is-active' %}
+      {% assign has_active_link = true %}
+
+    {% elsif
+      link.current and
+      has_active_link == false and
+      template_is_order == false
+    %}
+      {% assign modifier = modifier | append: ' is-active' %}
+    {% endif %}
+
+    {% unless link.url == routes.account_logout_url %}
+      <li
+        class="
+          navlist__item
+          {{ modifier }}
+        "
+      >
+        <a class="navlist__link h4" href="{{ link.url }}">
+          {{ link.title }}
+        </a>
+      </li>
+    {% endunless %}
+  {% endfor %}
+</ul>

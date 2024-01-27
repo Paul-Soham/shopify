@@ -1,0 +1,132 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Section: Unique Selling Points -- Carousel
+------------------------------------------------------------------------------
+{% endcomment %}
+
+<section
+  class="homepage-usps--carousel custom-section"
+  data-section-id="{{ section.id }}"
+  data-section-type="homepage-usps--carousel"
+  style="background-color: #f4f1e8;"
+>
+  <div id="UspsCarousel-{{ section.id }}"
+      class="container"
+  >
+    <div class="row homepage-usps--carousel__icons-wrapper">
+        
+        {% if header_text_1 %}
+          <div
+            class="
+              homepage-usps--carousel__icon col xs3
+              active-icon-bg-color--dark-sand
+              active-icon-fill-color--white
+              active
+            "
+            js-usps-carousel="icon-indicator"
+            data-header-text="{{header_text_1}}"
+            data-content-text="{{content_text_1}}"
+            data-position="1"
+          >
+            {% render "icon-misc",
+              icon: icon_handle_1,
+              icon_class: 'icon large'
+              fill: '#000'
+            %}
+          </div>
+        {% endif %}
+
+        {% if header_text_2 %}
+          <div
+            class="
+              homepage-usps--carousel__icon col xs3
+              active-icon-bg-color--dark-sand
+              active-icon-fill-color--white
+            "
+            js-usps-carousel="icon-indicator"
+            data-header-text="{{header_text_2}}"
+            data-content-text="{{content_text_2}}"
+            data-position="2"
+          >
+            {% render "icon-misc",
+              icon: icon_handle_2,
+              icon_class: 'icon large'
+              fill: '#000'
+            %}
+          </div>
+        {% endif %}
+
+        {% if header_text_3 %}
+          <div
+            class="
+              homepage-usps--carousel__icon col xs3
+              active-icon-bg-color--dark-sand
+              active-icon-fill-color--white
+            "
+            js-usps-carousel="icon-indicator"
+            data-header-text="{{header_text_3}}"
+            data-content-text="{{content_text_3}}"
+            data-position="3"
+          >
+            {% render "icon-misc",
+              icon: icon_handle_3,
+              icon_class: 'icon large'
+              fill: '#000'
+            %}
+          </div>
+        {% endif %}
+
+        {% if header_text_4 %}
+          <div
+            class="
+              homepage-usps--carousel__icon col xs3
+              active-icon-bg-color--dark-sand
+              active-icon-fill-color--white
+            "
+            js-usps-carousel="icon-indicator"
+            data-header-text="{{header_text_4}}"
+            data-content-text="{{content_text_4}}"
+            data-position="4"
+          >
+            {% render "icon-misc",
+              icon: icon_handle_4,
+              icon_class: 'icon large'
+              fill: '#000'
+            %}
+          </div>
+        {% endif %}
+      
+    </div>
+    <div class="row homepage-usps--carousel__content-wrapper">
+      <div class="col offset-m3 m6 xs12">
+
+        <h2 js-usps-carousel="header-text"
+          style="color: #000;"
+        >
+          {{ initial_header_text }}
+        </h2>
+        <p class="body-1" js-usps-carousel="content-text"
+          style="color: #515151;"
+        >
+          {{ initial_content_text }}
+        </p>
+      </div>
+    </div>
+    {% if header_text_2 %}
+      <div class="homepage-usps--carousel__navigation container">
+        <div
+          class="homepage-usps--carousel__navigation-button prev"
+          js-usps-carousel="prev"
+        >
+          {% render 'icon-direction' with icon: 'chevron-left' %}
+        </div>
+        <div
+          class="homepage-usps--carousel__navigation-button next"
+          js-usps-carousel="next"
+        >
+          {% render 'icon-direction' with icon: 'chevron-right' %}
+        </div>
+      </div>
+    {% endif %}
+  </div>
+</section>

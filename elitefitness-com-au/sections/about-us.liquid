@@ -1,0 +1,59 @@
+<section class="section section--text-centered hello aboutUs-bg" style="background: url({{ section.settings.about_background_image | img_url:'master' }});">
+  <div class="overlay">
+    <div class="container container--narrow">
+      <h2 class="heading h1">{{ section.settings.about_title | escape }}</h2>
+      <div class="rte">
+        <p>{{ section.settings.about_content | escape }}</p>
+        <a href="{{ section.settings.about_button_link }}" class="button button--primary">{{ section.settings.about_button_text | escape }}</a>
+      </div>
+    </div>
+  </div>
+</section>
+{% schema %}
+  {
+    "name": "About Us",
+    "settings": [
+        {
+        "type": "text",
+        "id": "about_title",
+        "label": "Heading",
+        "default": "Your title"
+      },
+        {
+        "type": "image_picker",
+        "id": "about_background_image",
+        "label": "Background Image",
+        "info": "Please add rectungular image"
+      },
+      {
+      "type": "textarea",
+      "id": "about_content",
+      "label": "Textarea"
+    },
+      {
+      "type": "text",
+      "id": "about_button_text",
+      "label": "Button text",
+      "default": "Our products"
+    },
+      {
+      "type": "url",
+      "id": "about_button_link",
+      "label": "Button link",
+      "default": "/collections/all"
+    }
+    ],
+    "presets": [
+      {
+        "category": "About Us",
+        "name": "About Us"
+      }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

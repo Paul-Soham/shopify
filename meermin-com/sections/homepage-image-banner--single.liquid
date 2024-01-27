@@ -1,0 +1,127 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Section: Image Banner -- Single
+------------------------------------------------------------------------------
+{% endcomment %}
+{% assign header_text = section.settings.header_text %}
+{% assign content_text = section.settings.content_text %}
+{% assign image_desktop = section.settings.image_desktop %}
+{% assign image_mobile = section.settings.image_mobile %}
+{% assign cta_text = section.settings.cta_text %}
+{% assign cta_url = section.settings.cta_url %}
+
+{% capture text_position_classes %}
+  {% if section.settings.text_position == 'left' %}
+    l5 offset-l1
+  {% else %}
+    l5 offset-l6
+  {% endif %}
+{% endcapture %}
+
+<section
+  class="homepage-image-banner--single"
+  data-section-id="{{ section.id }}"
+  data-section-type="homepage-image-banner--single"
+>
+  <div class="homepage-image-banner--single__image-wrapper col xs12">
+    {% render 'art-direction-image' with
+      alt: content_text.alt,
+      large_image: image_desktop,
+      small_image: image_mobile,
+    %}
+  </div>
+  <div class="container row no-gutter">
+    <div class="homepage-image-banner--single__text-wrapper col xs12 {{ text_position_classes | strip }}">
+      {% unless header_text == blank %}
+      <h3 class="d3">
+        {{ header_text }}
+      </h3>
+      {% endunless %}
+      {% unless content_text == blank %}
+      <div class="homepage-image-banner--single__content-text rte">
+        {{ content_text }}
+      </div>
+        {% unless cta_text == blank or cta_url == blank %}
+          <a
+            class="homepage-image-banner--single__button button button--secondary"
+            href="{{ cta_url }}" tabindex="0"
+          >
+            {{ cta_text }}
+          </a>
+        {% endunless %}
+      {% endunless %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+  {
+    "name": "Image Banner -- Single",
+    "class": "index-section",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Settings"
+      },
+      {
+        "type": "select",
+        "id": "text_position",
+        "label": "Text Position",
+        "options": [
+          {
+            "value": "left",
+            "label": "Left"
+          },
+          {
+            "value": "right",
+            "label": "Right"
+          }
+        ],
+        "default": "left"
+      },
+      {
+        "type": "image_picker",
+        "id": "image_desktop",
+        "label": "Image - Desktop",
+        "info": "Upload a 1328px x 740px image - *required"
+      },
+      {
+        "type": "image_picker",
+        "id": "image_mobile",
+        "label": "Image - mobile",
+        "info": "Upload a 720px x 520px image - *required"
+      },
+      {
+        "type": "text",
+        "id": "header_text",
+        "label": "Header Text",
+        "info": "*required"
+      },
+      {
+        "type": "html",
+        "id": "content_text",
+        "label": "Content Text",
+        "info": "*required"
+      },
+      {
+        "type": "text",
+        "id": "cta_text",
+        "label": "CTA Text",
+        "default": "Discover Collection",
+        "info": "Leave Blank to omit CTA"
+      },
+      {
+        "type": "url",
+        "id": "cta_url",
+        "label": "CTA URL",
+        "info": "Leave Blank to omit CTA"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Image Banner -- Single",
+        "category": "Image Banners"
+      }
+    ]
+  }
+{% endschema %}

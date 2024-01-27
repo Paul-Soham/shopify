@@ -1,0 +1,26 @@
+{% comment %}
+------------------------------------------------------------------------------------
+  Snippet: Full width image with text
+  - Code referenced from "Product highlight 3" section and shown on the custom page.
+------------------------------------------------------------------------------------
+{% endcomment %}
+
+<div class="template-product__highlight-3-container custom-section custom-section--large">
+  <div class="template-product__image-3-container">
+    <img src="{{ full_width_image | img_url: '1800x' }}" alt="">
+  </div>
+  <div class="template-product__highlight-container">
+    <div class="container">
+      <div class="row">
+        <div class="template-product__highlight col xs12 m5 l5">
+          <h5 class="template-product__highlight-title h1">
+            {{ full_width_image_title }}
+          </h5>
+          <p class="template-product__highlight-text">
+            {{ full_width_image_desc }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

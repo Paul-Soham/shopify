@@ -1,0 +1,100 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Snippet: Custom collection hero.
+  - Collection hero template added from theme settings.
+
+  - Accepts:
+  -- block: {Object} Block object.
+
+  - Usage:
+  -- In your liquid template file, copy the following line:
+  {% render 'collection-hero-custom' with
+    block: block
+  %}
+------------------------------------------------------------------------------
+{% endcomment %}
+
+<style>
+  #template-collection__hero-{{block.id}} {
+    background-color: {{ block.settings.background_color }};
+  }
+
+  #template-collection__hero-{{block.id}} .hero__container {
+    color: {{ block.settings.text_color }};
+  }
+
+  #template-collection__hero-{{block.id}} .hero__cta .button {
+    color: {{ block.settings.cta_color }};
+  }
+
+  #template-collection__hero-{{block.id}} .hero__cta .icon {
+    fill: {{ block.settings.cta_color }};
+  }
+
+  #template-collection__hero-{{block.id}} .hero__title::before {
+    background-color: {{ block.settings.text_color }};
+  }
+</style>
+
+<header
+  id="template-collection__hero-{{block.id}}"
+  class="template-collection__hero hero {% if collection.description %}has-description{% endif %}"
+>
+  {% if block.settings.enable_banner_image %}
+    <div class="hero__image">
+      {% render 'art-direction-image' with
+        alt: block.settings.alt_text
+        large_image: block.settings.desktop_image,
+        small_image: block.settings.mobile_image,
+      %}
+    </div>
+  {% endif %}
+  <div class="container">
+    <div class="row no-margin-bottom">
+      <div class="col xs12">
+        <div
+          class="hero__container"
+          {% if hero_text_color %}
+            style="color: {{ hero_text_color }}"
+          {% endif %}
+        >
+          <h1 class="hero__title d2">
+            {% if block.settings.header != blank %}
+              {{ block.settings.header }}
+            {% else %}
+              {{ collection.title }}
+            {% endif %}
+          </h1>
+
+          <div class="hero__description">
+            <p>
+              {% if block.settings.sub_header != blank %}
+                {{ block.settings.sub_header }}
+              {% else %}
+                {% if collection.description != blank %}
+                  {{ collection.description }}
+                {% endif %}
+              {% endif %}
+            </p>
+          </div>
+          {% if block.settings.cta_url != blank and block.settings.cta_text != blank %}
+            <div class="hero__cta">
+              <a
+                class="
+                button
+                button--secondary
+                button--secondary-no--arrow
+                "
+                href="{{ block.settings.cta_url }}"
+                js-hero-banner="link"
+              >
+                {{ block.settings.cta_text }}
+                {% render 'icon-direction' with icon: 'arrow-right' %}
+              </a>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</header>

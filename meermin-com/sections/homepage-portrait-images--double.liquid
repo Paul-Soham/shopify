@@ -1,0 +1,144 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Section: Portrait Images -- Double
+------------------------------------------------------------------------------
+{% endcomment %}
+
+{% assign background_color = section.settings.background_color %}
+
+<section
+  class="homepage-portrait-images--double"
+  data-section-id="{{ section.id }}"
+  data-section-type="homepage-portrait-images--double"
+  style="background-color: {{ section.settings.background_color }};"
+>
+  <div class="
+    container row no-gutter homepage-portrait-images--double__container
+  ">
+    {% for block in section.blocks %}
+      {% if block.settings.image != blank %}
+        <div class="
+          homepage-portrait-images--double__block-wrapper
+          col
+          offset-m1
+          m4
+          xs12
+          {% if forloop.last %}
+            second pull-m1
+          {% else %}
+            first
+          {% endif %}
+        ">
+          {% unless block.settings.cta_text == blank or block.settings.cta_url == blank %}
+            <a
+              class="homepage-portrait-images--double__button"
+              href="{{ block.settings.cta_url }}" tabindex="0"
+            >
+          {% endunless %}
+            {% render 'responsive-card-image' with
+              image: block.settings.image,
+              image_class: 'homepage-portrait-images--double__portrait',
+              wrapper_class: 'homepage-portrait-images--double__portrait-wrapper'
+            %}
+            {% unless block.settings.subheader_text == blank %}
+              <p class="h6 homepage-portrait-images--double__subheader">
+                {{ block.settings.subheader_text }}
+              </p>
+            {% endunless %}
+            {% unless block.settings.header_text == blank %}
+              <p class="h2 homepage-portrait-images--double__header">
+                {{ block.settings.header_text }}
+              </p>
+            {% endunless %}
+            {% unless block.settings.cta_text == blank or block.settings.cta_url == blank %}
+                <span
+                  class="button button--secondary"
+                  >
+                  {{ block.settings.cta_text }}
+                </span>
+              </a>
+          {% endunless %}
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+</section>
+
+{% schema %}
+  {
+    "name": "Portrait Images -- Double",
+    "class": "index-section",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Settings"
+      },
+      {
+        "type": "select",
+        "id": "background_color",
+        "label": "Background Color",
+        "default": "#f5f5f5",
+        "options": [
+          {
+            "value": "#f5f5f5",
+            "label": "Light Grey"
+          },
+          {
+            "value": "#f4f1e8",
+            "label": "Sand"
+          },
+          {
+            "value": "#fff",
+            "label": "White"
+          }
+        ]
+      }
+    ],
+    "max_blocks": 2,
+    "blocks": [
+      {
+        "type": "portrait-image",
+        "name": "Portrait w/ CTA",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image",
+            "info": "Upload a 464px x 618px image ~ 3:4 aspect ratio. *required"
+          },
+          {
+            "type": "text",
+            "id": "header_text",
+            "label": "Header Text",
+            "info": "*required"
+          },
+          {
+            "type": "text",
+            "id": "subheader_text",
+            "label": "Subheader Text",
+            "info": "*required"
+          },
+          {
+            "type": "text",
+            "id": "cta_text",
+            "label": "CTA Text",
+            "default": "Read More",
+            "info": "Leave Blank to omit CTA"
+          },
+          {
+            "type": "url",
+            "id": "cta_url",
+            "label": "CTA URL",
+            "info": "Leave Blank to omit CTA"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Portrait Images -- Double",
+        "category": "Images"
+      }
+    ]
+  }
+{% endschema %}

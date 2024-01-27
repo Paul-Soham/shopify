@@ -1,0 +1,50 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Section: Size Chart
+  - A custom section to allow custom urls for size chart link on PDP.
+------------------------------------------------------------------------------
+{% endcomment %}
+
+<section
+  class="size-chart"
+  data-section-id="{{ section.id }}"
+  data-section-type="size-chart"
+>
+  {% if section.settings.custom_url_enabled %}
+    {% unless section.settings.custom_url == blank %}
+      <a href="{{ section.settings.custom_url }}" class="template-product__size-chart">
+        {{ 'products.product.size_chart' | t }}
+      </a>
+    {% endunless %}
+
+  {% else %}
+    <a href="javascript:void(0)" class="template-product__size-chart" js-template-product="sizeGuide">
+      {{ 'products.product.size_chart' | t }}
+    </a>
+  {% endif %}
+</section>
+
+{% schema %}
+  {
+    "name": "Size Chart",
+    "class": "pdp-section",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Size Chart Link"
+      },
+      {
+        "type": "checkbox",
+        "id": "custom_url_enabled",
+        "label": "Enable custom url",
+        "default": false,
+        "info": "Check this box if you would like a custom link for the size chart."
+      },
+      {
+        "type": "url",
+        "id": "custom_url",
+        "label": "Custom url for size chart"
+      }
+    ]
+  }
+{% endschema %}

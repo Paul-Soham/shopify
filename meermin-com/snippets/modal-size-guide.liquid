@@ -1,0 +1,48 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Snippet: Size Guide
+  - Modal to display size guide on product pages.
+------------------------------------------------------------------------------
+{% endcomment %}
+<div
+  id="size-guide"
+  class="modal modal--light size-guide"
+  role="dialog"
+  tabindex="-1"
+  js-size-guide="container"
+>
+  <div
+    class="modal__overlay"
+    tabindex="-1"
+    data-micromodal-close
+    js-size-guide="overlay"
+  >
+  </div>
+
+  <div class="modal__card">
+    <div class="modal__header modal-size-guide__header">
+      <h3 class="modal-size-guide__title"> {{pages[size_guide_handle].title}} </h3>
+
+      <button
+        class="button modal-size-guide__close"
+        js-size-guide="closeModal"
+      >
+        <span class="visually-hidden">
+          {{ 'general.accessibility.close' | t }}
+        </span>
+
+        {% render 'icon-misc' with icon: 'close' %}
+      </button>
+    </div>
+
+    <div class="modal__body modal-size-guide__body">
+      <div class="container">
+        <div class="row">
+          <div class="col xs12">
+            {{pages[size_guide_handle].content}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

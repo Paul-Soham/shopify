@@ -1,0 +1,31 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Snippet: Related Articles
+  - This component for 2 columns related articles items.
+------------------------------------------------------------------------------
+{% endcomment %}
+<div
+  id="RelatedArticles-{{ section.id }}"
+  class="related-articles section border-top"
+>
+  <div class="container">
+    <div class="section__header">
+      <h2 class="section__title">
+        {{ 'blogs.article.related_articles_title' | t }}
+      </h2>
+    </div>
+
+    <div class="related-articles__article">
+      {% for tag in article.tags %}
+        {% assign sanitized_tag = tag | downcase %}
+
+        {% if sanitized_tag contains 'related-articles: ' %}
+          {% assign blog_post_handle = tag | split: ': ' | last %}
+          {% assign article = articles[blog_post_handle] %}
+
+          {% render 'article-card' with article: article %}
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</div>

@@ -1,0 +1,55 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Component: Currency selector
+  - A dropdown selector allowing the user to see different prices on the
+  store to the selected currency.
+  - Requires coupled JS and CSS to function.
+  - Currencies defined in theme settings.
+------------------------------------------------------------------------------
+{% endcomment %}
+{% unless id %}
+  {% assign id = 1 %}
+{% endunless %}
+
+{% assign settings_store_code = settings.store_code | downcase %}
+
+{% if settings_store_code == 'seconds' %}
+  {% if cart.currency.iso_code == 'USD' %}
+    {% assign settings_store_code = 'us' %}
+  {% else %}
+    {% assign settings_store_code = 'eu' %}
+  {% endif %}
+{% endif %}
+
+<div class="currency-selector" js-currency-selector="container">
+  <span class="currency-selector__flag-icon flag-icon flag-icon-{{ settings_store_code }}">
+  </span>
+
+  {% form 'currency' %}
+    <label
+      class="label currency-selector__label visually-hidden"
+      for="CurrencySelector-{{ id }}"
+      js-currency-selector="label"
+    >
+      {{ 'layout.currency_selector.label' | t }}
+    </label>
+
+    <select
+      id="CurrencySelector-{{ id }}"
+      class="currency-selector__select"
+      name="currency"
+      js-currency-selector="selector"
+    >
+      {% for currency in shop.enabled_currencies %}
+        <option
+          value="{{ currency.iso_code }}"
+          {% if currency.iso_code == cart.currency.iso_code %}
+            selected
+          {% endif %}
+        >
+          {{ cart.currency.iso_code }} ({{ cart.currency.symbol }})
+        </option>
+      {% endfor %}
+    </select>
+  {% endform %}
+</div>

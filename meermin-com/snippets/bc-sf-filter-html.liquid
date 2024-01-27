@@ -1,0 +1,135 @@
+{%- capture bc_layout -%}
+{%- comment -%}Check if made to order collection template{%- endcomment -%}
+{% assign is_funding_template = false %}
+{% if template.suffix == 'mto--funding' %}
+  {% assign is_funding_template = true %}
+{% endif %}
+
+{%- case layout -%}
+
+{%- when 'productGridItemHtml' -%}
+<div
+    class="bc-sf-filter-product-item testt bc-sf-filter-product-item-grid [[gridWidthClass]][[soldOutClass]][[saleClass]] [[itemActiveSwapClass]]"
+    js-promo-banner="productCard"
+>
+    <script class="bc-sf-filter-product-script" data-id="bc-product-json-[[itemId]]" type="application/json">[[itemJson]]</script> 
+    <div class="bc-sf-filter-product-item-inner"> 
+        <div class="bc-sf-filter-product-item-image"> 
+            <a href="[[itemUrl]]" class="bc-sf-filter-product-item-image-link">[[itemImages]]</a> 
+        </div> 
+        <div class="bc-sf-filter-product-item-label">[[itemLabels]][[itemTagLabels]]</div>
+
+        {% if is_funding_template %}
+          <div
+            class="template-collection__mto-countdown text-center"
+            data-start-date="[[itemStartDateTag]]"
+            data-end-date="[[itemEndDateTag]]"
+            data-timezone="{{ shop.metafields.location.timezone }}"
+            js-count-down="container"
+          >
+          </div>
+        {% endif %}
+
+        <div class="{{ template }} bc-sf-filter-product-bottom text-center"> 
+            <a href="[[itemUrl]]" class="bc-sf-filter-product-item-title h6">[[itemTitle]]</a> 
+            [[itemVendor]] 
+            [[itemPrice]] 
+        </div> 
+    </div> 
+</div>
+
+  
+{%- when 'productListItemHtml' -%}
+<div
+    class="bc-sf-filter-product-item bc-sf-filter-product-item-list [[soldOutClass]][[saleClass]] [[itemActiveSwapClass]]"
+    js-promo-banner="productCard"
+> 
+    <div class="bc-sf-filter-product-item-list-col-1"> 
+        <div class="bc-sf-filter-product-item-image"> 
+            <div class="bc-sf-filter-product-item-label">[[itemLabels]][[itemTagLabels]]</div> 
+            <a href="[[itemUrl]]" class="bc-sf-filter-product-item-image-link">[[itemImages]]</a> 
+        </div> 
+    </div>
+
+    {% if is_funding_template %}
+        <div
+          class="template-collection__mto-countdown text-center"
+          data-end-date="[[itemDateTag]]"
+          data-timezone="{{ shop.metafields.location.timezone }}"
+          js-count-down="container"
+        >
+        </div>
+    {% endif %}
+
+    <div class="bc-sf-filter-product-bottom text-center"> 
+        <div class="bc-sf-filter-product-item-list-col-2"> 
+            <a href="[[itemUrl]]" class="bc-sf-filter-product-item-title h6">[[itemTitle]]</a> 
+            [[itemVendor]] 
+            <p class="bc-sf-filter-des">[[itemDescription]]</p> 
+        </div> 
+        <div class="bc-sf-filter-product-item-list-col-3">[[itemPrice]]</div> 
+    </div>
+</div>
+
+{%- when 'soldOutLabelHtml' -%}
+<span class="soldout bc-sf-filter-label"> {{ section.settings.soldout_label }} </span>
+
+{%- when 'saleLabelHtml' -%}
+<span class="sale bc-sf-filter-label"> {{ section.settings.sale_label }} </span>
+
+{%- when 'tagLabelHtml' -%}
+<span class="tag bc-sf-filter-label [[labelTag]]" >[[labelTag]]</span>
+
+{%- when 'vendorHtml' -%}
+<p class="bc-sf-filter-product-item-vendor">[[itemVendorLabel]]</p>
+
+{%- when 'previousActiveHtml' -%}
+<li><a class="body-1" href="[[itemUrl]]" aria-label="{{ 'collections.pagination.previous' | t }}">{% render 'icon-direction' with icon: 'arrow-left' %}</a></li>
+
+{%- when 'previousDisabledHtml' -%}
+<li class="disabled body-1"><span>{% render 'icon-direction' with icon: 'arrow-left' %}</span></li>
+
+{%- when 'nextActiveHtml' -%}
+<li><a class="body-1" href="[[itemUrl]]" aria-label="{{ 'collections.pagination.next' | t }}">{% render 'icon-direction' with icon: 'arrow-right' %}</a></li>
+
+{%- when 'pageCountHtml' -%}
+<li><span class="body-1">{{ 'collections.pagination.current_page' | t }}</span></li>
+
+{%- when 'nextDisabledHtml' -%}
+<li class="disabled body-1"><span>{% render 'icon-direction' with icon: 'arrow-right' %}</span></li>
+
+{%- when 'pageItemHtml' -%}
+<li><a class="body-1" href="[[itemUrl]]">[[itemTitle]]</a></li>
+
+{%- when 'pageItemSelectedHtml' -%}
+<li><span class="active body-1">[[itemTitle]]</span></li>
+
+{% when 'pageItemRemainHtml' %}
+<li><span>[[itemTitle]]</span></li>
+
+{%- when 'paginateHtml' -%}
+<ul>[[previous]][[pageItems]][[next]]</ul>
+
+{%- when 'sortingHtml' -%}
+<label><span><span class="body-2"> {% assign temp = 'collections.sorting.title' | t  %} {% unless temp contains 'translation missing'  %} {{ temp }} {% else %} Sorting {% endunless %}, </span></span></label><ul class="bc-sf-filter-filter-dropdown">[[sortingItems]]</ul>
+
+{%- when 'showLimitHtml' -%}
+<label> Show </label><select class="bc-sf-filter-filter-dropdown">[[showLimitItems]]</select>
+
+{%- when 'breadcrumbHtml' -%}
+<a href="/"> Home </a> [[breadcrumbDivider]] [[breadcrumbItems]]
+
+{%- when 'breadcrumbDivider' -%}
+<span class="divider">/</span>
+
+{%- when 'breadcrumbItemLink' -%}
+<a href="[[itemLink]]">[[itemTitle]]</a>
+
+{%- when 'breadcrumbItemSelected' -%}
+<span>[[itemTitle]]</span>
+
+{%- endcase -%}
+{%- endcapture -%}
+
+{%- assign str = '}}' -%}
+{{- bc_layout | json | replace: '[[', '{{' | replace: ']]', str -}}

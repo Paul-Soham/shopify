@@ -1,0 +1,24 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Snippet: Store selector
+  - Options are rendered from `Frame.MultiStore` options.
+  - Redirect options are defined in Redirect Modal section settings.
+------------------------------------------------------------------------------
+{% endcomment %}
+<div class="store-selector" js-store-selector="container">
+  <label
+    class="label store-selector__label visually-hidden"
+    for="StoreSelector-{{ id }}"
+  >
+    {{ 'layout.store_settings.change_store' | t }}
+  </label>
+
+  <select
+    id="StoreSelector-{{ id }}"
+    class="store-selector__select"
+    name="store-selector"
+    style="background-image: url({{ 'icon-caret-down.svg' | asset_url }});"
+    js-store-selector="selector"
+  >
+  </select>
+</div>

@@ -1,0 +1,80 @@
+{% comment %}
+----------------------------------------------------------------------------
+  Snippet: Search bar
+  - Used in header and on search page.
+----------------------------------------------------------------------------
+{% endcomment %}
+{% assign namespace = '' %}
+
+{% if id %}
+  {% assign namespace = id | prepend: '-' %}
+{% endif %}
+<div
+  id="searchBarHeader"
+  class="site-header__search critical-hide"
+  data-section-id="{{ section.id }}"
+  data-section-type="predictive-search"
+  js-site-header="searchBar"
+  js-search-bar-active="false"
+>
+  <div class="search-bar {{ state }}">
+    <div class="search-bar__input-wrapper">
+      <div class="col xs12">
+        <form
+          class="search-bar__form"
+          action="/search"
+          autocomplete="off"
+          method="get"
+          role="search"
+          js-predictive-search="form"
+          js-search="form"
+        >
+          <div class="search-bar__container">
+            <div class="search-bar__field">
+              <label
+                class="visually-hidden"
+                for="Search{{ namespace }}"
+              >
+                {{ 'general.search.title' | t }}
+              </label>
+
+              <input
+                id="Search{{ namespace }}"
+                class="search-bar__input"
+                name="q"
+                placeholder="{{ 'general.search.placeholder' | t }}"
+                type="search"
+                js-predictive-search="input"
+                js-site-header="input"
+              >
+
+              <button type="submit" class="button search-bar__submit">
+                <span class="icon-fallback-text">
+                  {{ 'general.search.submit' | t }}
+                </span>
+
+                {% render 'icon-misc' with icon: 'search' %}
+              </button>
+
+              <button
+                class="search-bar__close"
+                tabindex="0"
+                type="submit"
+                data-target="searchBarHeader"
+                js-toggle="searchBarHeader"
+              >
+                <span class="icon-fallback-text">{{ 'general.search.submit' | t }}</span>
+                {% render 'icon-misc' with icon: 'close' %}
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="row search-bar__inner">
+      <div class="col xs12">
+        <div js-predictive-search="suggestions"></div>
+      </div>
+    </div>
+  </div>
+</div>

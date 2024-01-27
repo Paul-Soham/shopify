@@ -1,0 +1,117 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Section: Image Banner -- Double
+------------------------------------------------------------------------------
+{% endcomment %}
+
+{% assign featured_image =  section.settings.featured_image %}
+{% assign secondary_image =  section.settings.secondary_image %}
+{% assign header_text = section.settings.header_text %}
+{% assign content_text = section.settings.content_text %}
+{% assign cta_text = section.settings.cta_text %}
+{% assign cta_url = section.settings.cta_url %}
+
+{% assign layout_orientation = section.settings.layout_orientation %}
+{% if layout_orientation == 'featured-image-right' %}
+  {% assign layout_orientation = 'right' %}
+{% else %}
+  {% assign layout_orientation = '' %}
+{% endif %}
+
+<section
+  class="homepage-image-banner--double"
+  data-section-id="{{ section.id }}"
+  data-section-type="homepage-image-banner--double"
+>
+  <div class="homepage-image-banner--double__container">
+    <div
+      class="homepage-image-banner--double__featured-image__wrapper {{ layout_orientation | strip }}"
+    >
+      <div class="homepage-image-banner--double__header-text--mobile d2">
+        {{ header_text }}
+      </div>
+      {% render 'responsive-card-image' with
+        image: featured_image,
+        image_class: 'homepage-image-banner--double__image featured',
+        wrapper_class: 'homepage-image-banner--double__image-wrapper featured'
+      %}
+      <div class="homepage-image-banner--double__content__wrapper">
+        {{ content_text }}
+        {% unless cta_text == blank or cta_url == blank %}
+          <a
+            class="homepage-image-banner--double__button button button--secondary"
+            href="{{ cta_url }}" tabindex="0"
+          >
+            {{ cta_text }}
+          </a>
+        {% endunless %}
+      </div>
+    </div>
+    <div class="homepage-image-banner--double__secondary-image__wrapper">
+      <div class="homepage-image-banner--double__header-text d2">
+        {{ header_text }}
+      </div>
+      {% render 'responsive-card-image' with
+        image: secondary_image,
+        image_class: 'homepage-image-banner--double__image secondary',
+        wrapper_class: 'homepage-image-banner--double__image-wrapper secondary'
+      %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+  {
+    "name": "Image Banner -- Double",
+    "class": "index-section",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Settings"
+      },
+      {
+        "type": "image_picker",
+        "id": "featured_image",
+        "label": "Image - Featured",
+        "info": "Upload a 936px x 736px image - *required"
+      },
+      {
+        "type": "image_picker",
+        "id": "secondary_image",
+        "label": "Image - Secondary",
+        "info": "Upload a 392px x 504px image - *required"
+      },
+      {
+        "type": "text",
+        "id": "header_text",
+        "label": "Header Text",
+        "info": "*required"
+      },
+      {
+        "type": "html",
+        "id": "content_text",
+        "label": "Content Text",
+        "info": "*required"
+      },
+      {
+        "type": "text",
+        "id": "cta_text",
+        "label": "CTA Text",
+        "default": "Discover Collection",
+        "info": "Leave Blank to omit CTA"
+      },
+      {
+        "type": "url",
+        "id": "cta_url",
+        "label": "CTA URL",
+        "info": "Leave Blank to omit CTA"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Image Banner -- Double",
+        "category": "Image Banners"
+      }
+    ]
+  }
+{% endschema %}

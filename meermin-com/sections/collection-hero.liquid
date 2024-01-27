@@ -1,0 +1,154 @@
+{% comment %}
+----------------------------------------------------------------------------
+  Snippet: Collection hero
+  - Header shown on the collection page.
+----------------------------------------------------------------------------
+{% endcomment %}
+
+{% assign has_custom_hero = false %}
+
+{% for block in section.blocks %}
+  {% if block.settings.collection_handle == collection.handle %}
+    {% assign has_custom_hero = true %}
+    {% assign block_obj = block %}
+    {% break %}
+  {% endif %}
+{% endfor %}
+
+{% if has_custom_hero %}
+  {% render 'collection-hero-custom' with
+    block: block_obj
+  %}
+{% else %}
+  {% render 'collection-hero-default' with
+    collection: collection
+  %}
+{% endif %}
+
+{% schema %}
+  {
+    "name": "Collection Hero Banners",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Hero Banners"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "image",
+        "name": "Hero Banner",
+        "settings": [
+          {
+            "type": "header",
+            "content": "Collection"
+          },
+          {
+            "type": "collection",
+            "id": "collection_handle",
+            "label": "Collection",
+            "info": "Use this field to map this block to the collection page on which you would to display the content."
+          },
+          {
+            "type": "header",
+            "content": "Images"
+          },
+          {
+            "type": "checkbox",
+            "id": "enable_banner_image",
+            "label": "Enable Banner Image",
+            "default": true
+          },
+          {
+            "type": "image_picker",
+            "id": "desktop_image",
+            "label": "Desktop Image",
+            "info": "Recommended min dimensions: 2400x640px (.jpg) - Aspect Ratio => 3.75:1"
+          },
+          {
+            "type": "image_picker",
+            "id": "mobile_image",
+            "label": "Mobile image",
+            "info": "Recommended min dimensions: 720x810px (.jpg) - Aspect Ratio => 1:1.25"
+          },
+          {
+            "type": "radio",
+            "id": "background_color",
+            "label": "Background Color",
+            "default": "#f4f1e8",
+            "info": "Background color for hero banner area if image is NOT enabled",
+            "options": [
+              {
+                "value": "#f4f1e8",
+                "label": "Sand"
+              },
+              {
+                "value": "#000",
+                "label": "Black"
+              },
+              {
+                "value": "#7f551c",
+                "label": "Dark Sand"
+              },
+              {
+                "value": "#890000",
+                "label": "Red"
+              },
+              {
+                "value": "#4fc1d",
+                "label": "Dark Brown"
+              }
+            ]
+          },
+          {
+            "type": "header",
+            "content": "Text"
+          },
+          {
+            "type": "radio",
+            "id": "text_color",
+            "label": "Text Color",
+            "default": "#fff",
+            "options": [
+              {
+                "value": "#fff",
+                "label": "White"
+              },
+              {
+                "value": "#f4f1e8",
+                "label": "Sand"
+              },
+              {
+                "value": "#000",
+                "label": "Black"
+              },
+              {
+                "value": "#7f551c",
+                "label": "Dark Sand"
+              },
+              {
+                "value": "#890000",
+                "label": "Red"
+              },
+              {
+                "value": "#4fc1d",
+                "label": "Dark Brown"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "id": "header",
+            "label": "Header Text"
+          },
+          {
+            "type": "text",
+            "id": "sub_header",
+            "label": "Sub-Header Text"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}
+

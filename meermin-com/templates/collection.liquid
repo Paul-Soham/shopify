@@ -1,0 +1,26 @@
+{% render 'shogun-products', content: collection %}
+{{collection.metafields.shogun.above}}
+{% comment %}
+----------------------------------------------------------------------------
+  Template: Page
+  - Basic Shopify page.
+----------------------------------------------------------------------------
+  {% section 'collection--hero-banner' %}
+  {% section 'collection--promo-banner' %}
+{% endcomment %}
+{% render 'collection-header-new-custom' %}
+<div class="template-page">
+  <div class="container">
+    <div class="row">
+      <div class="col xs12">
+          {% section 'collection-template-new' %}
+      </div>
+    </div>
+  </div>
+</div>
+{{collection.metafields.shogun.below}}
+<style>
+  .template-collection .container{
+    max-width: 2560px;
+  }
+</style>

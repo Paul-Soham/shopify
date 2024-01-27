@@ -1,0 +1,88 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Snippet: Newsletter callout
+
+  It is available under Site Footer section settings.
+
+  Theme Store required settings
+  - Heading: title of the newsletter section
+  - subtitle: description of the newsletter section
+------------------------------------------------------------------------------
+{% endcomment %}
+<div class="newsletter-callout">
+  {% if
+    section.settings.esp_title != blank or
+    section.settings.esp_subtitle != blank
+  %}
+    <div class="newsletter-callout__header">
+      {% if section.settings.esp_title != blank %}
+        <h2 class="newsletter-callout__title" for="Email">
+          {{ section.settings.esp_title | escape }}
+        </h2>
+      {% endif %}
+
+      {% if section.settings.esp_subtitle != blank %}
+        <p class="newsletter-callout__subtitle">
+          {{ section.settings.esp_subtitle | escape }}
+        </p>
+      {% endif %}
+    </div>
+  {% endif %}
+
+  <div class="newsletter-callout__form">
+<!--     { % form 'customer', id: 'NewsletterCallout', js-direct-add: 'form' %} -->
+    {%- form 'customer', id: newsletter_id, class: 'form newsletter__form' -%}
+      {{ form.errors | default_errors }}
+
+      {% if form.posted_successfully? %}
+        <p>{{ 'general.newsletter_form.confirmation' | t }}</p>
+      {% else %}
+        <div js-direct-add="feedback" class="welcome"></div>
+        <div class="newsletter-callout__input-group input-group">
+          <input
+            name="contact[tags]"
+            value="newsletter"
+            type="hidden"
+          >
+
+          <div class="newsletter-callout__field input-group__control">
+            <input
+              id="NewsletterCallout-Email"
+              class="newsletter-callout__input"
+              autocapitalize="off"
+              autocorrect="off"
+              name="contact[email]"
+              placeholder="{{ 'general.newsletter_form.label' | t }}"
+              required
+              type="email"
+              js-direct-add="email"
+            >
+
+            <label
+              class="newsletter-callout__label caption"
+              for="NewsletterCallout-Email"
+            >
+              {{ 'general.newsletter_form.label' | t }}
+            </label>
+          </div>
+
+          <div class="input-group__addon">
+            <button
+              id="Subscribe"
+              class="newsletter-callout__submit"
+              aria-label="{{ 'customer.register.submit' | t }}"
+              js-direct-add="submit"
+            >
+              <div class="loader">
+                <div class="ball-clip-rotate">
+                  <div></div>
+                </div>
+              </div>
+              <img src="{{ 'cta_arrow.svg' | asset_url }}" />
+            </button>
+          </div>
+        </div>
+      {% endif %}
+    {% endform %}
+  </div>
+</div>

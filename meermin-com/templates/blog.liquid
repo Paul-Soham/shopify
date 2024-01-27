@@ -1,0 +1,117 @@
+{% comment %}
+----------------------------------------------------------------------------
+  Template: Blog
+  - Blog landing page template.
+----------------------------------------------------------------------------
+{% endcomment %}
+{% paginate blog.articles by 24 %}
+  {% assign blog_title = blog.title %}
+  {% assign hero_description = 'blogs.general.hero_description' | t %}
+  {% assign related_article_tag_size = 0 %}
+  
+
+  {%- assign blog_title = blog.title -%}
+  {% assign blog_handle = blog.handle %}
+  {% assign featured_article = false %}
+
+  {% for article in blogs[blog_handle].articles %}
+    {% if article.tags contains "featured" %}
+      {% assign featured_date = article.published_at | time_tag: format: 'day_month_year' %}
+      {% assign featured_title = article.title %}
+      {% assign featured_content = article.content | strip_html | truncate: 105, '...' %}
+      {% assign featured_img = article.image %}
+      {% assign featured_url = article.url %}
+      {% assign featured_article = true %}
+      {% break %}
+    {% endif %}
+  {% endfor %}
+
+  {% if current_tags %}
+    {% capture blog_title %}
+      {{ blog.title | link_to: blog.url }} &mdash; {{ current_tags.first }}
+    {% endcapture %}
+  {% endif %}
+
+  {% if featured_article %}
+    <div
+      class="
+        template-blog__hero hero featured-hero
+        lazyload
+      "
+      data-bgset="{% render 'responsive-bg-image', image: featured_img %}"
+    >
+      <div class="container">
+        <div class="featured-hero__content">
+          <h6 class="featured-hero__date body-2">{{ featured_date }}</h6>
+          <h1 class="h1 featured-hero__title">{{ featured_title }}</h1>
+          <p class="h4 featured-hero__description">{{ featured_content }}</p>
+          <a
+            class="button button--secondary button--secondary-light"
+            href="{{ featured_url }}"
+          >
+            {{ 'blogs.article.read_more' | t }}
+          </a>
+        </div>
+      </div>
+    </div>
+  {% else %}
+    <div class="template-blog__hero hero">
+      <div class="container">
+        <div class="row">
+          <div class="col xs12">
+            <div class="hero__content">
+              <h1 class="d3 hero__title">{{ blog_title }}</h1>
+              {% if hero_description %}
+                <h2 class="h4 hero__title">
+                  {{ hero_description }}
+                </h2>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+
+  {% section 'blog-filters' %}
+
+  {% comment %}
+  ------------------------------------------------------------------------------
+    Article previews
+  ------------------------------------------------------------------------------
+  {% endcomment %}
+  <div class="container">
+    <div class="template-blog__card-grid">
+      {% assign count = 1 %}
+      {% for article in blog.articles %}
+        {% assign loop_count = count | modulo: 5 %}
+        
+        {% unless article.tags contains "featured" %}
+          {% if loop_count == 0 %}
+            </div>
+          </div>
+            <div class="grid-item grid-item__featured">
+              {% render 'article-card' with article: article %}
+            </div>
+          <div class="container">
+            <div class="template-blog__card-grid">
+          {% else %}
+            <div class="grid-item">
+              {% render 'article-card' with article: article %}
+            </div>
+          {% endif %}
+          {% assign count = count | plus: 1 %}
+
+        {% endunless %}
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="container">
+    {% if paginate.pages > 1 %}
+      <div class="row">
+        {% render 'pagination' with paginate: paginate %}
+      </div>
+    {% endif %}
+  </div>
+{% endpaginate %}

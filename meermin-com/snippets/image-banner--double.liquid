@@ -1,0 +1,54 @@
+{% comment %}
+----------------------------------------------------------------------------
+  Snippet: Image banner double
+  - Image banner double shown on the custom page.
+----------------------------------------------------------------------------
+{% endcomment %}
+
+{% if layout_orientation == 'featured-image-right' %}
+  {% assign layout_orientation = 'right' %}
+{% else %}
+  {% assign layout_orientation = '' %}
+{% endif %}
+
+<section
+  class="homepage-image-banner--double custom-section custom-section--large"
+  data-section-id="{{ section.id }}"
+  data-section-type="homepage-image-banner--double"
+>
+  <div class="homepage-image-banner--double__container">
+    <div
+      class="homepage-image-banner--double__featured-image__wrapper {{ layout_orientation | strip }}"
+    >
+      <div class="homepage-image-banner--double__header-text--mobile d2">
+        {{ header_text }}
+      </div>
+      {% render 'responsive-card-image' with
+        image: featured_image,
+        image_class: 'homepage-image-banner--double__image featured',
+        wrapper_class: 'homepage-image-banner--double__image-wrapper featured'
+      %}
+      <div class="homepage-image-banner--double__content__wrapper">
+        {{ content_text }}
+        {% unless cta_text == blank or cta_url == blank %}
+          <a
+            class="homepage-image-banner--double__button button button--secondary"
+            href="{{ cta_url }}" tabindex="0"
+          >
+            {{ cta_text }}
+          </a>
+        {% endunless %}
+      </div>
+    </div>
+    <div class="homepage-image-banner--double__secondary-image__wrapper">
+      <div class="homepage-image-banner--double__header-text d2">
+        {{ header_text }}
+      </div>
+      {% render 'responsive-card-image' with
+        image: secondary_image,
+        image_class: 'homepage-image-banner--double__image secondary',
+        wrapper_class: 'homepage-image-banner--double__image-wrapper secondary'
+      %}
+    </div>
+  </div>
+</section>

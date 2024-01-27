@@ -1,0 +1,373 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Section: Visit us
+  - A custom section to display physical stores information.
+------------------------------------------------------------------------------
+{% endcomment %}
+
+<div class="container">
+  <div class="row">
+    <div class="col xs12 m10 offset-m1">
+      <div class="template-visit__intro">
+        <h1 class="d2 template-visit__title">{{ section.settings.title }}</h1>
+        {% if section.settings.description %}
+          <div class="template-visit__description rte">
+            {{ section.settings.description }}
+          </div>
+        {% endif %}
+        {% if section.settings.intro_button_url != blank %}
+          <a
+            class="template-visit__button button button--secondary"
+            href="{{ section.settings.intro_button_url }}">
+              {{ section.settings.intro_button_text }}
+          </a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<section
+  class="visit-us {{ modifiers }}"
+  data-section-id="{{ section.id }}"
+  data-section-type="visit-us"
+>
+  {% for block in section.blocks %}
+    <div class="visit-us__container">
+      <div class="visit-us__image">
+        {% render 'art-direction-image' with
+          alt: block.settings.alt_text
+          large_image: block.settings.image_desktop,
+          small_image: block.settings.image_mobile,
+        %}
+      </div>
+      <div class="visit-us__grid">
+        <div class="visit-us__aside intro">
+          {% if block.settings.label != blank %}
+            <h6 
+              class="h6 visit-us__label" 
+              style="color:{{ block.settings.label_color }}"
+            >
+              {{ block.settings.label }}
+            </h6>
+          {% endif %}
+          {% if block.settings.title != blank %}
+            <h1 class="h1 visit-us__title">{{ block.settings.title }}</h1>
+          {% endif %}
+          {% if block.settings.body_text != blank %}
+          <div 
+            class="visit-us__body" 
+            style="color:{{ block.settings.body_color }}"
+          >
+            {{ block.settings.body_text }}
+          </div>
+          {% endif %}
+        </div>
+        <div class="visit-us__aside contact">
+          {% if block.settings.location_address != blank %}
+            <div class="visit-us__location visit-us__item">
+              <h4 class="subtitle-1 visit-us__aside-label">{{ block.settings.location_label }}</h4>
+              {{ block.settings.location_address }}
+            </div>
+          {% endif %}
+          {% if block.settings.phone_number != blank %}
+            <div class="visit-us__phone visit-us__item">
+              <h4 class="subtitle-1 visit-us__aside-label">{{ block.settings.phone_label }}</h4>
+              <p class="body-1">{{ block.settings.phone_number }}</p>
+            </div>
+          {% endif %}
+          {% if block.settings.email_address != blank %}
+            <div class="visit-us__email visit-us__item">
+              <h4 class="subtitle-1 visit-us__aside-label">{{ block.settings.email_label }}</h4>
+              <p class="body-1">{{ block.settings.email_address }}</p>
+            </div>
+          {% endif %}
+        </div>
+        <div class="visit-us__aside">
+          {% if block.settings.opening_hours != blank %}
+            <div class="visit-us__opening visit-us__item">
+              <h4 class="subtitle-1 visit-us__aside-label">{{ block.settings.opening_hours_label }}</h4>
+              {{ block.settings.opening_hours }}
+            </div>
+          {% endif %}
+          {% if block.settings.special_hours != blank %}
+            <div class="visit-us__opening-special visit-us__item">
+              <h4 class="subtitle-1 visit-us__aside-label">
+                {{ block.settings.special_hours_label }}
+              </h4>
+              <p class="body-1">
+                {{ block.settings.special_hours }}
+              </p>
+            </div>
+          {% endif %}
+        </div>
+        {% if block.settings.primary_button_url != blank %}
+          <div class="visit-us__aside buttons">
+            {% if block.settings.primary_button_url != blank %}
+              <a
+                class="button button--primary"
+                href="{{ block.settings.primary_button_url }}">
+                <span>{{ block.settings.primary_button_text }}</span>
+              </a>
+            {% endif %}
+            {% if block.settings.secondary_button_url != blank %}
+              <a
+                class="button button--primary button--outlined"
+                href="{{ block.settings.secondary_button_url }}">
+                <span>{{ block.settings.secondary_button_text }}</span>
+              </a>
+            {% endif %}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  {% endfor %}
+</section>
+
+{% schema %}
+  {
+    "name": "Visit us",
+    "class": "index-section",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Intro content"
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Page title",
+        "default": "Visit us"
+      },
+      {
+        "type": "richtext",
+        "id": "description",
+        "label": "Page description",
+        "default": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit <a href=\"/pages/privacy-policy\">sed do eiusmod</a> tempor incididunt ut labore et dolore magna aliqua.</p>"
+      },
+      {
+        "type": "text",
+        "id": "intro_button_text",
+        "label": "Intro button text",
+        "default": "Lorem ipsum"
+      },
+      {
+        "type": "url",
+        "id": "intro_button_url",
+        "label": "Intro button url"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "image",
+        "name": "Location block",
+        "settings": [
+          {
+            "type": "header",
+            "content": "Imagery",
+            "info": "Both images are required."
+          },
+          {
+            "type": "image_picker",
+            "id": "image_desktop",
+            "label": "Image - Desktop",
+            "info": "Recommended min dimensions: 2000x1280px (.jpg)"
+          },
+          {
+            "type": "image_picker",
+            "id": "image_mobile",
+            "label": "Image - Mobile",
+            "info": "Recommended min dimensions: 720x720px (.jpg)"
+          },
+          {
+            "type": "header",
+            "content": "Header content"
+          },
+          {
+            "type": "text",
+            "id": "label",
+            "label": "Label",
+            "default": "Label"
+          },
+          {
+            "type": "select",
+            "id": "label_color",
+            "label": "Label color",
+            "default": "rgb(0, 0, 0)",
+            "options": [
+              {
+                "label": "Color Black",
+                "value": "rgb(0, 0, 0)"
+              },
+              {
+                "label": "Color Gold",
+                "value": "rgb(127, 85, 28)"
+              },
+              {
+                "label": "Color Red",
+                "value": "rgb(137, 0, 0)"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+            "default": "Title"
+          },
+          {
+            "type": "richtext",
+            "id": "body_text",
+            "label": "Body text",
+            "default": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit <a href=\"/pages/privacy-policy\">sed do eiusmod</a> tempor incididunt ut labore et dolore magna aliqua.</p>"
+          },
+          {
+            "type": "select",
+            "id": "body_color",
+            "label": "Body color",
+            "default": "rgb(0, 0, 0)",
+            "options": [
+              {
+                "label": "Color Black",
+                "value": "rgb(0, 0, 0)"
+              },
+              {
+                "label": "Color Gold",
+                "value": "rgb(127, 85, 28)"
+              },
+              {
+                "label": "Color Red",
+                "value": "rgb(137, 0, 0)"
+              }
+            ]
+          },
+          {
+            "type": "header",
+            "content": "Location",
+            "info": "Leave content blank to hide"
+          },
+          {
+            "type": "text",
+            "id": "location_label",
+            "label": "Location label",
+            "default": "Location"
+          },
+          {
+            "type": "richtext",
+            "id": "location_address",
+            "label": "Location address",
+            "default": "<p>Location address <a href=\"/pages/privacy-policy\">sed do eiusmod</a> goes here</p>"
+          },
+          {
+            "type": "header",
+            "content": "Phone",
+            "info": "Leave content blank to hide"
+          },
+          {
+            "type": "text",
+            "id": "phone_label",
+            "label": "Phone label",
+            "default": "Phone"
+          },
+          {
+            "type": "text",
+            "id": "phone_number",
+            "label": "Phone number"
+          },
+          {
+            "type": "header",
+            "content": "Email",
+            "info": "Leave content blank to hide"
+          },
+          {
+            "type": "text",
+            "id": "email_label",
+            "label": "Email label",
+            "default": "Email"
+          },
+          {
+            "type": "text",
+            "id": "email_address",
+            "label": "Email Address"
+          },
+          {
+            "type": "header",
+            "content": "Opening hours",
+            "info": "Leave content blank to hide"
+          },
+          {
+            "type": "text",
+            "id": "opening_hours_label",
+            "label": "Opening hours label",
+            "default": "Opening hours"
+          },
+          {
+            "type": "richtext",
+            "id": "opening_hours",
+            "label": "Opening hours",
+            "default": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit <a href=\"/pages/privacy-policy\">sed do eiusmod</a> tempor incididunt ut labore et dolore magna aliqua.</p>"
+          },
+          {
+            "type": "text",
+            "id": "special_hours_label",
+            "label": "Special hours label",
+            "default": "Special hours"
+          },
+          {
+            "type": "richtext",
+            "id": "special_hours",
+            "label": "Special hours",
+            "default": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit <a href=\"/pages/privacy-policy\">sed do eiusmod</a> tempor incididunt ut labore et dolore magna aliqua.</p>"
+          },
+          {
+            "type": "select",
+            "id": "special_hours_color",
+            "label": "Special hours color",
+            "default": "rgb(137, 0, 0)",
+            "options": [
+              {
+                "label": "Color Black",
+                "value": "rgb(0, 0, 0)"
+              },
+              {
+                "label": "Color Gold",
+                "value": "rgb(127, 85, 28)"
+              },
+              {
+                "label": "Color Red",
+                "value": "rgb(137, 0, 0)"
+              }
+            ]
+          },
+          {
+            "type": "header",
+            "content": "Buttons",
+            "info": "Leave links blank to hide"
+          },
+          {
+            "type": "text",
+            "id": "primary_button_text",
+            "label": "Primary button text",
+            "default": "Lorem ipsum"
+          },
+          {
+            "type": "url",
+            "id": "primary_button_url",
+            "label": "Primary button url"
+          },
+          {
+            "type": "text",
+            "id": "secondary_button_text",
+            "label": "Secondary button text",
+            "default": "Lorem ipsum"
+          },
+          {
+            "type": "url",
+            "id": "secondary_button_url",
+            "label": "Secondary button url"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

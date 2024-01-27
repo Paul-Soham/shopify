@@ -1,0 +1,82 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Snippet: Icons - direction
+  - Directional icons to provide context on the state of a UI.
+------------------------------------------------------------------------------
+{% endcomment %}
+{% case icon %}
+  {% when 'arrow-down' %}
+    <svg class="icon icon__arrow icon__arrow--down" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path fill="#000" d="M20 12l-1.41-1.41L13 16.17V4h-2v12.17l-5.58-5.59L4 12l8 8 8-8z"/>
+    </svg>
+
+  {% when 'arrow-left' %}
+    <svg class="icon icon__arrow icon__arrow--left"width="27px" height="16px" viewBox="0 0 27 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+      <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <path d="M27,7.50049 L27,8.50049 L0.999999,8.50049 L0.999999,7.50049 L27,7.50049 Z M0.652012071,8.35952356 L1.34798593,7.64145644 L8.57020693,14.6414664 L7.87423307,15.3595336 L0.652012071,8.35952356 Z M1.34798567,8.35952381 L0.652012327,7.64145619 L7.87423333,0.641456192 L8.57020667,1.35952381 L1.34798567,8.35952381 Z" fill="#000000" fill-rule="nonzero"></path>
+      </g>
+    </svg>
+
+  {% when 'arrow-right' %}
+    <svg class="icon icon__arrow icon__arrow--right" width="27px" height="16px" viewBox="0 0 27 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+      <path d="M0,8.5 L0,7.5 L26,7.5 L26,8.5 L0,8.5 Z M26.3479872,7.6409667 L25.6520128,8.3590333 L18.4298128,1.3590333 L19.1257872,0.640966697 L26.3479872,7.6409667 Z M25.6520128,7.6409667 L26.3479872,8.3590333 L19.1257872,15.3590333 L18.4298128,14.6409667 L25.6520128,7.6409667 Z" fill-rule="nonzero"></path>
+    </svg>
+
+  {% when 'arrow-up' %}
+    <svg class="icon icon__arrow icon__arrow--up" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"/>
+    </svg>
+
+  {% when 'caret-down' %}
+    <svg class="icon icon__caret icon__caret--down" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M7 10l5 5 5-5H7z"/>
+    </svg>
+
+  {% when 'caret-left' %}
+    <svg class="icon icon__caret icon__caret--left" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M14 7l-5 5 5 5V7z"/>
+    </svg>
+
+  {% when 'caret-right' %}
+    <svg class="icon icon__caret icon__caret--right" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M10 17l5-5-5-5v10z"/>
+    </svg>
+
+  {% when 'caret-up' %}
+    <svg class="icon icon__caret icon__caret--up" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M7 14l5-5 5 5H7z"/>
+    </svg>
+
+  {% when 'chevron-down' %}
+    <svg class="icon icon__chevron icon__chevron--down" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6-1.41-1.41z"/>
+    </svg>
+
+  {% when 'chevron-left' %}
+    <svg class="icon icon__chevron icon__chevron--left" width="12px" height="36px" viewBox="0 0 12 36" version="1.1" xmlns="http://www.w3.org/2000/svg">
+      <polygon fill-rule="nonzero" points="1.30571353 18.0000093 11.9999997 29.3095825 11.3471416 30 0 18.0000099 11.3471413 6 12 6.6904169"></polygon>
+    </svg>
+
+  {% when 'chevron-right' %}
+    <svg class="icon icon__chevron icon__chevron--right" width="12px" height="36px" viewBox="0 0 12 36" version="1.1" xmlns="http://www.w3.org/2000/svg">
+      <polygon fill-rule="nonzero" points="0 6.68686969 0.649682425 6 12 18 0.649682425 30 0 29.3131303 10.7006351 18"></polygon>
+    </svg>
+
+  {% when 'chevron-up' %}
+    <svg class="icon icon__chevron icon__chevron--up" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 8l-6 6 1.41 1.41L12 10.83l4.59 4.58L18 14l-6-6z"/>
+    </svg>
+
+  {% when 'page-first' %}  
+    <svg class="icon icon__page icon__page--first" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M18.41 16.59L13.82 12L18.41 7.41L17 6L11 12L17 18L18.41 16.59ZM6 6H8V18H6V6Z"/>
+    </svg>
+
+  {% when 'page-last' %}  
+    <svg class="icon icon__page icon__page--last" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M5.59009 7.41L10.1801 12L5.59009 16.59L7.00009 18L13.0001 12L7.00009 6L5.59009 7.41ZM16.0001 6H18.0001V18H16.0001V6Z"/>
+    </svg>
+    
+  {% else %}
+    <span>No icon found!</span>
+{% endcase %}

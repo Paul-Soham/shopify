@@ -1,0 +1,22 @@
+{% if product.metafields.highlight.image_3 and 
+  product.metafields.highlight.heading_3 and 
+  product.metafields.highlight.description_3
+%}
+  <div class="template-product__highlight-3-container">
+    <div class="template-product__image-3-container">
+      <img src="https://{{product.metafields.highlight.image_3}}" alt="">
+    </div>
+    <div class="template-product__highlight-container">
+      <div class="container">
+        <div class="row">
+          <div class="template-product__highlight col xs12 m5 l5">
+            <h5 class="template-product__highlight-title h1">{{ product.metafields.highlight.heading_3 }}</h5>
+            <p class="template-product__highlight-text">
+              {{ product.metafields.highlight.description_3 }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endif %}  

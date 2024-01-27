@@ -1,0 +1,315 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Section: Homepage Image Banner -- Triple
+------------------------------------------------------------------------------
+{% endcomment %}
+{% assign overlay_opacity = section.settings.overlay_opacity %}
+
+{% comment %}
+  Image #1
+{% endcomment %}
+{% assign image_1 = section.settings.image_1 %}
+{% assign cta_color_1 = section.settings.cta_color_1 %}
+{% assign cta_text_1 = section.settings.cta_text_1 %}
+{% assign cta_url_1 = section.settings.cta_url_1 %}
+
+{% comment %}
+  Image #2
+{% endcomment %}
+{% assign image_2 = section.settings.image_2 %}
+{% assign cta_color_2 = section.settings.cta_color_2 %}
+{% assign cta_text_2 = section.settings.cta_text_2 %}
+{% assign cta_url_2 = section.settings.cta_url_2 %}
+{% comment %}
+
+  Image #3
+{% endcomment %}
+{% assign image_3 = section.settings.image_3 %}
+{% assign cta_color_3 = section.settings.cta_color_3 %}
+{% assign cta_text_3 = section.settings.cta_text_3 %}
+{% assign cta_url_3 = section.settings.cta_url_3 %}
+
+<section
+  class="homepage-image-banner--triple"
+  data-section-id="{{ section.id }}"
+  data-section-type="homepage-image-banner--triple"
+>
+  <div
+    id="ImageBannerTriple-{{ section.id }}"
+    js-image-banner-triple="container"
+    class="homepage-image-banner--triple__container"
+  >
+    <div class="row">
+      {% unless image_1 == blank or cta_text_1 == blank or cta_url_1 == blank %}
+        <div  class="
+          homepage-image-banner--triple__cta-wrapper
+          homepage-image-banner--triple__cta-wrapper--1"
+        >
+          <div
+            class="homepage-image-banner--triple__thumbnail lazyload"
+            data-bgset="{% render 'responsive-bg-image',
+            image: image_1 %}"
+            style="background-position: {{ section.settings.image_1_position }}"
+          >
+          </div>
+
+          <a class="homepage-image-banner--triple__cta-wrapper--inner" href="{{cta_url_1}}">
+            <span class="homepage-image-banner--triple__cta-text h5" style="color: {{ cta_color_1 }};">
+              {{ cta_text_1 }}
+            </span>
+
+          <div class="homepage-image-banner--triple__image-overlay" style="opacity: {{ overlay_opacity }}%;"></div>
+          </a>
+        </div>
+      {% endunless %}
+
+      {% unless image_2 == blank or cta_text_2 == blank or cta_url_2 == blank %}
+        <div class="
+          homepage-image-banner--triple__cta-wrapper
+          homepage-image-banner--triple__cta-wrapper--2"
+        >
+          <div
+            class="homepage-image-banner--triple__thumbnail lazyload"
+            data-bgset="{% render 'responsive-bg-image',
+            image: image_2 %}"
+            style="background-position: {{ section.settings.image_2_position }}"
+          >
+          </div>
+          <a class="homepage-image-banner--triple__cta-wrapper--inner" href="{{cta_url_2}}">
+            <span class="homepage-image-banner--triple__cta-text h5" style="color: {{ cta_color_2 }};">
+              {{ cta_text_2 }}
+            </span>
+
+          <div class="homepage-image-banner--triple__image-overlay" style="opacity: {{ overlay_opacity }}%;"></div>
+          </a>
+        </div>
+      {% endunless %}
+
+
+      {% unless image_3 == blank or cta_text_3 == blank or cta_url_3 == blank %}
+        <div class="
+          homepage-image-banner--triple__cta-wrapper
+          homepage-image-banner--triple__cta-wrapper--3"
+        >
+          <div
+            class="homepage-image-banner--triple__thumbnail lazyload"
+            data-bgset="{% render 'responsive-bg-image',
+            image: image_3 %}"
+            style="background-position: {{ section.settings.image_3_position }}"
+          >
+          </div>
+          <a class="homepage-image-banner--triple__cta-wrapper--inner" href="{{cta_url_3}}">
+            <span class="homepage-image-banner--triple__cta-text h5" style="color: {{ cta_color_3 }};">
+              {{ cta_text_3 }}
+            </span>
+
+          <div class="homepage-image-banner--triple__image-overlay" style="opacity: {{ overlay_opacity }}%;"></div>
+          </a>
+        </div>
+      {% endunless %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+  {
+    "name": "Image Banner -- Triple",
+    "class": "index-section",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Overlay"
+      },
+      {
+        "type": "range",
+        "id": "overlay_opacity",
+        "label": "Overlay Opacity (Percentage)",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "%",
+        "default": 15
+      },
+      {
+        "type": "header",
+        "content": "Primary Image"
+      },
+      {
+        "type": "image_picker",
+        "id": "image_1",
+        "label": "Image - Primary",
+        "info": "Upload an image with an aspect ratio of ~ 1.25:1 - *required"
+      },
+      {
+        "type": "select",
+        "id": "image_1_position" ,
+        "label": "Image Position",
+        "default": "center",
+        "options": [
+          {
+            "value": "top center",
+            "label": "Top"
+          },
+          {
+            "value": "center",
+            "label": "Center"
+          },
+          {
+            "value": "bottom center",
+            "label": "Bottom"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "cta_color_1",
+        "label": "Primary CTA Color",
+        "options": [
+          {
+            "value": "#fff",
+            "label": "White"
+          },
+          {
+            "value": "#000",
+            "label": "Black"
+          }
+        ],
+        "default": "#fff"
+      },
+      {
+        "type": "text",
+        "id": "cta_text_1",
+        "label": "CTA Text - Primary",
+        "info": "Leave Blank to omit CTA"
+      },
+      {
+        "type": "url",
+        "id": "cta_url_1",
+        "label": "CTA URL",
+        "info": "Leave Blank to omit CTA"
+      },
+      {
+        "type": "header",
+        "content": "Secondary Image - #1"
+      },
+      {
+        "type": "image_picker",
+        "id": "image_2",
+        "label": "Image - Secondary #1",
+        "info": "Upload an image with an aspect ratio of ~ 1.25:1 - *required"
+      },
+      {
+        "type": "select",
+        "id": "image_2_position" ,
+        "label": "Image Position",
+        "default": "center",
+        "options": [
+          {
+            "value": "top center",
+            "label": "Top"
+          },
+          {
+            "value": "center",
+            "label": "Center"
+          },
+          {
+            "value": "bottom center",
+            "label": "Bottom"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "cta_color_2",
+        "label": "CTA Color - Secondary #1",
+        "options": [
+          {
+            "value": "#fff",
+            "label": "White"
+          },
+          {
+            "value": "#000",
+            "label": "Black"
+          }
+        ],
+        "default": "#fff"
+      },
+      {
+        "type": "text",
+        "id": "cta_text_2",
+        "label": "CTA Text - Secondary #1",
+        "info": "Leave Blank to omit CTA"
+      },
+      {
+        "type": "url",
+        "id": "cta_url_2",
+        "label": "CTA URL - Secondary #1",
+        "info": "Leave Blank to omit CTA"
+      },
+      {
+        "type": "header",
+        "content": "Secondary Image - #2"
+      },
+      {
+        "type": "image_picker",
+        "id": "image_3",
+        "label": "Image - Secondary #2",
+        "info": "Upload an image with an aspect ratio of ~ 1.25:1 - *required"
+      },
+      {
+        "type": "select",
+        "id": "image_3_position" ,
+        "label": "Image Position",
+        "default": "center",
+        "options": [
+          {
+            "value": "top center",
+            "label": "Top"
+          },
+          {
+            "value": "center",
+            "label": "Center"
+          },
+          {
+            "value": "bottom center",
+            "label": "Bottom"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "cta_color_3",
+        "label": "CTA Color - Secondary #2",
+        "options": [
+          {
+            "value": "#fff",
+            "label": "White"
+          },
+          {
+            "value": "#000",
+            "label": "Black"
+          }
+        ],
+        "default": "#fff"
+      },
+      {
+        "type": "text",
+        "id": "cta_text_3",
+        "label": "CTA Text - Secondary #2",
+        "info": "Leave Blank to omit CTA"
+      },
+      {
+        "type": "url",
+        "id": "cta_url_3",
+        "label": "CTA URL - Secondary #2",
+        "info": "Leave Blank to omit CTA"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Image Banner -- Triple",
+        "category": "Image Banners"
+      }
+    ]
+  }
+{% endschema %}

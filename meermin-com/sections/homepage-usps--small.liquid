@@ -1,0 +1,152 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Section: Unique Selling Points -- small
+------------------------------------------------------------------------------
+{% endcomment %}
+
+<section
+  class="homepage-usps--small"
+  data-section-id="{{ section.id }}"
+  data-section-type="homepage-usps--small"
+  style="background-color: {{ section.settings.background_color }};"
+>
+  <div class="container">
+    <div class="row">
+      {% for block in section.blocks %}
+        <div class="col xs6 m3 homepage-usps--small__selling-point">
+          <span class="homepage-usps--small__accent-line" style="background-color: {{ section.settings.accent_line_color }};"></span>
+          <h4 class="body-1" style="color: {{ section.settings.text_color }};">
+            {{ block.settings.selling_point_line_1 }}<br>
+            {{ block.settings.selling_point_line_2 }}
+          </h4>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+  {
+    "name": "USPs -- Small",
+    "class": "index-section",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Settings"
+      },
+      {
+        "type": "select",
+        "id": "background_color",
+        "label": "Background Color",
+        "default": "#fff",
+        "options": [
+          {
+            "value": "#f4f1e8",
+            "label": "Sand"
+          },
+          {
+            "value": "#f5f5f5",
+            "label": "Light Grey"
+          },
+          {
+            "value": "#7f551c",
+            "label": "Dark Sand"
+          },
+          {
+            "value": "#fff",
+            "label": "White"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "text_color",
+        "label": "Text Color",
+        "default": "#000",
+        "options": [
+          {
+            "value": "#fff",
+            "label": "White"
+          },
+          {
+            "value": "#f4f1e8",
+            "label": "Sand"
+          },
+          {
+            "value": "#000",
+            "label": "Black"
+          },
+          {
+            "value": "#7f551c",
+            "label": "Dark Sand"
+          },
+          {
+            "value": "#4fc1d",
+            "label": "Dark Brown"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "accent_line_color",
+        "label": "Accent Line Color",
+        "default": "#7f551c",
+        "options": [
+          {
+            "value": "#fff",
+            "label": "White"
+          },
+          {
+            "value": "#f4f1e8",
+            "label": "Sand"
+          },
+          {
+            "value": "#000",
+            "label": "Black"
+          },
+          {
+            "value": "#7f551c",
+            "label": "Dark Sand"
+          },
+          {
+            "value": "#890000",
+            "label": "Red"
+          },
+          {
+            "value": "#4fc1d",
+            "label": "Dark Brown"
+          }
+        ]
+      },
+      {
+        "type": "header",
+        "content": "Content"
+      }
+    ],
+    "max_blocks": 4,
+    "blocks": [
+      {
+        "type": "selling-point",
+        "name": "Selling Point",
+        "settings": [
+          {
+            "type": "text",
+            "id": "selling_point_line_1",
+            "label": "Selling Point - Line 1"
+          },
+          {
+            "type": "text",
+            "id": "selling_point_line_2",
+            "label": "Selling Point - Line 2"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "USPs -- Small",
+        "category": "Selling Points"
+      }
+    ]
+  }
+{% endschema %}

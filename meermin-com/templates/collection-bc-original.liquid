@@ -1,0 +1,238 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Collection
+  - Main collection template.
+  - Hero banner text options.
+  - Native filtering via tags.
+------------------------------------------------------------------------------
+{% endcomment %}
+{% assign sorting_options = 'manual,price-ascending,price-descending,title-ascending,title-descending,created-ascending,created-descending,best-selling' | split: ',' %}
+{% assign facets = 'colour,style,gender' | split: ',' %}
+{% assign all_tags = collection.tags %}
+
+{% if collection.products.size <= 0 and current_tags or current_tags %}
+  {% assign all_tags = current_tags %}
+{% endif %}
+
+{% paginate collection.products by 24 %}
+  {% render 'collection-hero' with
+    collection: collection,
+    hero_text_color: hero_text_color,
+  %}
+
+  <div
+    class="critical-clear"
+    {% if settings.enable_quick_view %}
+      js-quick-view="container"
+    {% endif %}
+  >
+    <div class="container">
+      <div class="row">
+        <div class="template-collection__header">
+          <div class="col xs6">
+            {% if settings.enable_breadcrumbs %}
+              <div class="template-collection__breadcrumb">
+                {% render 'breadcrumb' %}
+              </div>
+            {% endif %}
+
+            <p class="template-collection__page-size meta">
+              {{ 'collections.general.showing_results' | t: page_size: paginate.items }}
+            </p>
+          </div>
+
+          <div class="col xs6">
+            <div class="template-collection__sort-by">
+              <div class="form-group">
+                <label class="label visually-hidden" for="sortBy">
+                  {{ 'collections.sorting.sort_by' | t }}
+                </label>
+
+                <select
+                  id="sortBy"
+                  style="background-image: url({{ 'icon-caret-down.svg' | asset_url }});"
+                  js-collection="sortBy"
+                >
+                  {% for option in sorting_options %}
+                    {% assign language_string = 'collections.sorting' |
+                      append: '.' |
+                      append: option |
+                      replace: '-', '_'
+                    %}
+
+                    <option
+                      value="{{ option }}"
+                      {% if forloop.first %}selected{% endif %}
+                    >
+                      {{ language_string | t }}
+                    </option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div
+          class="
+            template-collection__grid
+            {% if collection_has_menu %}
+              template-collection__grid--with-aside
+            {% endif %}
+          "
+        >
+          {% comment %}
+          ----------------------------------------------------------------------------
+            Sidebar
+          ----------------------------------------------------------------------------
+          {% endcomment %}
+          <div class="template-collection__sidebar">
+            <div class="template-collection__filter-toggle">
+              <button
+                class="button button--primary button--block"
+                data-target="filterMenu"
+                js-toggle="filterMenu"
+              >
+                <span>{{ 'collections.general.filter_label' | t }}</span>
+              </button>
+            </div>
+
+            {% if current_tags %}
+              <button
+                class="template-collection__clear-filter text-link"
+                type="button"
+                js-collection-filter="clear"
+              >
+                {{ 'collections.filtering.clear' | t }}
+              </button>
+            {% endif %}
+
+            <div
+              id="filterMenu"
+              class="accordion template-collection__filter-menu"
+              js-accordion="container"
+            >
+              {% for facet in facets %}
+                {% assign has_options = false %}
+                {% assign options = '' %}
+                {% assign facet_prefix = facet | append: ': ' %}
+                {% assign facet_index = forloop.index %}
+
+                {% comment %}
+                ----------------------------------------------------------------------------
+                  Build the facet's options.
+                ----------------------------------------------------------------------------
+                {% endcomment %}
+                {% for tag in all_tags %}
+                  {% if tag contains facet_prefix %}
+                    {% assign has_options = true %}
+                    {% assign tag_value = tag | split: facet_prefix | last %}
+
+                    {% if options == '' %}
+                      {% assign options = tag_value %}
+
+                    {% else %}
+                      {% assign options = options | append: ',' | append: tag_value %}
+                    {% endif %}
+                  {% endif %}
+
+                  {% if forloop.last %}
+                    {% assign options = options | split: ',' %}
+                  {% endif %}
+                {% endfor %}
+
+                {% comment %}
+                ----------------------------------------------------------------------------
+                  Output the facet's options.
+                  - See `collection-filter.js` for event logic.
+                ----------------------------------------------------------------------------
+                {% endcomment %}
+                {% if has_options %}
+                  <div class="accordion__item" js-accordion="item">
+                    <h2 class="accordion__title">
+                      <button
+                        id="Accordion{{ facet | handle }}"
+                        class="accordion__control"
+                        aria-controls="content-{{ facet | handle }}"
+                        aria-expanded="true"
+                        js-accordion="control"
+                      >
+                        {{ facet | capitalize }} {% render 'icon-direction' with icon: 'caret-down' %}
+                      </button>
+                    </h2>
+
+                    <div
+                      id="content-{{ facet | handle }}"
+                      class="accordion__content"
+                      role="region"
+                      aria-labelledby="Accordion{{ facet | handle }}"
+                      js-accordion="content"
+                    >
+                      {% for option in options %}
+                        {% assign full_tag = facet_prefix | append: option %}
+                        {% assign option_id = facet_index | append: '-' | append: forloop.index %}
+
+                        <div class="checkbox__container">
+                          <input
+                            id="checkbox-{{ option_id }}"
+                            class="checkbox__input"
+                            {% if current_tags contains full_tag %}
+                              checked
+                            {% endif %}
+                            name="checkbox-{{ option_id }}"
+                            type="checkbox"
+                            value="{{ full_tag | handle }}"
+                            js-collection-filter="option"
+                          >
+
+                          <label
+                            class="checkbox__label"
+                            for="checkbox-{{ option_id }}"
+                          >
+                            {{ option }}
+                          </label>
+                        </div>
+                      {% endfor %}
+                    </div>
+                  </div>
+                {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+
+          {% comment %}
+          ----------------------------------------------------------------------------
+            Product cards
+          ----------------------------------------------------------------------------
+          {% endcomment %}
+          <div class="template-collection__body">
+            {% if collection.products.size <= 0 %}
+              <h2 class="text-center">
+                {{ 'collections.general.no_matches' | t }}
+              </h2>
+
+            {% else %}
+              <div class="card-grid">
+                {% for product in collection.products %}
+                  <div class="card-grid__item">
+                    {% render 'product-card' with product: product %}
+                  </div>
+                {% endfor %}
+              </div>
+
+              {% if paginate.pages > 1 %}
+                <div class="row">
+                  <div class="template-collection__pagination">
+                    {% render 'pagination' with paginate: paginate %}
+                  </div>
+                </div>
+              {% endif %}
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endpaginate %}

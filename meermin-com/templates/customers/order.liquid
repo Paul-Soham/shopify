@@ -1,0 +1,294 @@
+{% comment %}
+----------------------------------------------------------------------------
+  Template: Order
+  - Single order page.
+----------------------------------------------------------------------------
+{% endcomment %}
+
+{% render 'account-header' %}
+
+<div class="container">
+  <div class="row">
+    <div class="template-account__body">
+      {% comment %}
+      ------------------------------------------------------------------------------
+        Sidebar
+      ------------------------------------------------------------------------------
+      {% endcomment %}
+      <div class="col xs12 l2 offset-l1">
+        {% render 'account-nav' %}
+      </div>
+
+      {% comment %}
+      ------------------------------------------------------------------------------
+        Inner content
+      ------------------------------------------------------------------------------
+      {% endcomment %}
+      <div class="col xs12 l7 offset-l1">
+        <div class="template-order__inner">
+
+          <div class="template-order__buttons row">
+            <div class="col xs12">
+              <a
+                class="
+                  button
+                  button--secondary
+                  button--secondary-brand 
+                  left-align
+                  template-order__back-to-orders"
+                href="{{ routes.account_url }}?view=orders"
+              >
+                {{ 'customer.account.return_to_orders' | t }}
+              </a>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col xs12 m8">
+              <h2 class="template-order__title h2">
+                {{ 'customer.order.title' | t: name: order.name }}
+              </h2>
+
+              <p>
+                {{ 'customer.order.subtitle' | t }}
+              </p>
+            </div>
+
+            <div class="col xs12 m4 template-order__date">
+              <h3 class="template-account__label h3">
+                {{ 'customer.order.date_label' | t }}
+              </h3>
+
+              <span class="body-2">
+                {{ 'customer.order.date' | t: date: order.created_at | date: '%B %d, %Y' }}
+              </span>
+
+              {% if order.cancelled %}
+                {% assign cancelled_at = order.cancelled_at | date: '%B %d, %Y %I:%M%p' %}
+
+                <p>
+                  {{ 'customer.order.cancelled' | t: date: cancelled_at }}
+                </p>
+
+                <p>
+                  {{ 'customer.order.cancelled_reason' | t: reason: order.cancel_reason }}
+                </p>
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col xs12">
+              <h2 class="h3">{{ 'customer.order.details_title' | t }}</h2>
+
+              <div class="order-overview panel">
+                <div class="panel__grid">
+                  <div class="container">
+                    <div class="panel__flex-row row">
+                      <div class="col xs12 m4 order-overview__aside">
+                        <h3 class="order-overview__heading h4">
+                          {{ 'customer.order.shipping_title' | t }}
+                        </h3>
+
+                        <h4 class="panel__label h3">
+                          {{ 'customer.order.fulfillment_status' | t }}
+                        </h4>
+
+                        <p class="panel__body">
+                          {{ order.fulfillment_status_label }}
+                        </p>
+
+                        {% comment %}
+                        ----------------------------------------------------------------------------
+                          Order Tracking Information
+                        ----------------------------------------------------------------------------
+                        {% endcomment %}
+                        {% for line_item in order.line_items %}
+                          {% if line_item.fulfillment %}
+                            {% if line_item.fulfillment.tracking_number %}
+                              <h4 class="panel__label h3">
+                                {{ 'customer.orders.tracking' | t }}
+                              </h4>
+                              <p class="panel__body">
+                                {% if line_item.fulfillment.tracking_url %}
+                                  <a 
+                                    href="{{ line_item.fulfillment.tracking_url }}" 
+                                    class="tracking_link text-link">
+                                      {{ line_item.fulfillment.tracking_number }}
+                                  </a>
+                                {% else %}
+                                  {{ line_item.fulfillment.tracking_number }}
+                                {% endif %}
+                              </p>
+                            {% endif %}
+                          {% endif %}
+                        {% endfor %}
+                        
+
+                        <h4 class="panel__label h3">
+                          {{ 'customer.order.shipping_address' | t }}
+                        </h4>
+
+                        <div class="panel__body">
+                          {{ order.shipping_address | format_address }}
+                        </div>
+                      </div>
+
+                      <div class="col xs12 m8 order-overview__body">
+                        <div class="row">
+                          <div class="col xs12">
+                            <h3 class="order-overview__heading h4">
+                              {{ 'customer.order.billing_title' | t }}
+                            </h3>
+                          </div>
+
+                          <div class="col xs12 m6">
+                            <h4 class="panel__label h3">
+                              {{ 'customer.order.payment_status' | t }}
+                            </h4>
+
+                            <p class="panel__body">
+                              {{ order.financial_status_label }}
+                            </p>
+                          </div>
+
+                          <div class="col xs12 m6">
+                            <h4 class="panel__label h3">
+                              {{ 'customer.order.billing_address' | t }}
+                            </h4>
+
+                            <div class="panel__body">
+                              {{ order.billing_address | format_address }}
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="row order-overview__prices">
+                          <div class="col xs12">
+                            <div class="order-overview__price-row">
+                              <p>
+                                {{ 'customer.order.subtotal' | t }}
+
+                                <span data-label="{{ 'customer.order.subtotal' | t }}">
+                                  {{ order.subtotal_price | money }}
+                                </span>
+                              </p>
+                            </div>
+
+                            {% for discount in order.discounts %}
+                              <div class="order-overview__price-row">
+                                <p>
+                                  {{ discount.code }} {{ 'customer.order.discount' | t }}
+
+                                  <span data-label="{{ 'customer.order.discount' | t }}">
+                                    {{ discount.savings | money }}
+                                  </span>
+                                </p>
+                              </div>
+                            {% endfor %}
+
+                            {% for shipping_method in order.shipping_methods %}
+                              <div class="order-overview__price-row">
+                                <p>
+                                  {{ 'customer.order.shipping' | t }} ({{ shipping_method.title }})
+
+                                  <span data-label="{{ 'customer.order.shipping' | t }} ({{ shipping_method.title }})">
+                                    {{ shipping_method.price | money }}
+                                  </span>
+                                </p>
+                              </div>
+                            {% endfor %}
+
+                            {% for tax_line in order.tax_lines %}
+                              <div class="order-overview__price-row">
+                                <p>
+                                  {{ 'customer.order.tax' | t }} ({{ tax_line.title }} {{ tax_line.rate | times: 100 }}%)
+
+                                  <span data-label="{{ 'customer.order.tax' | t }} ({{ tax_line.title }} {{ tax_line.rate | times: 100 }}%)">
+                                    {{ tax_line.price | money }}
+                                  </span>
+                                </p>
+                              </div>
+                            {% endfor %}
+                          </div>
+                        </div>
+
+                        <div class="row">
+                          <div class="order-overview__price-row col xs12">
+                            <p class="order-overview__total">
+                              {{ 'customer.order.total' | t }}
+
+                              <span
+                                data-label="{{ 'customer.order.total' | t }}"
+                              >
+                                {{ order.total_price | money }}
+                              </span>
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {% comment %}
+          ----------------------------------------------------------------------------
+            Line items
+          ----------------------------------------------------------------------------
+          {% endcomment %}
+          <div class="row">
+            <div class="col xs12">
+              <h2 class="template-order__heading h3">
+                {{ 'customer.order.items_title' | t }}
+              </h2>
+
+              <div class="row row-narrow">
+                <div class="col xs12">
+                  {% for line_item in order.line_items %}
+                    <div id="{{ line_item.key }}" class="row">
+                      <div
+                        class="order-item col xs12 m6"
+                        data-label="{{ 'customer.order.product' | t }}"
+                      >
+                        <div class="order-item__image-wrapper">
+                          {{ line_item.product.featured_image | img_tag: '', 'order-item__image', '85x' }}
+                        </div>
+
+                        <div class="order-item__description">
+                          {{ line_item.product.title | link_to: line_item.product.url }}
+
+                          <div class="order-item__variant-info">
+                            <span data-label="{{ 'customer.order.variants' | t }}">
+                              {{ line_item.variant.title }}
+                            </span>
+                          </div>
+
+                          <div data-label="{{ 'customer.order.sku' | t }}">
+                            {{ line_item.sku }}
+                          </div>
+                        </div>
+
+                        <div class="order-item__price">
+                          <span data-label="{{ 'customer.order.quantity' | t }}">
+                            {{ line_item.quantity }} ×
+                          </span>
+
+                          <span data-label="{{ 'customer.order.price' | t }}">
+                            {{ line_item.price | money }}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

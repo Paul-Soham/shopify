@@ -1,0 +1,38 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Snippet: Liquid line item countdown container
+  - Appends countdown container to product card if product contains 'mto-end-date' tag.
+
+  - Accepts:
+  -- template: {Object} Collection template.
+  -- productTags: {Object} Product tags.
+
+  - Usage:
+  {% render 'bc-sf-filter-product-item-countdown',
+    template: template,
+    productTags: product.tags
+  %}
+------------------------------------------------------------------------------
+{% endcomment %}
+
+{%- comment -%}Check if made to order collection template{%- endcomment -%}
+{% assign is_funding_template = false %}
+{% if template.suffix == 'mto--funding' %}
+  {% assign is_funding_template = true %}
+{% endif %}
+
+
+{% if is_funding_template %}
+  {% for tag in productTags %}
+    {% if tag contains 'mto-end-date:'%}
+      {% assign item_end_date = tag | split: 'mto-end-date:' | last %}
+      {% break %}
+    {% endif %}
+  {% endfor %}
+  <div
+    class="template-collection__mto-countdown text-center"
+    data-end-date="{{ item_end_date }}"
+    data-timezone="{{ shop.metafields.location.timezone }}"
+    js-count-down="container"
+  ></div>
+{% endif %}

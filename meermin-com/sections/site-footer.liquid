@@ -1,0 +1,216 @@
+{% comment %}
+----------------------------------------------------------------------------
+  Section: Site footer
+  - This is a required section for the Shopify Theme Store.
+  - Settings available in `Footer` section in the theme editor.
+  - Three column linklists with newsletter callout, store selector and
+  payment icons.
+----------------------------------------------------------------------------
+{% endcomment %}
+<section
+  class="site-footer critical-clear"
+  data-section-id="{{ section.id }}"
+  data-section-type="site-footer"
+>
+  <div class="container">
+    <div class="row site-footer__main-row">
+      <div class="site-footer__newsletter-callout">
+        {% render 'newsletter-callout' %}
+      </div>
+
+      <div class="site-footer__column-wrap">
+        {% for i in (1..3) %}
+          {% assign menu_string = 'menu_#' | replace: '#', i %}
+          {% assign menu = section.settings[menu_string] %}
+          {% assign menu_title_string = menu_string | append: '_title' %}
+          {% assign menu_title = section.settings[menu_title_string] %}
+
+          {% if linklists[menu].links.size > 0 %}
+            <div
+              class="site-footer__menu-column"
+              data-id="{{ menu_title }}"
+              js-site-footer="menuColumn"
+            >
+              <h3
+                class="site-footer__menu-heading"
+                data-id="{{ menu_title }}"
+                js-site-footer="menuHeading"
+              >
+                {{ menu_title }}
+                <img
+                  class="caret-mobile"
+                  src="{{ 'icon-caret-down.svg' | asset_url }}"
+                  data-id="{{ menu_title }}"
+                  js-site-footer="menuCaret"
+                />
+              </h3>
+
+              <ul class="site-footer__navlist navlist">
+                {% for link in linklists[menu].links %}
+                  <li
+                    class="navlist__item"
+                    data-id="{{ menu_title }}"
+                    js-site-footer="menuLink"
+                  >
+                    <a class="navlist__link" href="{{ link.url }}">{{ link.title }}</a>
+                  </li>
+                {% endfor %}
+              </ul>
+            </div>
+          {% endif %}
+        {% endfor %}
+
+        <div
+          class="site-footer__menu-column terms-mobile"
+          data-id="terms-conditions"
+          js-site-footer="menuColumn"
+        >
+          <h3
+            class="site-footer__menu-heading"
+            data-id="terms-conditions"
+            js-site-footer="menuHeading"
+          >
+            {{ 'general.meta.terms_conditions' | t }}
+            <img
+              class="caret-mobile"
+              src="{{ 'icon-caret-down.svg' | asset_url }}"
+              data-id="terms-conditions"
+              js-site-footer="menuCaret"
+            />
+          </h3>
+
+          <ul class="site-footer__navlist navlist">
+            {% for link in linklists[section.settings.menu_terms_conditions].links %}
+              <li
+                class="navlist__item"
+                data-id="terms-conditions"
+                js-site-footer="menuLink"
+              >
+                <a class="navlist__link" href="{{ link.url }}">{{ link.title }}</a>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col xs12 site-footer__footnote-container">
+        <div class="site-footer__footnote">
+          <p class="site-footer__disclaimer">&copy; {{ 'now' | date: "%Y" }} Meermin &#174; <span class="trademark">{{ 'general.meta.rights_reserved' | t }}</span></p>
+
+          <div class="site-footer__misc">
+            <div class="site-footer__terms-conditions">
+              <ul class="site-footer__navlist navlist navlist-horizontal">
+                {% for link in linklists[section.settings.menu_terms_conditions].links %}
+                  <li class="navlist__item">
+                    <a class="navlist__link" href="{{ link.url }}">{{ link.title }}</a>
+                  </li>
+                {% endfor %}
+              </ul>
+            </div>
+
+            {% render 'currency-selector' %}
+
+            {% if settings.store_code == 'EU' %}
+              {% render 'language-selector' %}
+            {% endif %}
+
+            {% if settings.enable_store_selector %}
+              <div class="site-footer__store-selector">
+                {% render 'store-selector' with id: section.id %}
+              </div>
+            {% endif %}
+          </div>
+        </div>
+
+        {% if section.settings.show_payment_icons %}
+          {% unless shop.enabled_payment_types == empty %}
+            <span class="visually-hidden">
+              {{ 'layout.footer.payment_methods' | t }}
+            </span>
+
+            {% render 'payment-icons' %}
+          {% endunless %}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+  {
+    "name": "Footer",
+    "settings": [
+      {
+        "type": "text",
+        "id": "menu_1_title",
+        "label": "List Title",
+        "default": "Meermin"
+      },
+      {
+        "type": "link_list",
+        "id": "menu_1",
+        "label": "Primary menu",
+        "default": "footer"
+      },
+      {
+        "type": "text",
+        "id": "menu_2_title",
+        "label": "List Title",
+        "default": "Support"
+      },
+      {
+        "type": "link_list",
+        "id": "menu_2",
+        "label": "Secondary menu",
+        "default": "footer"
+      },
+      {
+        "type": "text",
+        "id": "menu_3_title",
+        "label": "List Title",
+        "default": "Follow Us"
+      },
+      {
+        "type": "link_list",
+        "id": "menu_3",
+        "label": "Tertiary menu",
+        "default": "footer"
+      },
+      {
+        "type": "link_list",
+        "id": "menu_terms_conditions",
+        "label": "Terms and conditions menu",
+        "default": "footer"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_payment_icons",
+        "label": "Show payment icons",
+        "default": false
+            },
+      {
+        "type": "header",
+        "content": "Email service provider (ESP)"
+      },
+      {
+        "type": "text",
+        "id": "esp_title",
+        "label": "Heading",
+        "default": "Subscribe to our newsletter"
+      },
+      {
+        "type": "text",
+        "id": "esp_subtitle",
+        "label": "subtitle",
+        "default": "Short sentence describing what someone will receive by signing up."
+      },
+      {
+        "type": "paragraph",
+        "content": "Any customers who sign up will have an account created for them in Shopify. [View customers](/admin/customers?query=&accepts_marketing=1)"
+      }
+    ]
+  }
+
+{% endschema %}

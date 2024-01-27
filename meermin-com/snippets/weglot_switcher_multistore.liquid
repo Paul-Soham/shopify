@@ -1,0 +1,18 @@
+{% comment %}
+  - required script for custom weglot implementation
+  - complete documentration: https://developers.weglot.com/javascript/javascript
+{% endcomment %}
+
+<script src="//cdn.weglot.com/weglot.min.js"></script>
+
+{% if shop.permanent_domain contains '-dev' %}
+  <!--Start Weglot Script-->
+  <script id="has-script-tags">Weglot.initialize({ api_key:"wg_3d41f7acce9c71e823eebc1746438ebc9" });</script>
+  <!--End Weglot Script-->
+{% endif %}
+
+{% if shop.permanent_domain contains '-eu' %}
+  <!--Start Weglot Script-->
+  <script id="has-script-tags">Weglot.initialize({ api_key:"wg_b7b20a075310dc45a317398f851d92b63" });</script>
+  <!--End Weglot Script-->
+{% endif %}

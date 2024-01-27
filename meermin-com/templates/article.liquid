@@ -1,0 +1,149 @@
+{% render 'shogun-products', content: article %}
+
+{% comment %}
+------------------------------------------------------------------------------
+  Template: Article
+  - Article comments have been removed from template.
+------------------------------------------------------------------------------
+{% endcomment %}
+{% assign related_article_tag_size = 0 %}
+
+<article class="template-article__article" role="article">
+  <div class="container">
+    <div class="row">
+      <div class="col xs12 m8 offset-m2">
+        <header class="template-article__header" role="banner">
+
+          <div class="template-article__meta">
+            <div class="template-article__meta-container">
+              <h2 class="body-1 template-article__meta-body">
+                {{ article.published_at | time_tag: format: 'day_month_year' }}
+              </h2>
+            </div>
+          </div>
+
+          <h1 class="template-article__title">{{ article.title }}</h1>
+
+          {% if article.tags.size > 0 %}
+            <ul class="template-article__categories">
+              {% for tag in article.tags %}
+                {% if tag contains 'related-articles' %}
+                  {% assign related_article_tag_size = related_article_tag_size | plus: 1 %}
+
+                {% elsif tag contains 'template: shogun' %}
+                  {% assign isShogunTemplate = true %}
+                {% else %}
+                  <li class="template-article__category-item">
+                    {{ tag | link_to_tag: tag }}
+                  </li>
+                {% endif %}
+              {% endfor %}
+            </ul>
+          {% endif %}
+        </header>
+      </div>
+    </div>
+  </div>
+
+  {% if article.image %}
+    <div class="template-article__hero">
+      <div class="template-article__hero-container">
+        <div class="row">
+          <div class="col xs12 m10 offset-m1 template-article__hero-col">
+            <div
+              class="hero template-article__hero-image lazyload"
+              data-bgset="{% render 'responsive-bg-image', image: article.image %}"
+            >
+            </div>
+
+            <noscript>
+              {% assign image_size = article.image.width | append: 'x' %}
+
+              <div
+                class="hero template-article__hero"
+                style="background-image: {{ article.image | img_url: image_size }}"
+              >
+              </div>
+            </noscript>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+
+  <div class="container">
+    <div class="template-article__container">
+      <div class="row">
+        {% if isShogunTemplate %}
+          <div class="col xs12">
+            <div class="template-article__body">
+              {{ article.content }}
+            </div>
+          </div>
+
+        {% else %}
+          <div class="col xs12 m6 offset-m3">
+            <div class="template-article__body">
+              {{ article.content }}
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</article>
+
+{% unless related_article_tag_size <= 0 %}
+  {% render 'related-articles' %}
+{% endunless %}
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "Article",
+    "articleBody": {{ article.content | strip_html | json }},
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": {{ shop.url | append: page.url | json }}
+    },
+    "headline": {{ article.title | json }},
+    {% if article.excerpt != blank %}
+      "description": {{ article.excerpt | strip_html | json }},
+    {% endif %}
+    {% if article.image %}
+      {% assign image_size = article.image.width | append: 'x' %}
+      "image": [
+        {{ article | img_url: image_size | prepend: 'https' | json }}
+      ],
+    {% endif %}
+    "datePublished": {{ article.published_at | date: '%Y-%m-%dT%H:%M:%SZ' | json }},
+    "dateCreated": {{ article.created_at | date: '%Y-%m-%dT%H:%M:%SZ' | json }},
+    "author": {
+      "@type": "Person",
+      "name": {{ article.author | json }}
+    },
+    "publisher": {
+      "@type": "Organization",
+      {% if settings.share_image %}
+        {% assign image_size = settings.share_image.width | append: 'x' %}
+        "logo": {
+          "@type": "ImageObject",
+          "height": "{{ settings.share_image.height | json }},
+          "url": {{ settings.share_image | img_url: image_size | prepend: 'https' | json }},
+          "width": {{ settings.share_image.width | json }}
+        },
+      {% elsif article.image %}
+        {% assign image_size = article.image.width | append: 'x' %}
+        "logo": {
+          "@type": "ImageObject",
+          "height": {{ article.image.height | json }},
+          "url": {{ article.image | img_url: image_size | prepend: 'https' | json }},
+          "width": {{ article.image.width | json }}
+        },
+      {% endif %}
+      "name": {{ shop.name | json }}
+    }
+  }
+</script>
+
+

@@ -1,0 +1,169 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Section: Featured collection
+  - This section requires a collection object.
+------------------------------------------------------------------------------
+{% endcomment %}
+{% assign featured_collection = collections[section.settings.featured_collection] %}
+
+<section
+  class="featured-collection"
+  data-section-id="{{ section.id }}"
+  data-section-type="featured-collection"
+  {% if settings.enable_quick_view and handle != 'styleguide' %}
+    js-quick-view="container"
+  {% endif %}
+>
+  <div class="container">
+    <div class="row">
+      <div class="col xs12">
+        {% if section.settings.heading != blank %}
+          <h3 class="featured-collection__title h3">{{ section.settings.heading }}</h2>
+        {% endif %}
+
+        {% if section.settings.enable_slider %}
+          <div class="featured-collection__carousel-container swiper-outer-container">
+            
+            <div 
+              class="swiper-button-prev swiper-button-custom"
+              js-featured-collection="prev"
+            >
+              {% render 'icon-direction' with icon: 'chevron-left' %}
+            </div>
+
+            <div
+              id="FeaturedCollection-{{ section.id }}"
+              class="featured-collection__carousel swiper-container"
+              js-carousel="container"
+              js-featured-collection="carousel"
+            >
+
+              <ul class="swiper-wrapper">
+                {% for product in featured_collection.products limit: section.settings.max_slide_size %}
+                  <li
+                    class="featured-collection__slide swiper-slide"
+                    js-carousel="cell"
+                    js-featured-collection="slide"
+                  >
+                    {% render 'product-card' with 
+                      product: product,
+                      collection: featured_collection 
+                    %}
+                  </li>
+                {% endfor %}
+              </ul>
+            </div>
+
+            <div 
+              class="swiper-button-next swiper-button-custom"
+              js-featured-collection="next"
+            >
+              {% include 'icon-direction' with icon: 'chevron-right' %}
+            </div>
+          </div>
+
+        {% else %}
+          <div class="featured-collection__card-grid card-grid card-grid--4up">
+            {% for product in featured_collection.products limit: section.settings.max_slide_size %}
+              <div class="card-grid__item">
+                {% render 'product-card' with 
+                  product: product,
+                  collection: featured_collection 
+                %}
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+
+        {% if section.settings.show_view_all %}
+          <div class="text-center">
+            <a class="button button--primary" href="{{ featured_collection.url }}">
+              <span>{{ section.settings.call_to_action_text }}</span>
+            </a>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+  {
+    "name": "Featured Collection",
+    "class": "index-section",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Content"
+      },
+      {
+        "type": "text",
+        "id": "heading",
+        "label": "Heading",
+        "default": "Featured collection"
+      },
+      {
+        "type": "collection",
+        "id": "featured_collection",
+        "label": "Collection"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_view_all",
+        "label": "Show 'View all' button",
+        "default": false
+      },
+      {
+        "type": "text",
+        "id": "call_to_action_text",
+        "label": "'View all' text",
+        "default": "View all"
+      },
+      {
+        "type": "header",
+        "content": "Options"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_slider",
+        "label": "Enable slider",
+        "default": false,
+        "info": "Recommended on collections with atleast 5 products."
+      },
+      {
+        "type": "select",
+        "id": "max_slide_size",
+        "label": "Product limit",
+        "default": "4",
+        "options": [
+          {
+            "label": "4",
+            "value": "4"
+          },
+          {
+            "label": "5",
+            "value": "5"
+          },
+          {
+            "label": "6",
+            "value": "6"
+          },
+          {
+            "label": "7",
+            "value": "7"
+          },
+          {
+            "label": "8",
+            "value": "8"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Featured collection",
+        "category": "Collection"
+      }
+    ]
+  }
+{% endschema %}

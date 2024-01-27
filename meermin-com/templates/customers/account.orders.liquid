@@ -1,0 +1,238 @@
+{% comment %}
+----------------------------------------------------------------------------
+  Template: Account orders
+  - List of all orders.
+----------------------------------------------------------------------------
+{% endcomment %}
+<style>
+  .account-container{
+    max-width: 1440px !important;
+  }
+  .order-details {
+    width: 65.33333% !important;
+    margin-left: 50px !important;
+}
+  .row .col.xs2.order-heading {
+    width: 14.28% !important;
+}
+  .order-table__col {
+    width: 14.28% !important;
+}
+  @media only screen and (max-width: 991px){
+    .order-details {
+    width: auto !important;
+    margin-left: auto !important;
+    }
+    .row .col.xs2.order-heading {
+    width: auto !important;
+    }
+    .order-table__col {
+    width: auto !important;
+    }
+    .order-table__row{
+    padding-bottom: 10px;
+    }
+  }
+    @media only screen and (max-width: 767px){
+    .order-details {
+    width: auto !important;
+    margin-left: auto !important;
+    }
+    .row .col.xs2.order-heading {
+    width: auto !important;
+    }
+    .order-table__col {
+    width: auto !important;
+    }
+    .row .col.xs6.order-value {
+    width: 50% !important;
+    }
+    .order-table__row{
+    padding-bottom: 10px !important;
+    }
+  }
+  
+  @media only screen and (max-width: 950px) and (min-width: 767px)  {
+  .row .col.xs2.order-heading {
+      width: 14.28% !important;
+  }
+
+  .row .col.m2.order-value {
+    width: 14.28% !important;
+}
+
+    .order-details {
+    width: 100% !important;
+    margin-left: auto !important;
+}
+
+    
+  }
+</style>
+{% render 'account-header' %}
+
+<div class="container account-container">
+  <div class="row">
+    <div class="template-account__body">
+      {% comment %}
+      ------------------------------------------------------------------------------
+        Sidebar
+      ------------------------------------------------------------------------------
+      {% endcomment %}
+      <div class="col xs12 l2 offset-l1">
+        {% render 'account-nav' %}
+      </div>
+
+      {% comment %}
+      ------------------------------------------------------------------------------
+        Inner content
+      ------------------------------------------------------------------------------
+      {% endcomment %}
+      <div class="col xs12 l7 offset-l1 order-details">
+        <div class="order-table">
+          <h3 class="h2 order-table__heading">{{ 'customer.orders.title' | t }}</h3>
+
+          {% paginate customer.orders by 20 %}
+            {% if customer.orders.size != 0 %}
+              <div class="order-table__header">
+                <div class="row">
+                  <div class="col xs2 order-heading">
+                    <div class="order-table__label label">
+                      {{ 'customer.orders.order_number' | t }}
+                    </div>
+                  </div>
+
+                  <div class="col xs2 order-heading">
+                    <div class="order-table__label label">
+                      {{ 'customer.orders.date' | t }}
+                    </div>
+                  </div>
+
+                  <div class="col xs2 order-heading">
+                    <div class="order-table__label label">
+                      {{ 'customer.orders.total' | t }}
+                    </div>
+                  </div>
+
+                  <div class="col xs2 order-heading">
+                    <div class="order-table__label label">
+                      {{ 'customer.orders.payment_status' | t }}
+                    </div>
+                  </div>
+
+                  <div class="col xs2 order-heading">
+                    <div class="order-table__label label">
+                      Estimated Delivery
+                    </div>
+                  </div>
+
+                  <div class="col xs2 order-heading">
+                    <div class="order-table__label label">
+                      {{ 'customer.orders.fulfillment_status' | t }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {% for order in customer.orders %}
+                
+                <div class="order-table__row">
+                  <div class="row">
+                    <div
+                      class="order-table__col body-2 col xs6 m2 order-value"
+                      data-label="{{ 'customer.orders.order_number' | t }}"
+                    >
+                   <div class="order-table__label order-table__label--inner">
+                        {{ 'customer.orders.order_number' | t }}
+                      </div>
+                      <a href="{{ order.customer_url }}" class="body-2">
+                        {{ order.name }}
+                      </a>
+                    </div>
+
+                    <div
+                      class="order-table__col body-2 col xs6 m2 order-value"
+                      data-label="{{ 'customer.orders.date' | t }}"
+                    >
+                      <div class="order-table__label order-table__label--inner">
+                        {{ 'customer.orders.date' | t }}
+                      </div>
+
+                      {{ order.created_at | date: format: 'month_day_year' }}
+                    </div>
+
+                    <div
+                      class="order-table__col body-2 col xs6 m2 order-value"
+                      data-label="{{ 'customer.orders.total' | t }}"
+                    >
+                      <div class="order-table__label order-table__label--inner">
+                        {{ 'customer.orders.total' | t }}
+                      </div>
+                      <span js-currency="price" data-price="{{ order.total_price }}">
+                        {{ order.total_price | money }}
+                      </span>
+                    </div>
+
+                    <div
+                      class="order-table__col body-2 col xs6 m2 order-value"
+                      data-label="{{ 'customer.orders.payment_status' | t }}"
+                    >
+                      <div class="order-table__label order-table__label--inner">
+                        {{ 'customer.orders.payment_status' | t }}
+                      </div>
+
+                      {{ order.financial_status_label }}
+                    </div>
+                    <div class="order-table__col body-2 hello col xs6 m2 order-value" data-label="Estimated Delivery">
+                    {% for line_item in order.line_items %}
+                        {% if line_item.product.tags.size > 0 %}
+                            {% for tag in line_item.product.tags %}
+                              {% if tag contains 'mto-ship-date' %}
+                                {% assign tag_split = tag | split: ':' %}
+                                {% assign key_name = tag_split[0] | capitalize | replace: "-", " " %}
+                                {% assign key_value = tag_split[1] | capitalize | replace: "-", " " %}
+                                
+                                <div class="order-table__label order-table__label--inner">
+                                Estimated Delivery
+                                </div>
+                                {{ key_value }}
+                                                   
+                              {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    {% endfor %}
+                    </div> 
+
+                    <div
+                      class="order-table__col body-2 col xs6 m2 order-value"
+                      data-label="{{ 'customer.orders.fulfillment_status' | t }}"
+                    >
+                      <div class="order-table__label order-table__label--inner">
+                        {{ 'customer.orders.fulfillment_status' | t }}
+                      </div>
+
+                      {{ order.fulfillment_status_label }}
+                    </div>
+
+                    <div class="order-table__col body-2 col xs6 m2 text-right order-value">
+                      <a href="{{ order.customer_url }}" class="text-link">
+                        {{ 'customer.orders.view_order' | t }}
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
+
+            {% else %}
+              <p>{{ 'customer.orders.none' | t }}</p>
+            {% endif %}
+
+            {% if paginate.pages > 1 %}
+              {% render 'pagination' with paginate: paginate %}
+            {% endif %}
+          {% endpaginate %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

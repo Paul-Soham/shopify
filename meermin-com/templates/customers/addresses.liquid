@@ -1,0 +1,228 @@
+{% comment %}
+----------------------------------------------------------------------------
+  Template: Addresses
+----------------------------------------------------------------------------
+{% endcomment %}
+
+{% render 'account-header' %}
+
+{% paginate customer.addresses by 5 %}
+  <div class="container">
+    <div class="row">
+      <div class="template-account__body">
+        {% comment %}
+        ------------------------------------------------------------------------------
+          Sidebar
+        ------------------------------------------------------------------------------
+        {% endcomment %}
+        <div class="col xs12 l2 offset-l1">
+          {% render 'account-nav' %}
+        </div>
+
+        <div class="col xs12 l7 offset-l1 template-addresses__inner">
+          <div class="template-addresses__buttons row" js-addresses="contentToggle">
+            <div class="template-addresses__heading col xs12 l6">
+              <h2>{{ 'customer.addresses.title' | t }}</h2>
+            </div>
+
+            <div class="template-addresses__action col xs12 l6">
+              <button
+                class="button button--primary"
+                type="button"
+                js-addresses="newFormToggle"
+              >
+                <span>{{ 'customer.addresses.add_new' | t }}</span>
+              </button>
+            </div>
+          </div>
+
+          {% comment %}
+          ------------------------------------------------------------------------------
+            Add new address
+          ------------------------------------------------------------------------------
+          {% endcomment %}
+          <div class="template-addresses__form-row row">
+            <div class="col xs12">
+              <div
+                class="form-group template-addresses__form is-hidden"
+                js-addresses="newForm"
+              >
+
+                {% form 'customer_address', customer.new_address %}
+                  <button
+                    class="template-addresses__form-button button button--secondary button--secondary-brand left-align"
+                    type="button"
+                    js-addresses="newFormToggle"
+                  >
+                    {{ 'customer.addresses.return' | t }}
+                  </button>
+
+                  <h2>{{ 'customer.addresses.add_new' | t }}</h2>
+
+                  {% render 'address-fields' with form: form, id: 'New' %}
+
+                  <div class="row">
+                    <div class="col xs12">
+                      <button
+                        class="button button--primary"
+                        type="submit"
+                      >
+                        <span>{{ 'customer.addresses.add_new' | t }}</span>
+                      </button>
+                    </div>
+                  </div>
+                {% endform %}
+              </div>
+            </div>
+          </div>
+
+          {% comment %}
+          ------------------------------------------------------------------------------
+            Default address
+          ------------------------------------------------------------------------------
+          {% endcomment %}
+          <div class="template-addresses__form-row row">
+            <div class="col xs12 m5" js-addresses="contentToggle">
+              {% for address in customer.addresses %}
+                {% if address == customer.default_address %}
+                  <div class="form-group">
+                    <div class="template-addresses__panel panel">
+                      {% if address == customer.default_address %}
+                        <h3 class="panel__label label">
+                          {{ 'customer.addresses.default' | t }}
+                        </h3>
+                      {% endif %}
+
+                      <div class="panel__body">
+                        <div class="panel__address">
+                          {{ address | format_address }}
+                        </div>
+
+                        <button
+                          class="text-link"
+                          type="button"
+                          data-form-id="{{ address.id }}"
+                          js-addresses="editAddress"
+                        >
+                          {{ 'customer.addresses.edit' | t }}
+                        </button>
+
+                        <button
+                          class="text-link"
+                          type="button"
+                          data-form-id="{{ address.id }}"
+                          data-confirm-message="{{ 'customer.addresses.delete_confirm' | t }}"
+                          js-addresses="deleteAddress"
+                        >
+                          {{ 'customer.addresses.delete' | t }}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  {% break %}
+                {% endif %}
+              {% endfor %}
+            </div>
+
+            {% comment %}
+            ----------------------------------------------------------------------------
+              Additional addresses
+            ----------------------------------------------------------------------------
+            {% endcomment %}
+            <div class="col xs12 m7" js-addresses="contentToggle">
+              {% for address in customer.addresses %}
+                {% if address != customer.default_address %}
+                  <div class="form-group">
+                    <div class="template-addresses__panel panel">
+                      {% if forloop.first %}
+                        <h3 class="panel__label label">
+                          {{ 'customer.addresses.additional' | t }}
+                        </h3>
+                      {% endif %}
+
+                      <div class="panel__body">
+                        <div class="panel__address">
+                          {{ address | format_address }}
+                        </div>
+
+                        <button
+                          class="text-link"
+                          type="button"
+                          data-form-id="{{ address.id }}"
+                          js-addresses="editAddress"
+                        >
+                          {{ 'customer.addresses.edit' | t }}
+                        </button>
+
+                        <button
+                          class="text-link"
+                          type="button"
+                          data-confirm-message="{{ 'customer.addresses.delete_confirm' | t }}"
+                          data-form-id="{{ address.id }}"
+                          js-addresses="deleteAddress"
+                        >
+                          {{ 'customer.addresses.delete' | t }}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+
+          {% comment %}
+          ----------------------------------------------------------------------------
+            Edit address forms
+          ----------------------------------------------------------------------------
+          {% endcomment %}
+          {% for address in customer.addresses %}
+            <div class="template-addresses__form-row row">
+              <div class="col xs12">
+                <div
+                  id="EditAddress_{{ address.id }}"
+                  class="template-addresses__form is-hidden"
+                >
+                  {% form 'customer_address', address %}
+                    <button
+                      class="template-addresses__form-button button button--secondary button--secondary-brand left-align"
+                      type="button"
+                      data-form-id="{{ form.id }}"
+                      js-addresses="editAddress"
+                    >
+                      {{ 'customer.addresses.return' | t }}
+                    </button>
+
+                    <h4>{{ 'customer.addresses.edit_address' | t }}</h4>
+
+                    {% render 'address-fields' with form: form, id: form.id %}
+
+                    <div class="row">
+                      <div class="col xs12">
+                        <button
+                          class="button button--primary"
+                          type="submit"
+                        >
+                          <span>{{ 'customer.addresses.update' | t }}</span>
+                        </button>
+                      </div>
+                    </div>
+                  {% endform %}
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+
+          <div class="row">
+            <div class="col xs12">
+              {% if paginate.pages > 1 %}
+                {% render 'pagination' with paginate: paginate %}
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endpaginate %}

@@ -1,0 +1,145 @@
+{% comment %}
+----------------------------------------------------------------------------
+  Snippet: Theme strings
+  - Assign global variables for use in JavaScript.
+----------------------------------------------------------------------------
+{% endcomment %}
+
+{% capture brontoDirectAdd %}
+  {% unless settings.store_code == 'SECONDS' %}
+    {% if shop.permanent_domain contains 'meerminshoes.myshopify.com' %}
+      brontoDirectAdd: 'https://email.meermin.com/public/?q=direct_add&fn=Public_DirectAddForm&id=bgpjotvmrtajdkjvayccnzqzvdpibga&email=[userMail]&createCookie=1&list1=0be403ec00000000000000000000001dde8f',
+    {% endif %}
+
+    {% if shop.permanent_domain contains 'meermin-row.myshopify.com' %}
+      brontoDirectAdd: 'https://email.meermin.es/public/?q=direct_add&fn=Public_DirectAddForm&id=bgijuuncrugznihztgrdxdtktbjobmn&email=[userMail]&createCookie=1&list1=0be403ec000000000000000000000030a01a',
+    {% endif %}
+
+    {% if shop.permanent_domain contains 'meermin-eu.myshopify.com' %}
+      brontoDirectAdd: 'https://email.meermin.es/public/?q=direct_add&fn=Public_DirectAddForm&id=boymvqcytpdxrgvawdjbhdupbmnnbcd&email=[userMail]&createCookie=1&list1=0be403ec00000000000000000000001e4c8a',
+    {% endif %}
+  {% endunless %}
+{% endcapture %}
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace('no-js', '');
+
+  window.theme = {
+    strings: {
+      addingToCart: {{ 'products.product.adding_to_cart' | t | json }},
+      addToCart: {{ 'products.product.add_to_cart' | t | json }},
+      prompt: {{ 'products.product.prompt' | t | json }},
+      remove: {{ 'cart.general.remove' | t | json }},
+      soldOut: {{ 'products.product.sold_out' | t | json }},
+      unavailable: {{ 'products.product.unavailable' | t | json }},
+      madeToOrder: {{ 'products.product.made_to_order' | t | json }},
+      endOfCountdown: {{ 'products.product.end_of_countdown' | t | json }},
+      selectASize: {{ 'products.product.select_a_size' | t | json }},
+      estimatedDelivery: {{ 'products.product.estimated_delivery' | t | json }},
+      size: {{ 'products.product.size' | t | json }},
+      {{ brontoDirectAdd }}
+      cart: {
+        general: {
+          continue_browsing: {{ 'cart.general.continue_browsing' | t | json }},
+          empty: {{ 'cart.general.empty' | t | json }},
+          remove: {{ 'cart.general.remove' | t | json }},
+          review: {{ 'cart.general.review' | t | json }},
+          title: {{ 'cart.general.title' | t | json }},
+        },
+        label: {
+          discounted_price: {{ 'cart.label.discounted_price' | t | json }},
+          original_price: {{ 'cart.label.original_price' | t | json }},
+          price: {{ 'cart.label.price' | t | json }},
+          product: {{ 'cart.label.product' | t | json }},
+          quantity: {{ 'cart.label.quantity' | t | json }},
+          total: {{ 'cart.label.total' | t | json }},
+        }
+      },
+      productPrice: {
+        fromText:  {{ 'products.product.from_text_html' | t | json }},
+        onSaleFrom: {{ 'products.product.on_sale_from_html' | t | json}},
+        regularPrice: {{ 'products.product.regular_price' | t | json}},
+      },
+      collections: {
+        currentPage: {{ 'collections.pagination.current_page' | t | json }},
+        refineBy: {{ 'collections.general.filter_label' | t | json }},
+      },
+      customer: {
+        registerError: {{ 'customer.register.register_error' | t : shop_email : shop.email | json }},
+      }
+    },
+    moneyFormat: {{ shop.money_format | json }},
+    currency: {{ cart.currency.iso_code | json }},
+    enabledCurrencies: [
+      {% for currency in shop.enabled_currencies %}
+        {
+          name: {{ currency.name | json }},
+          iso_code: {{ currency.iso_code | json }},
+          symbol: {{ currency.symbol | json }}
+        }{% unless forloop.last %},{% endunless %}
+      {% endfor %}
+    ],
+    pageType: {{ request.page_type | json }},
+    features: {
+      cartAddOn: {{ settings.enable_cart_addon | json }},
+      cartAddOnMessage: {{ settings.enable_cart_addon_message | json }},
+      cartAddOnProduct: {{ settings.cart_addon_product | json }},
+      currencyConverter: {{ settings.enable_currency_converter | json }},
+      currencySelector: {{ settings.enable_currency_selector | json }},
+      freeShippingNotification: {{ settings.enable_free_shipping_notification | json }},
+      geolocationService: {{ settings.geolocation_service | json }},
+      imageZoom: {{ settings.enable_image_zoom | json }},
+      inventoryThreshold: {{ settings.inventory_quantity_threshold | json }},
+      productSwatches: {{ settings.enable_product_swatches | json }},
+      quickview: {{ settings.enable_quick_view | json }},
+      redirectModal: {{ settings.enable_redirect_modal | json }},
+      stickyHeader: {{ settings.enable_sticky_header | json }},
+      storeSelector: {{ settings.enable_store_selector | json }},
+    },
+    low_stock_message: {
+      blank: {{ 'cart.low_stock_message.blank' | t | json }},
+      multiple: {{ 'cart.low_stock_message.multiple' | t | json }},
+      single: {{ 'cart.low_stock_message.single' | t | json }},
+      outOfStock: {{ 'cart.low_stock_message.out_of_stock' | t | json }},
+    },
+    {% if settings.store_code != blank %}
+    store: {
+      storeCode: {{ settings.store_code | json }},
+      storeName: {{ settings.store_name | json }},
+    },
+    {% endif %}
+    {% if settings.enable_redirect_modal %}
+    redirect: {
+      choiceContinue: {{ 'redirect.modal.choice.continue' | t | json }},
+      updatePreferences: {{ 'redirect.modal.update_preferences' | t | json }},
+      updating: {{ 'redirect.modal.updating' | t | json }},
+    },
+    {% endif %}
+    {% if settings.enable_country_selector %}
+    storeSelector: {
+      messages: {
+        error: {{ 'layout.footer.store_selector_error' | t | json }}
+      },
+    },
+    {% endif %}
+    {% if settings.enable_free_shipping_notification %}
+    freeShipping: {
+      messages: {
+        blank: {{ 'cart.free_shipping.blank' | t | json }},
+        partial: {{ 'cart.free_shipping.partial' | t | json }},
+        ideal: {{ 'cart.free_shipping.ideal' | t | json }}
+      },
+      threshold: {{ settings.free_shipping_threshold_value }},
+      progressBar: {{ settings.enable_free_shipping_progress_bar | json }}
+    },
+    {% endif %}
+    collection: {
+      currentTags: [
+        {% for tag in current_tags %}
+          {{ tag | handle | json }}{% unless forloop.last %},{% endunless %}
+        {% endfor %}
+      ]
+    },
+    shopUrl: {{ shop.url  | json }},
+  };
+</script>

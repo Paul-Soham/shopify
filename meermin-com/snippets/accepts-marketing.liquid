@@ -1,0 +1,27 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Snippet: Accepts marketing checkbox
+  - Used in register.liquid template.
+------------------------------------------------------------------------------
+{% endcomment %}
+<div class="checkbox">
+  <input
+    name="customer[accepts_marketing]"
+    type="hidden"
+    value=""
+  >
+
+  <input
+    id="customer[accepts_marketing]"
+    class="input-checkbox checkbox__input"
+    name="customer[accepts_marketing]"
+    type="checkbox"
+  >
+
+  <label
+    class="checkbox__label body-2"
+    for="customer[accepts_marketing]"
+  >
+    {{ 'customer.register.subscribe' | t }}
+  </label>
+</div>

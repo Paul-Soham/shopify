@@ -1,0 +1,154 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Snippet: Cart table
+  - Line items shown in cart table, excludes sidebar.
+------------------------------------------------------------------------------
+{% endcomment %}
+{% assign enable_product_vendor = false %}
+
+<div
+  class="cart-table"
+  data-enable-vendor-title="{{ enable_product_vendor }}"
+  js-cart-table="container"
+>
+  <div class="cart-table__body ajax-cart">
+    {% for item in cart.items %}
+      {% assign product_type = item.product.type | handleize %}
+      {% assign property_size = item.properties | size %}
+      {% assign mto = false %}
+      {% assign mto_ship_date = '' %}
+      {% assign variant_title = item.variant.title | split: '/' %}
+
+      {% for tag in item.product.tags %}
+        {% if tag == 'mto:true' %}
+          {% assign mto = true %}
+        {% endif %}
+
+        {% if tag contains 'mto-ship-date:' %}
+          {% assign mto_ship_date = tag | replace: 'mto-ship-date:', '' | replace: '-', ' '%}
+        {% endif %}
+      {% endfor %}
+
+      {% unless product_type == 'add-on' %}
+        <div
+          class="cart-table__item ajax-cart__line-item"
+          data-index="{{ forloop.index0 }}"
+          data-key="{{ item.key }}"
+          js-cart-table="lineItem"
+        >
+          {% if item.image %}
+            <div
+              class="cart-table__image ajax-cart__image"
+              data-label="{{ 'customer.order.product' | t }}"
+            >
+              <a href="{{ item.url | within: collections.all }}">
+                <img
+                  alt="{{ item.image.alt }}"
+                  sizes="auto"
+                  src="{{ item.image | img_url: '50x' }}"
+                  srcset="
+                    {{ item.image | img_url: '120x' }} 120w,
+                    {{ item.image | img_url: '240x' }} 240w,
+                    {{ item.image | img_url: '320x' }} 320w
+                  "
+                >
+              </a>
+            
+            </div>
+          {% endif %}
+
+          <div class="cart-table__description">
+            <div class="row no-margin">
+              <div class="ajax-cart__inner">
+
+                <div class="ajax-cart__title-wrap">
+                  {% if enable_product_vendor %}
+                    <p class="ajax-cart__vendor meta">
+                      {{ item.product.vendor }}
+                    </p>
+                  {% endif %}
+
+                  {% if mto %}
+                    <p class="ajax-cart__made-to-order">{{ 'products.product.made_to_order' | t }}</p>
+                  {% endif %}
+
+                  <a class="ajax-cart__title" href="{{ item.url }}">
+                    {{ item.product.title }} 
+                  </a>
+                </div>
+
+                <p class="ajax-cart__variant-title caption">
+                  <span class="size-message">{{ 'products.product.size' }}</span> {{ variant_title.last }}
+                </p>
+
+                {% if property_size > 0 %}
+                  <p class="ajax-cart__properties caption">
+                    {% for property in item.properties %}
+                      {% assign first_character_in_key = property.first | slice: 0 %}
+
+                      {% unless property.last == blank or first_character_in_key == '_' %}
+                        {{ property.first }}:
+
+                        {% if property.last contains '/uploads/' %}
+                          <a href="{{ property.last }}">
+                            {{ property.last | split: '/' | last }}
+                          
+                          </a>
+
+                        {% else %}
+                          {{ property.last }}
+                        {% endif %}
+                      <br>
+                      
+                      {% endunless %}
+                    {% endfor %}
+                  </p>
+                {% endif %}
+
+                <div class="ajax-cart__amount">
+                  <div
+                    class="cart-table__quantity-selector"
+                    data-label="{{ 'cart.label.quantity' | t }}"
+                  >
+                    {% render 'quantity-selector' with
+                      id: forloop.index,
+                      key: item.key,
+                      namespace: 'cart-table',
+                      selected_variant: item.variant,
+                      size: 'small',
+                      value: item.quantity,
+                    %}
+                  </div>
+
+                  <button
+                    class="ajax-cart__remove"
+                    data-cy="removeProduct"
+                    data-key="{{ item.key }}"
+                    js-ajax-cart="remove"
+                  >
+                    {{ 'cart.general.remove' | t }}
+                  </button>
+                </div>
+
+                <div class="ajax-cart__price" js-cart-table="lineItemPrice">
+                  {% render 'line-item-price' with item: item %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endunless %}
+
+      <input
+        name="madeToOrder"
+        type="hidden"
+        {% if mto %}
+          value="true"
+          ship="{{ mto_ship_date }}"
+        {% endif %}
+        data-id="{{ item.product.id }}"
+        js-cart-table="madeToOrder"
+      >
+    {% endfor %}
+  </div>
+</div>

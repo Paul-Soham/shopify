@@ -1,0 +1,76 @@
+{% comment %}
+----------------------------------------------------------------------------
+  Snippet: Pagination
+  - Used on blog, collection, orders, addresses, and search.
+----------------------------------------------------------------------------
+{% endcomment %}
+<div class="pagination">
+  {% if paginate.previous %}
+    <a class="pagination__item pagination__link" href="{{ paginate.previous.url }}">
+      {% render 'icon-direction' with icon: 'arrow-left' %}
+
+      <div class="pagination__label visually-hidden">
+        {% if request.page_type == 'collection' %}
+          {{ 'collections.pagination.previous' | t }}
+
+        {% else %}
+          {{ 'blogs.pagination.previous' | t }}
+        {% endif %}
+      </div>
+    </a>
+
+  {% else %}
+    <span class="pagination__item">
+      {% render 'icon-direction' with icon: 'arrow-left' %}
+
+      <div class="pagination__label visually-hidden">
+        {% if request.page_type == 'collection' %}
+          {{ 'collections.pagination.previous' | t }}
+
+        {% else %}
+          {{ 'blogs.pagination.previous' | t }}
+        {% endif %}
+      </div>
+    </span>
+  {% endif %}
+
+  <div class="pagination__item">
+    {% if request.page_type == 'collection' %}
+      {{ 'collections.pagination.current_page' | t: current: paginate.current_page, size: paginate.pages }}
+
+    {% else %}
+      {{ 'blogs.pagination.current_page' | t: current: paginate.current_page, size: paginate.pages }}
+    {% endif %}
+  </div>
+
+  {% if paginate.next %}
+    <a class="pagination__item pagination__link" href="{{ paginate.next.url }}">
+      <span>
+        {% render 'icon-direction' with icon: 'arrow-right' %}
+
+        <div class="pagination__label visually-hidden">
+          {% if request.page_type == 'collection' %}
+            {{ 'collections.pagination.next' | t }}
+
+          {% else %}
+            {{ 'blogs.pagination.next' | t }}
+          {% endif %}
+        </div>
+      </span>
+    </a>
+
+  {% else %}
+    <span class="pagination__item">
+      {% render 'icon-direction' with icon: 'arrow-right' %}
+
+      <div class="pagination__label visually-hidden">
+        {% if request.page_type == 'collection' %}
+          {{ 'collections.pagination.next' | t }}
+
+        {% else %}
+          {{ 'blogs.pagination.next' | t }}
+        {% endif %}
+      </div>
+    </span>
+  {% endif %}
+</div>

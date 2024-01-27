@@ -1,0 +1,21 @@
+<div class="template-product__description-container" js-template-product="description">
+  <div class="container">
+    <div class="row">
+      <div class="template-product__description col xs12 l5 offset-l1">
+        <h5 class="template-product__description-title">
+          {{ 'products.product.product_description' | t }}
+        </h5>
+        {% for tag in product.tags %}
+          {% assign tag_value = settings.tag-select %}
+          {% if tag == tag_value %}
+            <p class="pdp-place" style="color: {{ settings.sale-placeholder_color }}"><b>{{ settings.sale-placeholder }}</b></p>
+          {% endif %}
+        {% endfor %}
+        <p class="template-product__description-text body-1">{{ product.description }}</p>
+      </div>
+      <div class="template-product__specification col xs12 l5 offset-l1">
+        {% section 'product-specification' %}
+      </div>
+    </div>
+  </div>
+</div>

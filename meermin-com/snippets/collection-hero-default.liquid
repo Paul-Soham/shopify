@@ -1,0 +1,69 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Snippet: Default collection hero.
+  - Default collection hero rendered if custom hero isn't added in template theme settings.
+
+  - Accepts:
+  -- collection: {Object} Collection.
+
+  - Usage:
+  -- In your liquid template file, copy the following line:
+  {% render 'rcollection-hero-default' with
+    collection: collection
+  %}
+------------------------------------------------------------------------------
+{% endcomment %}
+
+{% assign hero_banner_fields = collection.metafields.hero_banner %}
+{% assign collection_handle = collection.handle %}
+
+{% if collection.metafields.hero_banner['text_color'] != blank %}
+  {% assign hero_text_color = hero_banner_fields['text_color'] %}
+{% endif %}
+
+{% if collection.image %}
+  {% assign collection_featured_image = collection.image %}
+{% endif %}
+
+<header
+  class="template-collection__hero hero lazyload {% if collection.description %}has-description{% endif %}"
+  data-bgset="{% render 'responsive-bg-image', image: collection_featured_image %}"
+>
+  <div class="container">
+    <div class="row no-margin-bottom">
+      <div class="col xs12">
+        <div
+          class="hero__container"
+          {% if hero_text_color %}
+            style="color: {{ hero_text_color }}"
+          {% endif %}
+        >
+          <h1 class="
+            hero__title d2
+            {% if collection.image %}
+              hero__title-light
+            {% endif %}
+          "
+          >
+            {{ collection.title }}
+          </h1>
+
+          {% if collection.description != blank %}
+            <div 
+              class="
+                hero__description
+                {% if collection.image %}
+                  hero__description-light
+                {% endif %}
+              "
+            >
+              <p>
+                {{ collection.description }}
+              </p>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</header>

@@ -1,0 +1,180 @@
+<style>
+  .hero__container{
+    padding-left: 0 !important;
+    display: flex;
+  }
+  p.hero_title {
+    font-size: 32px;
+    font-weight: 300;
+}
+  p.product-count {
+    color: #717171;
+    font-size: 14px;
+}
+  a.category-name.active {
+    background: #082939;
+    color: #fff;
+}
+  a.category-name:hover {
+    background: #082939;
+    color: #fff;
+}
+</style>
+{% assign hero_banner_fields = collection.metafields.hero_banner %}
+{% assign collection_handle = collection.handle %}
+
+{% if collection.metafields.hero_banner['text_color'] != blank %}
+  {% assign hero_text_color = hero_banner_fields['text_color'] %}
+{% endif %}
+
+{% if collection.image %}
+  {% assign collection_featured_image = collection.image %}
+{% endif %}
+<header
+  class="template-collection__hero hero lazyload {% if collection.description %}has-description{% endif %}"
+  data-bgset="{% render 'responsive-bg-image', image: collection_featured_image %}"
+>
+  <div class="container">
+    <div class="row no-margin-bottom">
+      <div class="col xs12">
+        <div
+          class="hero__container"
+          {% if hero_text_color %}
+            style="color: {{ hero_text_color }}"
+          {% endif %}
+        >
+          <p class="hero_title {% if collection.image %} hero__title-light {% endif %}">
+            {{ collection.title }}
+          </p>
+          <p class="product-count">
+            {{ collection.all_products_count }}
+          </p>
+          {% if collection.description != blank %}
+            <div 
+              class="
+                hero__description
+                {% if collection.image %}
+                  hero__description-light
+                {% endif %}
+              "
+            >
+              <p>
+                {{ collection.description }}
+              </p>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+        <div class="bc-sf-filter-category-parent">
+
+          
+          {% if collection.all_tags.size > 0 %}
+            {% for tag in collection.all_tags %}
+
+              {% assign parts = request.path | split: '/' %}
+              {% assign last_part = parts[-1] %}
+              {% assign last_part_new = last_part | split: 'parent-' %}
+               {% assign last_part_new2 = last_part_new[-1] %}
+
+               {% assign last_part_new_subsub = last_part_new2 | split: '+' %}
+               {% assign last_part_new_subsub2 = last_part_new_subsub[-1] %}
+           
+               {% assign last_part_new_subsub21 = last_part_new_subsub2 | split: 'sub-' %}
+               {% assign last_part_new_subsub22 = last_part_new_subsub21[-1] %}
+
+
+        
+               {% if last_part contains 'parent' %}
+
+               {% assign tag_sub_handle = "sub-" | append: last_part_new2 %}
+               {% assign tag_sub_handle2 = "last-" | append: last_part_new_subsub22 %}
+               
+             
+                 
+                {% if tag contains tag_sub_handle %}
+              
+                  <div class="bc-sf-filter-category ncew">
+               
+
+                    {% if current_tags contains tag %} 
+                      {{ tag | split: ':' | last | link_to_remove_tag: tag }}
+                    {% else %}
+                      {{ tag | split: ':' | last | link_to_add_tag: tag }}
+                    {% endif %}
+                  </div>
+
+                  <style>
+                   .nc2ew {display: none !important;}
+                  </style>
+               {% assign tag_new_subpart = tag | split: 'sub-' %}
+               {% assign tag_new_subpart2 = tag_new_subpart[-1] %}
+               {% assign tag_new_subpart22 = "last-" | append: tag_new_subpart2 %}
+                 
+              {% if tag contains tag_new_subpart22 %}
+                  <style>
+                   .ncew {pointer-events:auto;}
+                  </style>
+               {% else %}
+                  <style>
+                   .ncew {pointer-events:auto;}
+                  </style>
+                {% endif %}
+ 
+                  {% elsif tag contains tag_sub_handle2 %}
+
+                  
+                  <div class="bc-sf-filter-category nc2ew">
+               
+
+                    {% if current_tags contains tag %} 
+                      {{ tag | split: ':' | last | link_to_remove_tag: tag }}
+                    {% else %}
+                      {{ tag | split: ':' | last | link_to_add_tag: tag }}
+                    {% endif %}
+                  </div>
+
+                  <style>
+                   .nc2ew {pointer-events:none;}
+                  </style>
+
+                  {% else %}
+          {% endif %}
+              
+
+              {% else %}
+          
+              {% if tag contains 'parent' %}
+                  <div class="bc-sf-filter-category new">
+               
+
+                    {% if current_tags contains tag %} 
+                      {{ tag | split: ':' | last | link_to_remove_tag: tag }}
+                    {% else %}
+                      {{ tag | split: ':' | last | link_to_add_tag: tag }}
+                    {% endif %}
+                  </div>
+                {% endif %}
+
+{% endif %}
+          
+              {% comment %}
+              {% assign parts = request.path | split: '/' %}
+              {% assign last_part = parts[-1] %}
+                {% for product in collections[collection_handle].products %}
+                  {% for product_tag in product.tags %}
+                    {% if product_tag contains last_part %}   
+                      {{ tag | split: '-' | last | link_to_add_tag: tag }}     
+                    {% endif %}
+                  {% endfor %}
+                {% endfor %}
+                {% endcomment %}
+          
+            {% endfor %}
+          {% endif %}
+
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</header>

@@ -1,0 +1,27 @@
+{% comment %}
+------------------------------------------------------------------------------------
+  Snippet: Landscape image with text
+  - Code referenced from "Product highlight 1" section and shown on the custom page.
+------------------------------------------------------------------------------------
+{% endcomment %}
+
+<div class="template-product__highlight-1-container custom-section custom-section--large">
+  <div class="template-product__image-container">
+    <img src="{{ landscape_image | img_url: '1400x' }}" alt="shoes" class="template-product__image">
+  </div>
+
+  <div class="template-product__highlight-container">
+    <div class="container">
+      <div class="row">
+        <div class="template-product__highlight col xs12">
+          <h5 class="template-product__highlight-title h1">
+            {{ landscape_image_title }}
+          </h5>
+          <p class="template-product__highlight-text">
+            {{ landscape_image_desc }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

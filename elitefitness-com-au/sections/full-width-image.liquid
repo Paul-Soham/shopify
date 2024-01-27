@@ -1,0 +1,59 @@
+{% if section.settings.show_product_title %}
+  <section
+    class="section fetureCollection"
+    data-section-id="{{ section.id }}"
+    style="background: url({{ section.settings.banner_image | img_url:'master' }});"
+  >
+    <div class="overlay">
+      <div class="container full-banner">
+        <h2 class="slideshow__title heading h1">{{ section.settings.banner_title }}</h2>
+        <a href="{{ section.settings.banner_btn_link }}" class="slideshow__button button">
+          {{ section.settings.banner_btn_text }}
+        </a>
+      </div>
+    </div>
+  </section>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Full width banner Image",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_product_title",
+      "label": "Show middle banner of PTP",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "banner_title",
+      "label": "Banner title",
+      "default": "PTP PRODUCTS"
+    },
+    {
+      "type": "image_picker",
+      "id": "banner_image",
+      "label": "Banner Image",
+      "info": "Rectangular .jpg recommended"
+    },
+    {
+      "type": "text",
+      "id": "banner_btn_text",
+      "label": "Button Text",
+      "default": "View all"
+    },
+    {
+      "type": "url",
+      "id": "banner_btn_link",
+      "label": "Button Link"
+    }
+  ],
+  "presets": [
+    {
+      "category": "Full width banner Image",
+      "name": "Full width banner Image"
+    }
+  ]
+}
+{% endschema %}

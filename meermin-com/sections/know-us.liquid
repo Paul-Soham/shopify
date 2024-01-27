@@ -1,0 +1,430 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Section: Get to know us
+  - A custom section to display get to know us sections.
+------------------------------------------------------------------------------
+{% endcomment %}
+
+{% for block in section.blocks %}
+  {% case block.type %}
+    
+    {% when 'hero' %}
+      {% render 'page-hero'
+        page_hero_image: block.settings.hero_image,
+        page_hero_title: block.settings.hero_title,
+        page_hero_desc: block.settings.hero_desc,
+        page_content_color: block.settings.content_color,
+      %}
+
+    {% when 'body-copy' %}
+      {% render 'body-copy'
+        body_copy_1: block.settings.body_copy_1,
+        body_copy_2: block.settings.body_copy_2,
+      %}
+
+    {% when 'image-banner-double' %}
+      {% render 'image-banner--double'
+        featured_image: block.settings.featured_image,
+        secondary_image: block.settings.secondary_image,
+        header_text: block.settings.header_text,
+        content_text: block.settings.content_text,
+        cta_text: block.settings.cta_text,
+        cta_url: block.settings.cta_url,
+        layout_orientation: block.settings.layout_orientation,
+      %}
+
+    {% when 'landscape-image-with-text' %}
+      {% render 'landscape-image-with-text'
+        landscape_image: block.settings.landscape_image,
+        landscape_image_title: block.settings.landscape_image_title,
+        landscape_image_desc: block.settings.landscape_image_desc,
+      %}
+
+    {% when 'full-width-with-text' %}
+      {% render 'full-width-image-with-text'
+        full_width_image: block.settings.full_width_image,
+        full_width_image_title: block.settings.full_width_image_title,
+        full_width_image_desc: block.settings.full_width_image_desc,
+      %}
+
+    {% when 'usps--carousel' %}
+      {% render 'usps--carousel'
+        initial_header_text: block.settings.header_text_1,
+        initial_content_text: block.settings.content_text_1,
+        icon_handle_1: block.settings.icon_handle_1,
+        header_text_1: block.settings.header_text_1,
+        content_text_1: block.settings.content_text_1,
+        icon_handle_2: block.settings.icon_handle_2,
+        header_text_2: block.settings.header_text_2,
+        content_text_2: block.settings.content_text_2,
+        icon_handle_3: block.settings.icon_handle_3,
+        header_text_3: block.settings.header_text_3,
+        content_text_3: block.settings.content_text_3,
+        icon_handle_4: block.settings.icon_handle_4,
+        header_text_4: block.settings.header_text_4,
+        content_text_4: block.settings.content_text_4,
+      %}
+
+  {% endcase %}
+{% endfor %}
+
+{% schema %}
+  {
+    "name": "Know us sections",
+    "class": "know-us-section",
+    "blocks": [
+      {
+        "type": "hero",
+        "name": "Hero",
+        "settings": [
+          {
+            "type": "header",
+            "content": "Hero image"
+          },
+          {
+            "type": "image_picker",
+            "id": "hero_image",
+            "label": "Image"
+          },
+          {
+            "type": "header",
+            "content": "Hero content"
+          },
+          {
+            "type": "text",
+            "id": "hero_title",
+            "label": "Title",
+            "default": "Get to Know Us"
+          },
+          {
+            "type": "text",
+            "id": "hero_desc",
+            "label": "Description",
+            "default": "Lorem ipsum dolor"
+          },
+          {
+            "type": "select",
+            "id": "content_color",
+            "label": "Content color",
+            "default": "content-white",
+            "options": [
+              {
+                "label": "White",
+                "value": "content-white"
+              },
+              {
+                "label": "Black",
+                "value": "content-black"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "body-copy",
+        "name": "Body copy",
+        "settings": [
+          {
+            "type": "header",
+            "content": "Content"
+          },
+          {
+            "type": "richtext",
+            "id": "body_copy_1",
+            "label": "Body column one",
+            "default": "<p>Default <em>richtext</em> <a href=\"https://example.com/\">content</a></p>"
+          },
+          {
+            "type": "richtext",
+            "id": "body_copy_2",
+            "label": "Body column two",
+            "default": "<p>Default <em>richtext</em> <a href=\"https://example.com/\">content</a></p>"
+          }
+        ]
+      },
+      {
+        "type": "image-banner-double",
+        "name": "Image banner double",
+        "settings": [
+          {
+            "type": "header",
+            "content": "Settings"
+          },
+          {
+            "type": "select",
+            "id": "layout_orientation",
+            "label": "Layout Orientation",
+            "options": [
+              {
+                "value": "featured-image-left",
+                "label": "Featured Image - Left"
+              },
+              {
+                "value": "featured-image-right",
+                "label": "Featured Image - right"
+              }
+            ],
+            "default": "featured-image-left"
+          },
+          {
+            "type": "image_picker",
+            "id": "featured_image",
+            "label": "Image - Featured",
+            "info": "Upload a 936px x 736px image - *required"
+          },
+          {
+            "type": "image_picker",
+            "id": "secondary_image",
+            "label": "Image - Secondary",
+            "info": "Upload a 392px x 504px image - *required"
+          },
+          {
+            "type": "text",
+            "id": "header_text",
+            "label": "Header Text",
+            "info": "*required"
+          },
+          {
+            "type": "html",
+            "id": "content_text",
+            "label": "Content Text",
+            "info": "*required"
+          },
+          {
+            "type": "text",
+            "id": "cta_text",
+            "label": "CTA Text",
+            "default": "Discover Collection",
+            "info": "Leave Blank to omit CTA"
+          },
+          {
+            "type": "url",
+            "id": "cta_url",
+            "label": "CTA URL",
+            "info": "Leave Blank to omit CTA"
+          }
+        ]
+      },
+      {
+        "type": "landscape-image-with-text",
+        "name": "Landscape image w/Text",
+        "settings": [
+          {
+            "type": "header",
+            "content": "Landscape image"
+          },
+          {
+            "type": "image_picker",
+            "id": "landscape_image",
+            "label": "Image"
+          },
+          {
+            "type": "header",
+            "content": "Hero content"
+          },
+          {
+            "type": "text",
+            "id": "landscape_image_title",
+            "label": "Title",
+            "default": "Lorem ipsum"
+          },
+          {
+            "type": "richtext",
+            "id": "landscape_image_desc",
+            "label": "Description",
+            "default": "<p>Default <em>richtext</em> <a href=\"https://example.com/\">content</a></p>"
+          }
+        ]
+      },
+      {
+        "type": "full-width-with-text",
+        "name": "Full width image w/Text",
+        "settings": [
+          {
+            "type": "header",
+            "content": "Full width image"
+          },
+          {
+            "type": "image_picker",
+            "id": "full_width_image",
+            "label": "Image"
+          },
+          {
+            "type": "header",
+            "content": "Hero content"
+          },
+          {
+            "type": "text",
+            "id": "full_width_image_title",
+            "label": "Title",
+            "default": "Lorem ipsum"
+          },
+          {
+            "type": "richtext",
+            "id": "full_width_image_desc",
+            "label": "Description",
+            "default": "<p>Default <em>richtext</em> <a href=\"https://example.com/\">content</a></p>"
+          }
+        ]
+      },
+      {
+        "type": "usps--carousel",
+        "name": "USPs Carousel",
+        "settings": [
+          {
+            "type": "header",
+            "content": "Selling point 1"
+          },
+          {
+            "type": "select",
+            "id": "icon_handle_1",
+            "label": "Icon",
+            "options": [
+              {
+                "value": "material",
+                "label": "Material"
+              },
+              {
+                "value": "boot",
+                "label": "Boot"
+              },
+              {
+                "value": "needle-and-thread",
+                "label": "Needle & Thread"
+              },
+              {
+                "value": "shipping",
+                "label": "Shipping"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "id": "header_text_1",
+            "label": "Header Text"
+          },
+          {
+            "type": "textarea",
+            "id": "content_text_1",
+            "label": "Content Text",
+            "info": "Max recommended characters: 255"
+          },
+          {
+            "type": "header",
+            "content": "Selling point 2"
+          },
+          {
+            "type": "select",
+            "id": "icon_handle_2",
+            "label": "Icon",
+            "options": [
+              {
+                "value": "material",
+                "label": "Material"
+              },
+              {
+                "value": "boot",
+                "label": "Boot"
+              },
+              {
+                "value": "needle-and-thread",
+                "label": "Needle & Thread"
+              },
+              {
+                "value": "shipping",
+                "label": "Shipping"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "id": "header_text_2",
+            "label": "Header Text"
+          },
+          {
+            "type": "textarea",
+            "id": "content_text_2",
+            "label": "Content Text",
+            "info": "Max recommended characters: 255"
+          },
+          {
+            "type": "header",
+            "content": "Selling point 3"
+          },
+          {
+            "type": "select",
+            "id": "icon_handle_3",
+            "label": "Icon",
+            "options": [
+              {
+                "value": "material",
+                "label": "Material"
+              },
+              {
+                "value": "boot",
+                "label": "Boot"
+              },
+              {
+                "value": "needle-and-thread",
+                "label": "Needle & Thread"
+              },
+              {
+                "value": "shipping",
+                "label": "Shipping"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "id": "header_text_3",
+            "label": "Header Text"
+          },
+          {
+            "type": "textarea",
+            "id": "content_text_3",
+            "label": "Content Text",
+            "info": "Max recommended characters: 255"
+          },
+          {
+            "type": "header",
+            "content": "Selling point 4"
+          },
+          {
+            "type": "select",
+            "id": "icon_handle_4",
+            "label": "Icon",
+            "options": [
+              {
+                "value": "material",
+                "label": "Material"
+              },
+              {
+                "value": "boot",
+                "label": "Boot"
+              },
+              {
+                "value": "needle-and-thread",
+                "label": "Needle & Thread"
+              },
+              {
+                "value": "shipping",
+                "label": "Shipping"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "id": "header_text_4",
+            "label": "Header Text"
+          },
+          {
+            "type": "textarea",
+            "id": "content_text_4",
+            "label": "Content Text",
+            "info": "Max recommended characters: 255"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

@@ -1,0 +1,102 @@
+{% assign order_count = 0 %}
+{% for item in order.line_items %}
+  {% assign order_count = order_count | plus: item.quantity %}
+{% endfor %}
+
+<!DOCTYPE html>
+<html lang="{{ locale }}" dir="{{ direction }}" class="{{ checkout_html_classes }}">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, height=device-height, minimum-scale=1.0, user-scalable=0">
+    <meta name="referrer" content="origin">
+
+    <title>{{ page_title }}</title>
+
+    {{ content_for_header }}
+
+    {{ checkout_stylesheets }}
+    {{ checkout_scripts }}
+
+    {% if settings.favicon != blank %}
+      {% render 'site-favicon' %}
+    {% endif %}
+
+    {% render 'theme-strings' %}
+
+    {% render 'shogun-head' %}
+  </head>
+  <body>
+    {{ skip_to_content_link }}
+
+    <header class="banner" data-header role="banner">
+      <div class="wrap">
+        <a href="{{ shop.url }}" aria-label="{{ shop.name }}">
+          {% render 'site-logo', color: 'black' %}
+        </a>
+      </div>
+    </header>
+
+    {{ order_summary_toggle }}
+    <div class="content" data-content>
+      <div class="wrap">
+        <div class="main">
+          <header class="main__header" role="banner">
+            {{ breadcrumb }}
+            {{ alternative_payment_methods }}
+          </header>
+          <main class="main__content" role="main">
+            {{ content_for_layout }}
+          </main>
+          <footer class="main__footer" role="contentinfo">
+            {{ content_for_footer }}
+            <div class="order-count visually-hidden">
+              {{ order_count }}
+            </div>
+          </footer>
+        </div>
+        <aside class="sidebar" role="complementary">
+          <div class="sidebar__header">
+            {{ content_for_logo }}
+          </div>
+          <div class="sidebar__content">
+            {{ content_for_order_summary }}
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    {{ tracking_code }}
+
+    {% render 'style-tags', layout: 'checkout' %}
+    {% render 'script-tags', layout: 'checkout' %}
+    
+    <!-- Loyalty Dev -->
+    <script src="https://cdn-widgetsrepository.yotpo.com/v1/loader/6V43gGjXEMP8jGAlKx1wPA" async></script>
+    <div class="yotpo-widget-instance" data-yotpo-instance-id="144652"></div>
+    <!-- End Loyalty Dev -->
+    
+    <!-- LOYALTY CODE START POST CHECKOUT -->
+<script src="https://cdn-widgetsrepository.yotpo.com/v1/loader/6V43gGjXEMP8jGAlKx1wPA" async></script>
+<!-- Initial CSS to hide the module -->
+<style type="text/css">
+    .yotpo-checkout-hide {
+        display: none;
+    }
+</style>
+<!-- module inside container -->
+<div class="yotpo-refer-popup-container yotpo-checkout-hide">
+<div class="yotpo-widget-instance" data-yotpo-instance-id="144652"></div>
+</div>
+<!-- JS to handle module initiation -->
+<script type="text/javascript">
+    window.location.href.indexOf("loyalty_thank_you") !== -1
+        ? document
+              .querySelector(".yotpo-checkout-hide")
+              .classList.remove("yotpo-checkout-hide")
+        : "";
+</script>
+<!-- LOYALTY CODE END -->
+    </body>
+</html>
+

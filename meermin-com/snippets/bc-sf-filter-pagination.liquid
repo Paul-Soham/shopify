@@ -1,0 +1,47 @@
+<ul>
+  {% if paginate.previous %}
+    <li>
+      <a
+        class="body-1"
+        href="{{ paginate.previous.url }}"
+        aria-label="{{ 'collections.pagination.previous' | t }}"
+      >
+        {% render 'icon-direction' with icon: 'arrow-left' %}
+      </a>
+    </li>
+  {% else %}
+    <li class="disabled">
+      <span class="body-1" >
+        {% render 'icon-direction' with icon: 'arrow-left' %}
+      </span>
+    </li>
+  {% endif %}
+
+  {% for part in paginate.parts %}
+    {% if part.is_link %}
+      <li><a class="body-1" href="{{ part.url }}">{{ part.title }}</a></li>
+    {% elsif part.title == '&hellip;' %}
+      <li><span class="body-1">...</span></li>
+    {% else %}
+      <li><span class="active body-1">{{ part.title }}</span></li>
+    {% endif %}
+  {% endfor %}
+
+  {% if paginate.next %}
+    <li>
+      <a
+        class="body-1"
+        href="{{ paginate.next.url }}"
+        aria-label="{{ 'collections.pagination.next' | t }}"
+      >
+        {% render 'icon-direction' with icon: 'arrow-right' %}
+      </a>
+    </li>
+  {% else %}
+    <li class="disabled">
+      <span class="body-1" >
+        {% render 'icon-direction' with icon: 'arrow-right' %}
+      </span>
+    </li>
+  {% endif %}
+</ul>

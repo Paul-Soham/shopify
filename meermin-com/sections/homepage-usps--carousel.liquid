@@ -1,0 +1,216 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Section: Unique Selling Points -- Carousel
+------------------------------------------------------------------------------
+{% endcomment %}
+
+{% assign background_color = section.settings.background_color %}
+{% assign text_color = section.settings.text_color %}
+{% assign active_icon_color = section.settings.active_icon_color %}
+{% assign active_icon_bg_color = section.settings.active_icon_bg_color %}
+
+<section
+  class="homepage-usps--carousel"
+  data-section-id="{{ section.id }}"
+  data-section-type="homepage-usps--carousel"
+  style="background-color: {{ background_color }};"
+>
+  <div id="UspsCarousel-{{ section.id }}"
+      class="container"
+  >
+    <div class="row homepage-usps--carousel__icons-wrapper">
+      {% for block in section.blocks %}
+        {% assign icon_handle = block.settings.icon_handle %}
+        {% if forloop.first %}
+          {% assign initial_header_text = block.settings.header_text %}
+          {% assign initial_content_text = block.settings.content_text %}
+        {% endif %}
+        {% assign header_text = block.settings.header_text %}
+        {% assign content_text = block.settings.content_text %}
+        <div
+          class="
+            homepage-usps--carousel__icon col xs3
+            active-icon-bg-color--{{ active_icon_bg_color }}
+            active-icon-fill-color--{{ active_icon_color }}
+            {% if forloop.index == 1 %} active {% endif%}
+          "
+          js-usps-carousel="icon-indicator"
+          data-header-text="{{header_text}}"
+          data-content-text="{{content_text}}"
+          data-position="{{ forloop.index }}"
+        >
+          {% render "icon-misc",
+            icon: icon_handle,
+            icon_class: 'icon large'
+            fill: text_color
+          %}
+        </div>
+      {% endfor %}
+    </div>
+    <div class="row homepage-usps--carousel__content-wrapper">
+      <div class="col offset-m3 m6 xs12">
+
+        <h2 js-usps-carousel="header-text"
+          style="color: {{ text_color }}"
+        >
+          {{ initial_header_text }}
+        </h2>
+        <p class="body-1" js-usps-carousel="content-text"
+          style="color: {{ text_color }}"
+        >
+          {{ initial_content_text }}
+        </p>
+      </div>
+    </div>
+    {% unless section.blocks.size <= 1 %}
+      <div class="homepage-usps--carousel__navigation container">
+        <div
+          class="homepage-usps--carousel__navigation-button prev"
+          js-usps-carousel="prev"
+        >
+          {% render 'icon-direction' with icon: 'chevron-left' %}
+        </div>
+        <div
+          class="homepage-usps--carousel__navigation-button next"
+          js-usps-carousel="next"
+        >
+          {% include 'icon-direction' with icon: 'chevron-right' %}
+        </div>
+      </div>
+    {% endunless %}
+  </div>
+</section>
+
+{% schema %}
+  {
+    "name": "USPs -- Carousel",
+    "class": "index-section",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Settings"
+      },
+      {
+        "type": "select",
+        "id": "background_color",
+        "label": "Background Color",
+        "default": "#fff",
+        "options": [
+          {
+            "value": "#f4f1e8",
+            "label": "Sand"
+          },
+          {
+            "value": "#f5f5f5",
+            "label": "Light Grey"
+          },
+          {
+            "value": "#fff",
+            "label": "White"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "text_color",
+        "label": "Text Color",
+        "default": "#515151",
+        "options": [
+          {
+            "value": "#000",
+            "label": "Black"
+          },
+          {
+            "value": "#515151",
+            "label": "Charcoal"
+          },
+          {
+            "value": "#7f551c",
+            "label": "Dark Sand"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "active_icon_bg_color",
+        "label": "Active Icon Background Color",
+        "default": "dark-sand",
+        "options": [
+          {
+            "value": "dark-sand",
+            "label": "Dark Sand"
+          },
+          {
+            "value": "dark-brown",
+            "label": "Dark Brown"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "active_icon_color",
+        "label": "Active Icon Color",
+        "default": "white",
+        "options": [
+          {
+            "value": "white",
+            "label": "White"
+          },
+          {
+            "value": "sand",
+            "label": "Sand"
+          }
+        ]
+      }
+    ],
+    "max_blocks": 4,
+    "blocks": [
+      {
+        "type": "selling-point",
+        "name": "Selling Point",
+        "settings": [
+          {
+            "type": "select",
+            "id": "icon_handle",
+            "label": "Icon",
+            "options": [
+              {
+                "value": "material",
+                "label": "Material"
+              },
+              {
+                "value": "boot",
+                "label": "Boot"
+              },
+              {
+                "value": "needle-and-thread",
+                "label": "Needle & Thread"
+              },
+              {
+                "value": "shipping",
+                "label": "Shipping"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "id": "header_text",
+            "label": "Header Text"
+          },
+          {
+            "type": "textarea",
+            "id": "content_text",
+            "label": "Content Text",
+            "info": "Max recommended characters: 255"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "USPs -- Carousel",
+        "category": "Selling Points"
+      }
+    ]
+  }
+{% endschema %}

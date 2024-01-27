@@ -1,0 +1,110 @@
+{% comment %}
+----------------------------------------------------------------------------
+  Snippet: Cart drawer line item
+----------------------------------------------------------------------------
+{% endcomment %}
+{% assign product_type = item.product.type | handleize %}
+{% assign quantity_selector_id = 'cart-drawer-' | append: forloop.index %}
+{% assign mto = false %}
+{% assign mto_ship_date = '' %}
+{% assign variant_title = item.variant.title | split: '/' %}
+
+{% for tag in item.product.tags %}
+  {% if tag == 'mto:true' %}
+    {% assign mto = true %}
+  {% endif %}
+
+  {% if tag contains 'mto-ship-date:' %}
+    {% assign mto_ship_date = tag | replace: 'mto-ship-date:', '' | replace: '-', ' '%}
+  {% endif %}
+{% endfor %}
+
+{% unless product_type == 'add-on' %}
+  <div
+    class="ajax-cart__line-item"
+    data-index="{{ forloop.index }}"
+    data-key="{{ item.key }}"
+    js-ajax-cart="lineItem"
+  >
+    {% if item.image %}
+      <div class="ajax-cart__image responsive-image__wrapper">
+        <img
+          alt="{{ item.image.alt }}"
+          sizes="auto"
+          src="{{ item.image | img_url: '50x' }}"
+          srcset="
+            {{ item.image | img_url: '120x' }} 120w,
+            {{ item.image | img_url: '240x' }} 240w,
+            {{ item.image | img_url: '320x' }} 320w
+          "
+        >
+      </div>
+    {% endif %}
+
+    <div class="ajax-cart__description">
+      <div class="row no-margin ajax-cart__line-item-wrap">
+        <div class="ajax-cart__inner">
+          {% if enable_product_vendor %}
+            <p class="ajax-cart__vendor caption">
+              {{ item.vendor }}
+            </p>
+          {% endif %}
+
+          {% if mto %}
+            <p class="ajax-cart__made-to-order">{{ 'products.product.made_to_order' | t }}</p>
+          {% endif %}
+
+          <a class="ajax-cart__title" href="{{ item.url }}">
+            {{ item.product.title }}
+          </a>
+
+          {% if mto %}
+            <div class="ajax-cart__made-to-order-ship">
+              <p>{{ 'products.product.estimated_delivery' | t }} {{ mto_ship_date }}</p>
+            </div>
+          {% endif %}
+
+          {% unless product_type == 'gift-card' %}
+            <p class="ajax-cart__variant-title caption">
+              {{ 'products.product.size' | t }} {{ variant_title.last }}
+            </p>
+          {% endunless %}
+
+          <div class="ajax-cart__quantity-selector">
+            {% render 'quantity-selector' with
+              id: quantity_selector_id,
+              current_variant: item.variant,
+              key: item.key,
+              namespace: 'ajax-cart',
+              selected_variant: item.variant,
+              size: 'small',
+              value: item.quantity,
+            %}
+          </div>
+        </div>
+
+        <div class="ajax-cart__amount" data-label="{{ 'cart.label.price' | t }}">
+          <div class="ajax-cart__quantity-price-wrap">
+            <div class="ajax-cart__quantity">
+              {{ item.quantity }} &times;
+            </div>
+
+            <div class="ajax-cart__price">
+              {% render 'line-item-price' with item: item %}
+            </div>
+            
+          </div>
+
+          <button
+            class="ajax-cart__remove"
+            tabindex="0"
+            data-key="{{ item.key }}"
+            js-ajax-cart="remove"
+          >
+            {{ 'cart.general.remove' | t }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endunless %}

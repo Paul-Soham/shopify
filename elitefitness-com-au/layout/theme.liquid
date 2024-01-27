@@ -1,0 +1,502 @@
+<!doctype html>
+
+<html class="no-js" lang="{{ request.locale.iso_code }}-AU">
+  <head>
+<!-- Canonical url custom logic injected by StoreSEO - Start -->
+<meta name="yandex-verification" content="4c6763b8b56b26a1" />
+
+    {%- if product.metafields.store_seo.cannonical_url.size > 2 -%}
+      {%- assign canonical_url = product.metafields.store_seo.cannonical_url -%}
+    {%- elsif page.metafields.store_seo.cannonical_url.size > 2 -%}
+      {%- assign canonical_url = page.metafields.store_seo.cannonical_url -%}
+    {%- elsif article.metafields.store_seo.cannonical_url.size > 2 -%}
+      {%- assign canonical_url = article.metafields.store_seo.cannonical_url -%}
+    {%- endif -%}
+    
+<!-- Canonical url custom logic injected by StoreSEO - End -->
+{% render 'spdn' %}
+   <!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-55SQLGW');</script>
+<!-- End Google Tag Manager -->
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-10962466199"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'AW-10962466199');
+</script>
+    
+<script
+  src="https://code.jquery.com/jquery-3.4.1.js"
+  integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+  crossorigin="anonymous">
+</script> 
+    
+    <meta name="google-site-verification" content="YKjZGUQ6SHHqMoQb7_JbWuCYK8VlOU-nI5tHYH15xfg" />
+    <meta name="google-site-verification" content="KbVcg8dhZ8yItB4pNL6pN4BDVBGpSNpetGKlRnkdOsE" />
+    <meta name="yandex-verification" content="4c6763b8b56b26a1" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, height=device-height, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="theme-color" content="{{ settings.accent_color }}">
+
+    {%- capture seo_page_title -%}
+      {%- if request.page_type == 'search' and search.terms != blank -%}
+        {{ search.terms | split: ' AND ' | last | split: 'product_type:' | last }} - {{ shop.name }}
+      {%- else -%}
+        {{ page_title }}{% if current_tags %}{% assign meta_tags = current_tags | join: ', ' %} &ndash; {{ 'general.meta.tags' | t: tags: meta_tags }}{% endif %}{% if current_page != 1 %} &ndash; {{ 'general.meta.page' | t: page: current_page }}{% endif %}
+      {%- endif -%}
+    {%- endcapture -%}
+
+    <title>{{- seo_page_title -}}</title>
+
+    {%- if page_description -%}
+      <meta name="description" content="{{ page_description | escape }}">
+    {%- endif -%}
+
+    <link rel="canonical" href="{{ canonical_url }}">
+
+    {%- if settings.favicon -%}
+      <link rel="shortcut icon" href="{{ settings.favicon | img_url: '96x96' }}" type="image/png">
+    {%- endif -%}
+
+    {%- comment -%}Few prefech to increase performance on commonly used third-parties{%- endcomment -%}
+    <link rel="preload" as="style" href="{{ 'theme.css' | asset_url }}">
+    <link rel="preload" as="script" href="{{ 'theme.js' | asset_url }}">
+    <link rel="preconnect" href="https://cdn.shopify.com">
+    <link rel="preconnect" href="https://fonts.shopifycdn.com">
+    <link rel="dns-prefetch" href="https://productreviews.shopifycdn.com">
+    <link rel="dns-prefetch" href="https://ajax.googleapis.com">
+    <link rel="dns-prefetch" href="https://maps.googleapis.com">
+    <link rel="dns-prefetch" href="https://maps.gstatic.com">
+
+    {% render 'social-meta-tags' %}
+    {% render 'css-variables' %}
+
+    {{ content_for_header }}
+
+    <link rel="stylesheet" href="{{ 'theme.css' | asset_url }}">
+    <link rel="stylesheet" href="{{ 'style.css' | asset_url }}">
+
+    {% render 'microdata-schema' %}
+
+    <script>
+      // This allows to expose several variables to the global scope, to be used in scripts
+      window.theme = {
+        pageType: {{ request.page_type | json }},
+        cartCount: {{ cart.item_count | json }},
+        moneyFormat: {{ shop.money_format | json }},
+        moneyWithCurrencyFormat: {{ shop.money_with_currency_format | json }},
+        currencyCodeEnabled: {{ settings.currency_code_enabled | json }},
+        showDiscount: {{ settings.show_discount | json }},
+        discountMode: {{ settings.discount_mode | json }},
+        searchMode: {{ settings.search_mode | json }},
+        searchUnavailableProducts: {{ settings.search_unavailable_products | json }},
+        cartType: {{ settings.cart_type | json }}
+      };
+
+      window.routes = {
+        rootUrl: {{ routes.root_url | json }},
+        rootUrlWithoutSlash: {% if routes.root_url == '/' %}''{% else %}{{ routes.root_url | json }}{% endif %},
+        cartUrl: {{ routes.cart_url | json }},
+        cartAddUrl: {{ routes.cart_add_url | json }},
+        cartChangeUrl: {{ routes.cart_change_url | json }},
+        searchUrl: {{ routes.search_url | json }},
+        productRecommendationsUrl: {{ routes.product_recommendations_url | json }}
+      };
+
+      window.languages = {
+        productRegularPrice: {{ 'product.general.regular_price' | t | json }},
+        productSalePrice: {{ 'product.general.sale_price' | t | json }},
+        collectionOnSaleLabel: {{ 'collection.product.discount_html' | t | json }},
+        productFormUnavailable: {{ 'product.form.unavailable' | t | json }},
+        productFormAddToCart: {{ 'product.form.add_to_cart' | t | json }},
+        productFormPreOrder: {{ 'product.form.pre_order' | t | json }},
+        productFormSoldOut: {{ 'product.form.sold_out' | t | json }},
+        productAdded: {{ 'product.form.added' | t | json }},
+        productAddedShort: {{ 'product.form.added_short' | t | json }},
+        shippingEstimatorNoResults: {{ 'cart.shipping_estimator.no_results_title' | t | json }},
+        shippingEstimatorOneResult: {{ 'cart.shipping_estimator.one_result_title' | t | json }},
+        shippingEstimatorMultipleResults: {{ 'cart.shipping_estimator.multiple_results_title' | t | json }},
+        shippingEstimatorErrors: {{ 'cart.shipping_estimator.errors' | t | json }}
+      };
+
+      window.lazySizesConfig = {
+        loadHidden: false,
+        hFac: 0.8,
+        expFactor: 3,
+        customMedia: {
+          '--phone': '(max-width: 640px)',
+          '--tablet': '(min-width: 641px) and (max-width: 1023px)',
+          '--lap': '(min-width: 1024px)'
+        }
+      };
+
+      document.documentElement.className = document.documentElement.className.replace('no-js', 'js');
+    </script>
+
+    {%- if request.page_type == 'customers/addresses' -%}
+      <script src="{{ 'shopify_common.js' | shopify_asset_url }}" defer></script>
+      <script src="{{ 'customer_area.js' | shopify_asset_url }}" defer></script>
+    {%- endif -%}
+
+    <script src="{{ 'theme.js' | asset_url }}" defer></script>
+    <script src="{{ 'custom.js' | asset_url }}" defer></script>
+
+    {%- if request.page_type != 'cart' -%}
+      <script>
+        (function () {
+          window.onpageshow = function() {
+            // We force re-freshing the cart content onpageshow, as most browsers will serve a cache copy when hitting the
+            // back button, which cause staled data
+            document.documentElement.dispatchEvent(new CustomEvent('cart:refresh', {
+              bubbles: true,
+              detail: {scrollToTop: false}
+            }));
+          };
+        })();
+      </script>
+    {%- endif -%}
+  {% render "rafp-render" %} <!-- roartheme: FontPicker app -->
+
+{% render 'gsf-conversion-pixels' %}
+<script type="application/ld+json">
+{
+"@context": "http://schema.org",
+"@type": "LocalBusiness",
+"description": "Australia’s #1 supplier of affordable & high quality fitness & gym equipments.",
+"name": "Elite Fitness Equipment",
+"telephone": "(07)-3865-2344",
+"image": "https://cdn.shopify.com/s/files/1/0639/3508/6851/files/EF_Logo_Green2_b9f7ae24-ea7e-4504-a686-765596a53b9b_180x@2x.png?v=1651258966",
+"address": {
+"@type": "PostalAddress",
+"addressLocality": "Virginia",
+"addressRegion": "QLD",
+"postalCode":"4014",
+"streetAddress": "1774 Sandgate Rd"
+},
+"openingHours": "Mo,Tu,We,Th,Fr 09:00-17:30, Sa 09:00-16:00, Su 10:00-16:00",
+"geo": {
+"@type": "GeoCoordinates",
+"latitude": "-27.37",
+"longitude": "153.06"
+},
+"sameAs" : [ "https://www.facebook.com/EliteFitnessVirginaQLD",
+"https://www.instagram.com/elitefitnesslc/?hl=en",
+"https://www.pinterest.com.au/elitefitnessau/",
+"https://www.youtube.com/channel/UCSJLM1ac65wEWNSw4tZgErQ/videos",
+"https://www.linkedin.com/company/elitefitnessau"]
+}
+</script>
+<script type="application/ld+json">
+{ 
+  "@context": "http://schema.org", 
+  "@type": "WebSite", 
+  "url": "https://www.elitefitness.com.au/", 
+  "name": "Elite Fitness Equipment",
+  "description": "Australia’s #1 supplier of affordable & high quality fitness & gym equipments.",
+  "potentialAction": { 
+    "@type": "SearchAction", 
+    "target": "https://www.elitefitness.com.au/?s={search_term}", 
+    "query-input": "required name=search_term" } 
+    }
+</script>
+<script type="application/ld+json">
+{ "@context": "http://schema.org", "@type": "Product", "name": "Elite Fitness Equipment", "aggregateRating": {"@type": "AggregateRating", "ratingValue": "4.5", "reviewCount": "74" } }
+</script>
+<img alt="icon" width="1400" height="1400" style="pointer-events: none; position: absolute; top: 0; left: 0; width: 99vw; height: 99vh; max-width: 99vw; max-height: 99vh;"  src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48c3ZnIHdpZHRoPSI5OTk5OXB4IiBoZWlnaHQ9Ijk5OTk5cHgiIHZpZXdCb3g9IjAgMCA5OTk5OSA5OTk5OSIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj48ZyBzdHJva2U9Im5vbmUiIGZpbGw9Im5vbmUiIGZpbGwtb3BhY2l0eT0iMCI+PHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9Ijk5OTk5IiBoZWlnaHQ9Ijk5OTk5Ij48L3JlY3Q+IDwvZz4gPC9zdmc+">
+<!-- Noindex, nofollow tag inserted by StoreSEO - Start -->
+
+
+
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-196641614-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-196641614-1');
+</script>
+
+    
+    {%- if product -%}
+      {%- if product.metafields.store_seo.no_index == 1 and product.metafields.store_seo.no_follow == 1 -%}
+      	<meta name="robots" content="noindex, nofollow">
+      {%- elsif product.metafields.store_seo.no_index == 1 -%}
+      <meta name="robots" content="noindex">
+      {%- elsif product.metafields.store_seo.no_follow == 1 -%}
+      <meta name="robots" content="nofollow">
+      {%- endif -%}
+    {%- endif -%}
+    
+<!-- Noindex, nofollow tag inserted by StoreSEO - End -->
+
+<!-- Custom social media preview logic inserted by StoreSEO - Start -->
+
+    {%- if product.metafields.store_seo.facebook_preview_image_url.size > 2 -%}
+    <meta name="og:image" content="{{ product.metafields.store_seo.facebook_preview_image_url | default: page_image }}" />
+    {%- endif -%}
+
+    {%- if product.metafields.store_seo.twitter_preview_image_url.size > 2 -%}
+    <meta name="twitter:image" content="{{ product.metafields.store_seo.twitter_preview_image_url | default: page_image }}" />
+    {%- endif -%}
+
+    {%- if article.metafields.store_seo.facebook_preview_image_url.size > 2 -%}
+    <meta name="og:image" content="{{ article.metafields.store_seo.facebook_preview_image_url | default: page_image }}" />
+    {%- endif -%}
+
+    {%- if article.metafields.store_seo.twitter_preview_image_url.size > 2 -%}
+    <meta name="twitter:image" content="{{ article.metafields.store_seo.twitter_preview_image_url | default: page_image }}" />
+    {%- endif -%}
+
+    {%- if page.metafields.store_seo.facebook_preview_image_url.size > 2 -%}
+    <meta name="og:image" content="{{ page.metafields.store_seo.facebook_preview_image_url | default: page_image }}" />
+    {%- endif -%}
+
+    {%- if page.metafields.store_seo.twitter_preview_image_url.size > 2 -%}
+    <meta name="twitter:image" content="{{ page.metafields.store_seo.twitter_preview_image_url | default: page_image }}" />
+    {%- endif -%}
+    
+<!-- Custom social media preview logic inserted by StoreSEO - End -->
+</head>
+
+  <body class="warehouse--v1 {% if settings.animation_image_zoom %}features--animate-zoom{% endif%} template-{{ request.page_type | handle }} {% if request.page_type contains '/' %}template-{{ request.page_type | split: '/' | last | handle }}{% endif %}" data-instant-intensity="viewport">
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-55SQLGW"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+    
+    {%- comment -%}Common SVG definitions that we are re-using in several places{%- endcomment -%}
+    <svg class="visually-hidden">
+      <linearGradient id="rating-star-gradient-half">
+        <stop offset="50%" stop-color="var(--product-review-star-color)" />
+        <stop offset="50%" stop-color="rgba(var(--text-color-rgb), .4)" stop-opacity="0.4" />
+      </linearGradient>
+    </svg>
+
+    <a href="#main" class="visually-hidden skip-to-content">{{ 'general.accessibility.skip_to_content' | t }}</a>
+    <span class="loading-bar"></span>
+
+    {% section 'announcement-bar' %}
+
+    {%- unless request.page_type == 'cart' -%}
+      {%- comment -%}As required by Shopify rules, popup must be removed on cart page to remove distraction{%- endcomment -%}
+      {% section 'popups' %}
+    {%- endunless -%}
+
+    {% section 'header' %}
+
+    <main id="main" role="main">
+      {{ content_for_layout }}
+    </main>
+
+    {% section 'static-text-with-icons' %}
+    {% section 'footer' %}
+
+    <ul hidden>
+      <li id="a11y-new-window-message">{{ 'general.accessibility.new_window' | t }}</li>
+    </ul>
+  {% comment %} Zip Widget Script START {% endcomment %}
+{% comment %} This code was generated automatically by the Zip Partner application. {% endcomment %}
+{% include 'zip-widget' %}
+{% comment %} Zip Widget Script END {% endcomment %}
+<div id="popular-searches">
+<div class="fp-footer-container"> 
+<div class="fp-footer">
+<ul>
+<li><a href="/">Gym Equipments</a></li> 
+<li><a href="/">Fitness Equipments</a></li>
+<li><a href="https://www.elitefitness.com.au/collections/treadmills">Treadmills</a></li>    
+<li><a href="https://www.elitefitness.com.au/collections/boxing-bags">Boxing Bags</a></li>
+<li><a href="https://www.elitefitness.com.au/collections/boxing-bags">Everlast Boxing Bags</a></li>
+<li><a href="https://www.elitefitness.com.au/collections/commercial-gym-equipment">Commercial Fitness Equipments</a></li>  
+</ul>
+<ul>  
+<li><a href="https://www.elitefitness.com.au/collections/spin-bikes">Spin Bikes</a></li>
+<li><a href="https://www.elitefitness.com.au/collections/recumbent-bikes">Recumbent Bikes</a></li>
+<li><a href="https://www.elitefitness.com.au/collections/cardio">Cardio Equipments</a></li>  
+<li><a href="https://www.elitefitness.com.au/collections/force-gym-equipment">Force Gym Equipments</a></li>  
+<li><a href="https://www.elitefitness.com.au/products/force-usa-monster-g6-all-in-one-trainer">Force USA G6 Trainer</a></li>
+</ul> 
+  <ul>
+<li><a href="https://www.elitefitness.com.au/collections/boxing-bags">Boxing Bags For Sale</a></li>    
+<li><a href="/">Exercise Equipments Brisbane</a></li>     
+<li><a href="https://www.elitefitness.com.au/collections/treadmills">Treadmills For Sale Brisbane</a></li>
+<li><a href="https://www.elitefitness.com.au/collections/commercial-gym-equipment">Commercial Gym Equipments Brisbane</a></li>
+  </ul>
+<ul>
+<li><a href="https://www.elitefitness.com.au/collections/spin-bikes">Spin Bikes Brisbane</a></li>  
+<li><a href="https://www.elitefitness.com.au/collections/cardio">Cardio Gym Equipments</a></li>
+<li><a href="https://www.elitefitness.com.au/products/force-usa-monster-g6-all-in-one-trainer">Monster G6 Gym Trainer</a></li>
+<li><a href="https://www.elitefitness.com.au/collections/recumbent-bikes">Recumbent Exercise Bikes</a></li>
+<li class="fp-show-links-trigger"><a id="show-links" href="#popular-searches">Popular Products</a></li>
+<li class="fp-hide-links-trigger"><a id="hide-links" href="#popular-searches">Hide Popular Products</a></li>  
+</ul>  
+</div>
+</div>
+</div>
+<script>
+ (function($) {
+{
+jQuery('#show-links').click(function(e) {
+	jQuery('#popular-searches').toggle();
+	jQuery('#show-links').toggle();
+  	jQuery('#hide-links').toggle();
+});
+jQuery('#hide-links').click(function(e) {
+	jQuery('#popular-searches').toggle();
+	jQuery('#show-links').toggle();
+  	jQuery('#hide-links').toggle();
+});                 
+jQuery(".fp-show-links-trigger").appendTo("#block-footer-1 ul");
+jQuery(".fp-hide-links-trigger").appendTo("#block-footer-1 ul");
+jQuery("#popular-searches").appendTo(".footer__block-list");  
+}
+})( jQuery );
+
+// jQuery(document).ready(function($) {
+//   $('.collection-item').on('click', function(event) {
+//     event.preventDefault();
+//     var productUrl = $(this).attr('href');
+//     var collectionAttribute = $(this).data('collection');
+    
+//     if (collectionAttribute) {
+//       collectionAttribute = collectionAttribute.toLowerCase(); // Convert to lowercase
+      
+//       var collectionUrl = productUrl.replace('/products/', '/'); // Remove "products" from URL
+//       collectionUrl = collectionUrl.replace(/\/[^\/]+$/, '/collections/' + collectionAttribute);
+      
+//       window.location.href = collectionUrl;
+//     } else {
+//       window.location.href = productUrl;
+//     }
+//   });
+// });
+
+
+
+</script> 
+{{ '//cdn.shopify.com/s/files/1/0194/1736/6592/t/1/assets/booster-page-speed-optimizer.js?23' | script_tag }}
+{% render 'spdn2' %}
+<!-- **BEGIN** Hextom CTB Integration // Main Include - DO NOT MODIFY -->
+    {% render 'hextom_ctb_main', product: product, customer: customer %}
+    <!-- **END** Hextom CTB Integration // Main Include - DO NOT MODIFY -->
+
+<div class="reviews-io-floating-widget"
+  data-widget-id="4Pn0Ay3SM9xGs1IX"
+  data-store-name="elitefitness.com.au"
+  lang="en"
+ ></div>
+<script src='//widget.reviews.io/modern-widgets/floating.js'></script>
+      
+</body>
+</html>
+
+
+<!-- Back In Stock Flow Snippet start-->
+<script src="https://a.klaviyo.com/media/js/onsite/onsite.js"></script>
+
+<script>
+    var klaviyo = klaviyo || [];
+    klaviyo.init({
+      account: "Y8XZ8b",
+      platform: "shopify"
+    });
+    klaviyo.enable("backinstock",{ 
+    trigger: {
+      product_page_text: "Notify Me When Available",
+      product_page_class: "btn",
+      product_page_text_align: "center",
+      product_page_margin: "0px",
+      replace_anchor: false
+    },
+    modal: {
+     headline: "{product_name}",
+     body_content: "Register to receive a notification when this item comes back in stock.",
+     email_field_label: "Email",
+     button_label: "Notify me when available",
+     subscription_success_label: "You're in! We'll let you know when it's back.",
+     footer_content: '',
+     additional_styles: "@import url('https://fonts.googleapis.com/css?family=Helvetica+Neue');",
+     drop_background_color: "#000",
+     background_color: "#fff",
+     text_color: "#222",
+     button_text_color: "#6FFF00",
+     button_background_color: "#171717",
+     close_button_color: "#ccc",
+     error_background_color: "#fcd6d7",
+     error_text_color: "#C72E2F",
+     success_background_color: "#d3efcd",
+     success_text_color: "#1B9500"
+    }
+  });
+</script>
+
+<!-- Back In Stock Flow Snippet End-->
+  
+
+{% render 'spdn2' %}</body>
+</html>
+
+<!-- Begin Shopify-Afterpay JavaScript Snippet (v1.1.1) -->
+{% if cart.currency.iso_code == shop.currency %}
+<script type="text/javascript">
+// Overrides:
+// var afterpay_min = 0.04;       // As per your Afterpay contract.
+// var afterpay_max = 2000.00;    // As per your Afterpay contract.
+// var afterpay_msg_size = 'md';  // Can be 'xs', 'sm', 'md' or 'lg'.
+// var afterpay_logo_theme = 'colour';  // Can be 'colour', 'black' or 'white'.
+// var afterpay_modal_open_icon = true;
+// var afterpay_hide_upper_limit = false;
+// var afterpay_hide_lower_limit = true;
+// var afterpay_show_if_outside_limits = true;
+// var afterpay_cbt_enabled = false;
+
+// var afterpay_product_integration_enabled = true;
+// var afterpay_product_selector = '#product-price-selector';
+// var afterpay_variable_price_fallback = false;
+// var afterpay_variable_price_fallback_selector = '';
+// var afterpay_variable_price_fallback_method = 'mutation';  // Can be 'mutation' or 'interval'.
+
+// var afterpay_cart_integration_enabled = true;
+// var afterpay_cart_static_selector = '#cart-subtotal-selector';
+// var afterpay_variable_subtotal_fallback = false;
+// var afterpay_variable_subtotal_fallback_selector = '';
+// var afterpay_variable_subtotal_fallback_method = 'mutation'; // Can be 'mutation' or 'interval'.
+// var afterpay_cart_dynamic_integration_enabled = false;
+
+// var afterpay_footer_logo_enabled = true;
+// var afterpay_footer_logo_format = 'icon';  // Can be 'icon', 'stacked' or 'logo'.
+// var afterpay_footer_logo_theme = 'colour'; // Can be 'colour', 'black' or 'white'.
+// var afterpay_footer_logo_background = 'border';  // Can be 'border' or 'transparent'.
+// var afterpay_footer_logo_container = 'footer ul.payment-icons';
+// var afterpay_footer_logo_template = '<li class="payment-icon"><object data="{logo_path}" type="image/svg+xml"></object></li>';
+
+// Non-editable fields:
+var afterpay_js_language = {{ localization.language.iso_code | json }};
+var afterpay_js_country = {{ localization.country.iso_code | json }};
+var afterpay_shop_currency = {{ shop.currency | json }};
+var afterpay_cart_currency = {{ cart.currency.iso_code | json }};
+var afterpay_shop_money_format = {{ shop.money_format | json }};
+var afterpay_shop_permanent_domain = {{ shop.permanent_domain | json }};
+var afterpay_theme_name = {{ theme.name | json }};
+var afterpay_product = {{ product | json }};
+var afterpay_current_variant = {{ product.selected_or_first_available_variant | json }};
+var afterpay_cart_total_price = {{ cart.total_price | json }};
+var afterpay_js_snippet_version = '1.1.1';
+</script>
+<script type="text/javascript" src="https://static.afterpay.com/shopify-afterpay-javascript.js"></script>
+{% else %}
+<!-- Afterpay disabled: {{ cart.currency.iso_code }} != {{ shop.currency }} -->
+{% endif %}
+<!-- End Shopify-Afterpay JavaScript Snippet (v1.1.1) -->
+
+
+

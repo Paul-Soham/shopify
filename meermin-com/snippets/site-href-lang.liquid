@@ -1,0 +1,16 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Snippet - Href-lang
+  - https://moz.com/learn/seo/hreflang-tag
+  - Serve alternate languages on search engines.
+  - Sample tags for EU and US stores below.
+
+  <link href="{{ canonical_url | replace: shop.domain, 'eu.mystore.com' }}" hreflang="en-EU" rel="alternate">
+  <link href="{{ canonical_url | replace: shop.domain, 'us.mystore.com' }}" hreflang="en-US" rel="alternate">
+------------------------------------------------------------------------------
+{% endcomment %}
+<link href="{{ canonical_url | replace: shop.domain, 'www.frame-3.com' }}" hreflang="x-default" rel="alternate">
+<link href="{{ canonical_url | replace: shop.domain, 'www.frame-3-eu.com' }}" hreflang="en-EU" rel="alternate">
+<link href="{{ canonical_url | replace: shop.domain, 'www.frame-3-us.com' }}" hreflang="en-US" rel="alternate">
+<link href="{{ canonical_url | replace: shop.domain, 'www.frame-3-au.com' }}" hreflang="en-AU" rel="alternate">
+<link href="{{ canonical_url | replace: shop.domain, 'www.frame-3-de.com' }}" hreflang="de" rel="alternate">

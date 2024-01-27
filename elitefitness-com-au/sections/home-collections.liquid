@@ -1,0 +1,79 @@
+
+<section class="homeCollection" style="background: url({{ section.settings.background_img | img_url:'master' }});">
+  <div class="container">
+    <div class="scroller">
+      <div class="scroller__inner">
+        <div class="collection-list flickity-enabled" tabindex="0">
+          
+          {% for block in section.blocks %}
+            <a href="{{ block.settings.collection_url }}" class="">
+              <img src="{{ block.settings.collection_img | img_url:'master' }}" class="" alt="" width="" height="">
+              <h3>{{ block.settings.collection_name }}</h3>
+            </a>
+          {% endfor %}
+          
+            <button class="flickity-button flickity-prev-next-button previous" type="button" disabled="" aria-label="Previous">
+              <svg class="flickity-button-icon" viewBox="0 0 100 100">
+                <path d="M 10,50 L 60,100 L 70,90 L 30,50  L 70,10 L 60,0 Z" class="arrow"></path>
+              </svg>
+            </button>
+            <button class="flickity-button flickity-prev-next-button next" type="button" disabled="" aria-label="Next">
+                <svg class="flickity-button-icon" viewBox="0 0 100 100">
+                  <path d="M 10,50 L 60,100 L 70,90 L 30,50  L 70,10 L 60,0 Z" class="arrow" transform="translate(100, 100) rotate(180) "></path>
+                </svg>
+            </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{% schema %}
+  {
+    "name": "Parent Collections",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "background_img",
+        "label": "Section Background Image"
+      }
+    ],
+    "blocks": [
+    {
+      "name": "Home Collection",
+      "type": "collection",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "collection_img",
+          "label": "Collection Image"
+        },
+        {
+          "type": "url",
+          "id": "collection_url",
+          "label": "Collection Url"
+        },
+        {
+          "type": "text",
+          "id": "collection_name",
+          "label": "Collection Name"
+        }
+      ]
+    }
+    ],
+    "presets": [
+      {
+        "name": "Parent Collections",
+        "category": "Images"
+      }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+
+{% endjavascript %}

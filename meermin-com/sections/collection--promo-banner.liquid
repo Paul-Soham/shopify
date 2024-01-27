@@ -1,0 +1,133 @@
+{% assign has_promoBanner = false %}
+
+{% for block in section.blocks %}
+  {% if block.settings.collection_handle == collection.handle %}
+    {% assign has_promoBanner = true %}
+    {% assign promo = block %}
+    {% break %}
+  {% endif %}
+{% endfor %}
+
+<script type="text/javascript">
+  theme.promoBanner = {
+    hasPromoBanner: {{ has_promoBanner | json }},
+    desktopImage: {{ promo.settings.desktop_image | img_url: 'master' | json }},
+    mobileImage: {{ promo.settings.mobile_image | img_url: 'master' | json }},
+    imageAlt: {{ promo.settings.desktop_image.alt | json }},
+    desktopPosition: {{ promo.settings.desktop_position | json }},
+    mobilePosition: {{ promo.settings.mobile_position | json }},
+    textColor: {{ promo.settings.text_color | json }},
+    header: {{ promo.settings.header | json }},
+    ctaText: {{ promo.settings.cta_text | json }},
+    ctaUrl: {{ promo.settings.cta_url | json }},
+  };
+</script>
+
+
+{% schema %}
+  {
+    "name": "Collection Promo Banners",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Promo Banners"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "image",
+        "name": "Promo Banner",
+        "settings": [
+          {
+            "type": "header",
+            "content": "Collection"
+          },
+          {
+            "type": "collection",
+            "id": "collection_handle",
+            "label": "Collection",
+            "info": "Use this field to map this block to the collection page on which you would to display the content."
+          },
+          {
+            "type": "header",
+            "content": "Images"
+          },
+          {
+            "type": "image_picker",
+            "id": "desktop_image",
+            "label": "Desktop Image",
+            "info": "Recommended min dimensions: 1328x474px (.jpg) - Aspect Ratio => 2.8:1"
+          },
+          {
+            "type": "image_picker",
+            "id": "mobile_image",
+            "label": "Mobile image",
+            "info": "Recommended min dimensions: 720x530px (.jpg) - Aspect Ratio => 1.35:1"
+          },
+          {
+            "type": "header",
+            "content": "Position"
+          },
+          {
+            "type": "range",
+            "id": "desktop_position",
+            "min": 1,
+            "max": 8,
+            "step": 1,
+            "unit": "row",
+            "label": "Desktop position",
+            "default": 2,
+            "info": "Set promo banner row position for desktop screens"
+          },
+          {
+            "type": "range",
+            "id": "mobile_position",
+            "min": 1,
+            "max": 12,
+            "step": 1,
+            "unit": "row",
+            "label": "Mobile position",
+            "default": 2,
+            "info": "Set promo banner row position for mobile screens"
+          },
+          {
+            "type": "header",
+            "content": "Text"
+          },
+          {
+            "type": "radio",
+            "id": "text_color",
+            "label": "Text Color",
+            "default": "#fff",
+            "options": [
+              {
+                "value": "#fff",
+                "label": "White"
+              },
+              {
+                "value": "#000",
+                "label": "Black"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "id": "header",
+            "label": "Header Text"
+          },
+          {
+            "type": "text",
+            "id": "cta_text",
+            "label": "Call-to-Action Text",
+            "default": "Shop Now"
+          },
+          {
+            "type": "url",
+            "id": "cta_url",
+            "label": "Call-to-Action Link URL"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}
